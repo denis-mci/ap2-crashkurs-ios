@@ -28,12 +28,16 @@ jobs:
 
       - name: Piper und ffmpeg installieren
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
-          pip install -q "piper-tts>=1.3"
-          python -m piper.download_voices de_DE-thorsten-high
+          set -o pipefail
+          { sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+            pip install -q "piper-tts>=1.3"
+            python -m piper.download_voices de_DE-thorsten-high
+            ls -la *.onnx*; } 2>&1 | tee -a /tmp/audio.log
 
       - name: Clips vertonen
-        run: python tools/make_audio.py
+        run: |
+          set -o pipefail
+          python tools/make_audio.py 2>&1 | tee -a /tmp/audio.log
 
       - name: Audio committen
         run: |
@@ -43,3 +47,16 @@ jobs:
           if git diff --cached --quiet; then echo "Keine Änderungen"; exit 0; fi
           git commit -m "Vertonung aktualisiert (Piper Thorsten)"
           git push
+
+      - name: Log in Branch audio-log ablegen
+        if: always()
+        run: |
+          mkdir -p /tmp/al && cd /tmp/al
+          echo "run=${{ github.run_number }} job=${{ job.status }}" > status.txt
+          tail -200 /tmp/audio.log > log.txt 2>/dev/null || echo "kein Log" > log.txt
+          ls "$GITHUB_WORKSPACE/App/Resources/audio" 2>/dev/null | head -5 > sample.txt || true
+          git init -q -b audio-log
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "Audio ${{ github.run_number }}: ${{ job.status }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" audio-log
