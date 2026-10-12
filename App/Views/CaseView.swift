@@ -128,11 +128,13 @@ struct CaseSubView: View {
 
     @State private var text = ""
     @State private var loaded = false
+    @State private var drawMode = true
     @FocusState private var focused: Bool
 
     private var progress: CaseProgress { store.caseProgress(caseID) }
     private var shown: Bool { progress.shown.contains(key) }
     private var isCode: Bool { sub.kind == "code" }
+    private var isDiagram: Bool { sub.kind == "diagram" }
 
     private var reached: Int {
         let cr = progress.crit[key] ?? []
@@ -149,6 +151,16 @@ struct CaseSubView: View {
             Text(sub.q).font(.body.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
             if let m = sub.material { MaterialBlock(m: m) }
 
+            if isDiagram {
+                Picker("Modus", selection: $drawMode) {
+                    Text("Zeichnen").tag(true)
+                    Text("Text").tag(false)
+                }
+                .pickerStyle(.segmented)
+            }
+            if isDiagram && drawMode {
+                SketchView(key: "case:\(caseID):\(key)")
+            } else {
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $text)
                     .font(isCode ? .system(.callout, design: .monospaced) : .body)
@@ -166,9 +178,13 @@ struct CaseSubView: View {
             }
             .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 12))
             .onChange(of: text) { if loaded { let t = text; store.updateCase(caseID) { $0.ans[key] = t } } }
+            }
 
             if shown {
                 Text("MUSTERLÖSUNG").font(.caption.weight(.bold)).tracking(1).foregroundStyle(.secondary)
+                if sub.diagram != nil {
+                    DiagramImage(id: "\(caseID)_\(key)", crowFoot: sub.q.contains("ERM") || sub.q.contains("ER-Modell") || sub.q.contains("Entity"))
+                }
                 ScrollView(.horizontal, showsIndicators: false) {
                     Text(sub.model)
                         .font(.system(.footnote, design: .monospaced))

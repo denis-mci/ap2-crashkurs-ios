@@ -54,6 +54,7 @@ struct WriteTask: Codable, Hashable {
     var task: String
     var model: String
     var alt: String?
+    var diagram: String?
     var keys: [KeyRule]
     var isCode: Bool {
         model.contains("\n") && ["SELECT", "funktion", "UPDATE", "{", "——"].contains { model.contains($0) }
@@ -147,6 +148,7 @@ struct CaseSub: Codable, Hashable {
     var q: String
     var material: CaseMaterial?
     var kind: String?
+    var diagram: String?
     var model: String
     var criteria: [Criterion]
 }

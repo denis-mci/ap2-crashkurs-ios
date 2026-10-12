@@ -47,6 +47,8 @@ struct WriteTaskCard: View {
     @State private var hits: [Bool]? = nil
     @State private var loaded = false
     @State private var checkTrigger = 0
+    @State private var drawMode = true
+    @State private var compared = false
     @FocusState private var focused: Bool
 
     private var key: String { "\(lesson.id):w\(index)" }
@@ -67,6 +69,36 @@ struct WriteTaskCard: View {
             }
             Text(task.task).font(.body.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
 
+            if task.diagram != nil {
+                Picker("Modus", selection: $drawMode) {
+                    Text("Zeichnen").tag(true)
+                    Text("Text").tag(false)
+                }
+                .pickerStyle(.segmented)
+            }
+
+            if task.diagram != nil && drawMode {
+                SketchView(key: key)
+                Button {
+                    withAnimation { compared = true }
+                } label: {
+                    Label("Mit gezeichneter Musterlösung vergleichen", systemImage: "rectangle.on.rectangle").frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.borderedProminent).controlSize(.large)
+                if compared {
+                    DiagramImage(id: "\(lesson.id)_w\(index)", crowFoot: lesson.id == "erm")
+                    Text("MUSTERLÖSUNG ALS TEXT").font(.caption.weight(.bold)).tracking(1).foregroundStyle(.secondary)
+                    Text(task.model).font(.system(.footnote, design: .monospaced))
+                        .padding(12).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+                    Text("Wie gut war deine Zeichnung?").font(.subheadline.weight(.semibold))
+                    HStack {
+                        rateButton("Passt", 100)
+                        rateButton("Teilweise", 50)
+                        rateButton("Daneben", 0)
+                    }
+                }
+            } else {
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $text)
                     .font(task.isCode ? .system(.callout, design: .monospaced) : .body)
@@ -123,6 +155,7 @@ struct WriteTaskCard: View {
                             .padding(12)
                     }
                     .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10))
+                    if task.diagram != nil { DiagramImage(id: "\(lesson.id)_w\(index)", crowFoot: lesson.id == "erm") }
                     if let alt = task.alt { Text(alt).font(.footnote) }
                     Text("**Trick fürs Einprägen:** Lies die Musterlösung einmal, dann leere dein Feld und schreib sie aus dem Kopf nochmal.")
                         .font(.footnote)
@@ -135,6 +168,7 @@ struct WriteTaskCard: View {
                 }
                 .transition(.opacity)
             }
+            }
         }
         .padding(16)
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
@@ -142,6 +176,17 @@ struct WriteTaskCard: View {
             if !loaded { text = store.writeText(key); loaded = true }
         }
         .sensoryFeedback(.success, trigger: checkTrigger)
+    }
+
+    private func rateButton(_ label: String, _ pct: Int) -> some View {
+        Button(label) {
+            let first = last == nil
+            store.update(lesson.id) { $0.write[String(index)] = pct }
+            store.gain(first ? 30 : 10)
+            checkTrigger += 1
+        }
+        .buttonStyle(.bordered)
+        .frame(maxWidth: .infinity)
     }
 
     private func check() {
