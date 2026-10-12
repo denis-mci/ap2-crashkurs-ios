@@ -19,6 +19,7 @@ struct QuizRunner<EndContent: View>: View {
     @State private var startTime = Date()
     @State private var finished = false
     @State private var wrongCount = 0
+    @State private var preparedIdx = -1
     @FocusState private var inputFocused: Bool
     private let tick = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
 
@@ -26,7 +27,7 @@ struct QuizRunner<EndContent: View>: View {
         Group {
             if finished { resultView } else if idx < items.count { questionView(items[idx]) }
         }
-        .onAppear { prepare() }
+        .onAppear { if preparedIdx != idx { prepare() } }
         .onReceive(tick) { _ in
             guard let t = timer, !answered, !finished else { return }
             if Date().timeIntervalSince(startTime) >= t { timedOut = true; answer(false, chosen: nil) }
@@ -39,6 +40,7 @@ struct QuizRunner<EndContent: View>: View {
 
     private func prepare() {
         guard idx < items.count else { return }
+        preparedIdx = idx
         order = Array(0..<(items[idx].o?.count ?? 0)).shuffled()
         startTime = Date()
         answered = false; chosen = nil; input = ""; timedOut = false
@@ -69,6 +71,7 @@ struct QuizRunner<EndContent: View>: View {
                         .keyboardType(.numbersAndPunctuation)
                         .focused($inputFocused)
                         .submitLabel(.done)
+                        .toolbar { ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Fertig") { inputFocused = false } } }
                         .onSubmit(submitInput)
                         .disabled(answered)
                         .padding(14)
@@ -95,8 +98,9 @@ struct QuizRunner<EndContent: View>: View {
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(optionStroke(k, q), lineWidth: 2))
                             .contentShape(Rectangle())
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(PressStyle())
                         .disabled(answered)
+                        .accessibilityValue(answered ? (k == q.correct ? "richtig" : (k == chosen ? "deine Antwort, falsch" : "")) : "")
                     }
                 }
             }
@@ -147,6 +151,7 @@ struct QuizRunner<EndContent: View>: View {
 
     private func answer(_ ok: Bool, chosen k: Int?) {
         guard !answered else { return }
+        inputFocused = false
         chosen = k
         wasRight = ok
         let key = items[idx].key
@@ -170,15 +175,17 @@ struct QuizRunner<EndContent: View>: View {
         let pass = pct >= 50
         return VStack(spacing: 12) {
             Text("ERGEBNIS").font(.caption.weight(.bold)).tracking(1).foregroundStyle(.secondary)
-            Gauge(value: Double(pct), in: 0...100) {
-                EmptyView()
-            } currentValueLabel: {
-                Text("\(pct) %").font(.title2.weight(.heavy)).monospacedDigit()
+            ZStack {
+                Circle().stroke(.quaternary, lineWidth: 11)
+                Circle().trim(from: 0, to: Double(pct) / 100)
+                    .stroke(pass ? Color.green : Color.red, style: StrokeStyle(lineWidth: 11, lineCap: .round))
+                    .rotationEffect(.degrees(-90))
+                Text("\(pct) %").font(.title.weight(.heavy)).monospacedDigit()
             }
-            .gaugeStyle(.accessoryCircularCapacity)
-            .tint(pass ? .green : .red)
-            .scaleEffect(1.6)
-            .padding(.vertical, 22)
+            .frame(width: 130, height: 130)
+            .padding(.vertical, 10)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Ergebnis \(pct) Prozent")
             Text("\(right) von \(items.count) richtig").font(.headline)
             Text(pass ? "Bestehens-Niveau erreicht" : "Unter 50 %, nochmal ran")
                 .font(.subheadline.weight(.bold))
@@ -193,6 +200,15 @@ struct QuizRunner<EndContent: View>: View {
         .padding(20)
         .frame(maxWidth: .infinity)
         .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18))
+    }
+}
+
+struct PressStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.98 : 1)
+            .opacity(configuration.isPressed ? 0.85 : 1)
+            .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }
 
@@ -262,6 +278,7 @@ struct RunView: View {
     var timer: Double? = nil
     var showLesson = true
     var xpEach = 5
+    @State private var confirmExit = false
 
     var body: some View {
         ScrollView {
@@ -276,5 +293,16 @@ struct RunView: View {
         .background(Color(.systemGroupedBackground))
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(timer != nil)
+        .toolbar {
+            if timer != nil {
+                ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { confirmExit = true } }
+            }
+        }
+        .confirmationDialog("Lauf abbrechen?", isPresented: $confirmExit, titleVisibility: .visible) {
+            Button("Abbrechen und zurück", role: .destructive) { dismiss() }
+        } message: {
+            Text("Der aktuelle Lauf wird nicht gewertet.")
+        }
     }
 }

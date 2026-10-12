@@ -43,8 +43,8 @@ struct HomeView: View {
                                 HStack { AreaTag(area: l.area); PrioTag(lesson: l) }
                                 Text(l.title).font(.title3.weight(.bold))
                                 Text(l.why).font(.subheadline).foregroundStyle(.secondary)
-                                Label(["Erklärclip ansehen", "Quiz machen", "Schreibaufgabe lösen"][step] + " · ca. \(l.mins) Min",
-                                      systemImage: ["play.circle.fill", "checklist", "pencil.line"][step])
+                                let s = [("Erklärclip ansehen", "play.circle.fill"), ("Quiz machen", "checklist"), ("Schreibaufgabe lösen", "pencil.line")][step]
+                                Label("\(s.0) · ca. \(l.mins) Min", systemImage: s.1)
                                     .font(.subheadline.weight(.semibold)).foregroundStyle(Color.cobalt)
                             }
                             .padding(.vertical, 6)
@@ -82,7 +82,7 @@ struct HomeView: View {
                                 Text(Dates.short.string(from: item.date))
                                     .font(.caption.monospacedDigit().weight(.semibold))
                                     .foregroundStyle(.secondary)
-                                    .frame(width: 70, alignment: .leading)
+                                    .fixedSize()
                                 Text(item.lesson.title)
                                     .font(.subheadline)
                                     .strikethrough(done)
@@ -115,11 +115,12 @@ struct HomeView: View {
 struct LessonRoute: Hashable { let id: String; let step: Int }
 
 struct CountdownHero: View {
+    @ScaledMetric(relativeTo: .largeTitle) private var heroSize = 72.0
     var body: some View {
         HStack(alignment: .bottom, spacing: 14) {
             VStack(alignment: .leading, spacing: -4) {
                 Text("\(Dates.daysLeft)")
-                    .font(.system(size: 72, weight: .black, design: .rounded))
+                    .font(.system(size: heroSize, weight: .black, design: .rounded))
                     .monospacedDigit()
                 Text("Tage").font(.headline)
             }
@@ -136,6 +137,7 @@ struct CountdownHero: View {
         .background(
             RoundedRectangle(cornerRadius: 20, style: .continuous).fill(Color.ink)
         )
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).strokeBorder(.separator))
         .overlay(alignment: .topTrailing) {
             Circle().fill(Color.marker).frame(width: 14, height: 14).padding(16)
         }
@@ -148,7 +150,7 @@ struct StatCell: View {
     var body: some View {
         VStack(spacing: 2) {
             Image(systemName: icon).foregroundStyle(color).font(.caption)
-            Text(value).font(.title2.weight(.bold)).monospacedDigit()
+            Text(value).font(.title2.weight(.bold)).monospacedDigit().contentTransition(.numericText())
             Text(label).font(.caption2).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
         }
         .frame(maxWidth: .infinity)

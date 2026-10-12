@@ -85,7 +85,7 @@ struct ExamView: View {
                         ModeRow(title: "Blitzrunde", sub: "10 Fragen quer durch alles, 20 s pro Frage", icon: "bolt.fill", color: .yellow)
                     }
                     NavigationLink(value: RunRoute(title: "WiSo-Simulation", keys: keys([.WISO], 25), timer: 60, showLesson: false)) {
-                        ModeRow(title: "WiSo-Simulation", sub: "25 Fragen, 60 s pro Frage. Die echte WiSo hat nur Ankreuzfragen.", icon: "building.columns.fill", color: Color.area(.WISO))
+                        ModeRow(title: "WiSo-Simulation", sub: "25 Fragen, 60 s pro Frage. Die echte WiSo ist maschinell auswertbar, keine Freitexte.", icon: "building.columns.fill", color: Color.area(.WISO))
                     }
                     NavigationLink(value: RunRoute(title: "GA-Mix", keys: keys([.GA1, .GA2], 15), timer: 45, showLesson: true)) {
                         ModeRow(title: "GA-Mix", sub: "15 Fragen aus GA1 und GA2, 45 s pro Frage", icon: "chevron.left.forwardslash.chevron.right", color: .cobalt)
@@ -108,9 +108,9 @@ struct ExamView: View {
                 Section {
                     LabeledContent("08:00 bis 09:30", value: "GA1 Planen")
                     LabeledContent("10:00 bis 11:30", value: "GA2 Algorithmen")
-                    LabeledContent("11:45 bis 12:45", value: "WiSo")
+                    LabeledContent("11:45 bis 12:45", value: "WiSo, gebundene Aufgaben")
                     ForEach(["Einladung und Personalausweis", "Nicht programmierbarer Taschenrechner", "Mehrere Kulis, Lineal", "Belegsatz liegt bei: SQL-Syntax und UML dort nachschauen", "Erst alles überfliegen, mit dem Leichtesten anfangen", "Nie etwas leer lassen, Teilpunkte gibt es fast überall"], id: \.self) { s in
-                        Label(s, systemImage: "square").font(.subheadline)
+                        Label(s, systemImage: "checkmark.circle").symbolRenderingMode(.hierarchical).font(.subheadline)
                     }
                 } header: {
                     Text("Prüfungstag")

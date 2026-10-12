@@ -33,8 +33,20 @@ final class Speaker: NSObject, AVSpeechSynthesizerDelegate {
     }
 
     func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        releaseSession()
         guard utterance === current else { return }
         DispatchQueue.main.async { self.onFinish?() }
+    }
+
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didCancel utterance: AVSpeechUtterance) {
+        releaseSession()
+    }
+
+    private func releaseSession() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self, !self.synth.isSpeaking else { return }
+            try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+        }
     }
 }
 
@@ -50,7 +62,8 @@ struct ClipStep: View {
     @State private var gen = 0
     @State private var sceneStart = Date()
     @State private var sceneDur: Double = 5
-    @State private var speaker = Speaker()
+    @State private var speaker: Speaker? = nil
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var haptic = 0
     private let tick = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
 
@@ -108,6 +121,7 @@ struct ClipStep: View {
         .onReceive(tick) { _ in
             if playing { progress = min(1, Date().timeIntervalSince(sceneStart) / sceneDur) }
         }
+        .onAppear { if speaker == nil { speaker = Speaker() } }
         .onDisappear { halt() }
         .sensoryFeedback(.selection, trigger: haptic)
     }
@@ -127,6 +141,7 @@ struct ClipStep: View {
                 }
             }
             .padding([.horizontal, .top], 12)
+            .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 12) {
                 Text("SZENE \(idx + 1) VON \(lesson.clip.count)")
@@ -134,14 +149,18 @@ struct ClipStep: View {
                 Text(scene.h).font(.title2.weight(.heavy))
                 VisualView(v: scene.v)
                     .id(idx)
-                    .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                    .transition(reduceMotion ? .opacity : .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
             }
             .padding(16)
             .frame(maxWidth: .infinity, minHeight: 260, alignment: .topLeading)
             .contentShape(Rectangle())
-            .gesture(DragGesture(minimumDistance: 30).onEnded { v in
+            .simultaneousGesture(DragGesture(minimumDistance: 30).onEnded { v in
+                guard abs(v.translation.width) > abs(v.translation.height) * 1.5 else { return }
                 if v.translation.width < -40 { jump(1) } else if v.translation.width > 40 { jump(-1) }
             })
+            .accessibilityElement(children: .combine)
+            .accessibilityValue("Szene \(idx + 1) von \(lesson.clip.count)")
+            .accessibilityAdjustableAction { d in if d == .increment { jump(1) } else { jump(-1) } }
 
             Text(scene.say)
                 .font(.callout)
@@ -211,8 +230,8 @@ struct ClipStep: View {
         sceneStart = Date()
         sceneDur = estimate(scene.say)
         progress = 0
-        speaker.stop()
-        if store.state.sound {
+        speaker?.stop()
+        if store.state.sound, let speaker {
             speaker.onFinish = {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     if my == gen && playing { advance() }
@@ -252,7 +271,7 @@ struct ClipStep: View {
     private func halt() {
         playing = false
         gen += 1
-        speaker.stop()
+        speaker?.stop()
     }
 
     private func toggle() {
@@ -271,7 +290,7 @@ struct ClipStep: View {
         if n >= lesson.clip.count { finish(); return }
         idx = n
         haptic += 1
-        if playing { run() } else { gen += 1; speaker.stop(); progress = 0 }
+        if playing { run() } else { gen += 1; speaker?.stop(); progress = 0 }
     }
 }
 
@@ -283,7 +302,7 @@ struct VisualView: View {
             if let code = v.code {
                 ScrollView(.horizontal, showsIndicators: false) {
                     Text(code)
-                        .font(.system(size: 12.5, design: .monospaced))
+                        .font(.system(.caption, design: .monospaced))
                         .fixedSize(horizontal: true, vertical: false)
                         .padding(12)
                 }
@@ -302,7 +321,7 @@ struct VisualView: View {
             }
             if let s = v.stat {
                 Text(s)
-                    .font(.system(size: 34, weight: .black, design: .rounded))
+                    .font(.system(.largeTitle, design: .rounded, weight: .black))
                     .background(alignment: .bottom) { Color.marker.opacity(0.85).frame(height: 14).offset(y: -4) }
                 if let sub = v.sub { Text(sub).foregroundStyle(.secondary) }
             }

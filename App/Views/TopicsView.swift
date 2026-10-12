@@ -72,13 +72,6 @@ struct LessonView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack { AreaTag(area: l.area); PrioTag(lesson: l) }
-                    Picker("Schritt", selection: $step) {
-                        let d = store.stepsDone(l)
-                        Text((d[0] ? "✓ " : "") + "Clip").tag(0)
-                        Text((d[1] ? "✓ " : "") + "Quiz").tag(1)
-                        Text((d[2] ? "✓ " : "") + "Schreiben").tag(2)
-                    }
-                    .pickerStyle(.segmented)
 
                     switch step {
                     case 0:
@@ -92,6 +85,17 @@ struct LessonView: View {
                 .padding()
             }
             .scrollDismissesKeyboard(.interactively)
+            .safeAreaInset(edge: .top) {
+                let d = store.stepsDone(l)
+                Picker("Schritt", selection: $step) {
+                    Text((d[0] ? "✓ " : "") + "Clip").tag(0)
+                    Text((d[1] ? "✓ " : "") + "Quiz").tag(1)
+                    Text((d[2] ? "✓ " : "") + "Schreiben").tag(2)
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal).padding(.vertical, 8)
+                .background(.bar)
+            }
             .background(Color(.systemGroupedBackground))
             .navigationTitle(l.title)
             .navigationBarTitleDisplayMode(.inline)

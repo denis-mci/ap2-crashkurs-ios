@@ -26,14 +26,14 @@
    "prio": 1,
    "title": "Pseudocode: die 4 Grundmuster",
    "mins": 25,
-   "why": "War in jeder AP2 seit 2021 dran und bringt die meisten Punkte überhaupt.",
+   "why": "War in jeder AP2 von Winter 2021 bis Winter 2025 dran und bringt die meisten Punkte überhaupt.",
    "clip": [
     {
      "h": "Warum das hier zuerst?",
-     "say": "Pseudocode kam in jeder einzelnen AP2 seit 2021 dran. Kein Thema bringt mehr Punkte. Wenn du nur eine Sache lernst, dann diese.",
+     "say": "Pseudocode kam in jeder einzelnen AP2 von Winter 2021 bis Winter 2025 dran. Kein Thema bringt mehr Punkte. Wenn du nur eine Sache lernst, dann diese.",
      "v": {
       "stat": "9 von 9",
-      "sub": "Prüfungen seit 2021 hatten Pseudocode. Kein anderes Thema bringt mehr Punkte."
+      "sub": "Prüfungen von Winter 2021 bis Winter 2025 hatten Pseudocode. Kein anderes Thema bringt mehr Punkte."
      }
     },
     {
@@ -272,21 +272,21 @@
    "why": "Bubble, Selection und Insertion Sort stehen seit 2025 ausdrücklich im Katalog.",
    "clip": [
     {
-     "h": "Neu im Katalog",
-     "say": "Seit dem neuen Prüfungskatalog stehen drei Sortierverfahren ausdrücklich drin: Bubble Sort, Selection Sort und Insertion Sort. Dazu kommen binäre Suche und Rekursion.",
+     "h": "Was im Katalog steht",
+     "say": "Seit dem Prüfungskatalog 2025 stehen drei Sortierverfahren ausdrücklich drin: Bubble Sort, Selection Sort und Insertion Sort. Weiterhin im Katalog sind lineare und binäre Suche sowie Rekursion.",
      "v": {
       "list": [
-       "Bubble Sort",
-       "Selection Sort",
-       "Insertion Sort",
-       "Binäre Suche",
-       "Rekursion"
+       "Neu seit 2025: Bubble Sort",
+       "Neu seit 2025: Selection Sort",
+       "Neu seit 2025: Insertion Sort",
+       "Weiterhin: lineare und binäre Suche",
+       "Weiterhin: Rekursion"
       ]
      }
     },
     {
      "h": "Bubble Sort",
-     "say": "Bubble Sort vergleicht immer zwei Nachbarn. Ist der linke größer, werden sie getauscht. Nach dem ersten Durchlauf ist die größte Zahl ganz hinten. Wie eine Blase, die nach oben steigt. Das wiederholst du, bis nichts mehr getauscht wird.",
+     "say": "Bubble Sort vergleicht immer zwei Nachbarn. Ist der linke größer, werden sie getauscht. Nach dem ersten Durchlauf ist die größte Zahl ganz hinten. Wie eine Blase, die nach oben steigt. Das wiederholst du n minus eins Mal, dann ist die Liste sortiert. Wird in einem Durchlauf nichts mehr getauscht, kann man auch früher abbrechen.",
      "v": {
       "code": "[5, 1, 4, 2]\n 5>1 tauschen → [1, 5, 4, 2]\n 5>4 tauschen → [1, 4, 5, 2]\n 5>2 tauschen → [1, 4, 2, 5]   ← nach Durchlauf 1\n                                  größte Zahl ist hinten"
      }
@@ -295,7 +295,7 @@
      "h": "Bubble Sort in Pseudocode",
      "say": "Im Code sind das zwei verschachtelte Schleifen. Die innere vergleicht Nachbarn. Zum Tauschen brauchst du eine Hilfsvariable temp. Das nennt man Dreieckstausch. Ohne temp überschreibst du einen Wert. Das kommt gerne als Fehlersuche dran.",
      "v": {
-      "code": "für i = 0 bis n - 2\n  für j = 0 bis n - 2 - i\n    falls a[j] > a[j+1] dann\n      temp = a[j]          // Dreieckstausch\n      a[j] = a[j+1]\n      a[j+1] = temp\n    ende falls\n  ende für\nende für"
+      "code": "für i = 0 bis n - 2\n  für j = 0 bis n - 2 - i\n    falls a[j] > a[j+1] dann\n      temp = a[j]          // Dreieckstausch\n      a[j] = a[j+1]\n      a[j+1] = temp\n    ende falls\n  ende für\nende für\n// Optional: Flag getauscht, Abbruch wenn\n// in einem Durchlauf nichts getauscht wurde"
      }
     },
     {
@@ -1005,7 +1005,7 @@
       },
       {
        "label": "HAVING COUNT >= 2",
-       "pattern": "having\\s+count\\s*\\(.*\\)\\s*(>=\\s*2|>\\s*1)",
+       "pattern": "having\\s+count\\s*\\(.*\\)\\s*(>=\\s*2\\b|>\\s*1\\b)",
        "flags": "i"
       }
      ]
@@ -1183,7 +1183,7 @@
       },
       {
        "label": "SET Honorar = Honorar * 1.1",
-       "pattern": "set\\s+honorar\\s*=\\s*honorar\\s*\\*\\s*1[.,]1",
+       "pattern": "set\\s+honorar\\s*=\\s*(honorar\\s*\\*\\s*1[.,]10?\\b|honorar\\s*\\+\\s*honorar\\s*\\*\\s*0[.,]10?\\b)",
        "flags": "i"
       },
       {
@@ -1201,7 +1201,7 @@
    "prio": 1,
    "title": "Testen und Schreibtischtest",
    "mins": 25,
-   "why": "Testen kam in der Hälfte aller Prüfungen. Schreibtischtests sind leicht verdiente Punkte.",
+   "why": "Testen kam in 6 von 9 Prüfungen seit Winter 2021. Schreibtischtests sind leicht verdiente Punkte.",
    "clip": [
     {
      "h": "Black-Box vs. White-Box",
@@ -1235,7 +1235,7 @@
      "h": "Äquivalenzklassen",
      "say": "Äquivalenzklassen teilen alle Eingaben in Gruppen, die sich gleich verhalten. Aus jeder Klasse reicht ein Testwert. Vergiss die ungültigen Klassen nicht, zum Beispiel negative Zahlen. Die geben in der Prüfung oft die Extrapunkte.",
      "v": {
-      "code": "Rabatt ab Bestellwert 100 €, max. 10.000 €\n\nungültig   |   gültig: kein Rabatt | gültig: Rabatt | ungültig\n   < 0     |      0 bis 99,99      | 100 bis 10.000 |  > 10.000\n\nTestwerte: -5   |   50   |   500   |   20.000"
+      "code": "Rabatt ab Bestellwert 100 €. Zulässiger Bestellwert: 0 bis 10.000 €\n\nungültig   |   gültig: kein Rabatt | gültig: Rabatt | ungültig\n   < 0     |      0 bis 99,99      | 100 bis 10.000 |  > 10.000\n\nTestwerte: -5   |   50   |   500   |   20.000"
      }
     },
     {
@@ -1249,7 +1249,7 @@
      "h": "Überdeckung",
      "say": "Bei White-Box gibt es Überdeckungsgrade. Anweisungsüberdeckung heißt, jede Anweisung wird mindestens einmal ausgeführt. Zweigüberdeckung heißt, jeder Zweig wird durchlaufen, also bei jedem falls einmal ja und einmal nein. Zweigüberdeckung ist stärker.",
      "v": {
-      "code": "falls x > 0 dann\n  y = 1\nende falls\nausgabe(y)\n\nAnweisungsüberdeckung (C0): x = 5 reicht\n  → jede Anweisung einmal ausgeführt\nZweigüberdeckung (C1): x = 5 UND x = -1\n  → jeder Zweig (ja UND nein) einmal"
+      "code": "y = 0\nfalls x > 0 dann\n  y = 1\nende falls\nausgabe(y)\n\nAnweisungsüberdeckung (C0): x = 5 reicht\n  → jede Anweisung einmal ausgeführt\nZweigüberdeckung (C1): x = 5 UND x = -1\n  → jeder Zweig (ja UND nein) einmal"
      }
     },
     {
@@ -1340,7 +1340,7 @@
     },
     {
      "key": "test:2",
-     "q": "Welche Überdeckung verlangt, dass jede Bedingung einmal wahr UND einmal falsch ist?",
+     "q": "Welche Überdeckung verlangt, dass bei jeder Verzweigung (falls) beide Zweige mindestens einmal durchlaufen werden?",
      "o": [
       "Anweisungsüberdeckung",
       "Zweigüberdeckung",
@@ -1448,11 +1448,11 @@
    "prio": 2,
    "title": "Aktivitäts-, Sequenz-, Zustandsdiagramm",
    "mins": 25,
-   "why": "Das Aktivitätsdiagramm ersetzt seit 2025 Struktogramm und PAP.",
+   "why": "Struktogramm und PAP sind seit 2025 gestrichen. Abläufe zeigst du als Aktivitätsdiagramm oder Pseudocode.",
    "clip": [
     {
      "h": "Aktivitätsdiagramm: Elemente",
-     "say": "Das Aktivitätsdiagramm ersetzt jetzt Struktogramm und Programmablaufplan. Es beginnt mit einem schwarzen Punkt und endet mit einem Punkt im Ring. Aktionen sind abgerundete Rechtecke. Eine Raute ist eine Verzweigung, und an die Pfeile schreibst du die Bedingungen in eckigen Klammern. Ein dicker Balken bedeutet parallele Abläufe. Swimlanes trennen, wer was macht.",
+     "say": "Struktogramm und Programmablaufplan sind seit 2025 aus dem Katalog gestrichen. Abläufe zeigst du jetzt als Aktivitätsdiagramm oder in Pseudocode. Das Aktivitätsdiagramm beginnt mit einem schwarzen Punkt und endet mit einem Punkt im Ring. Aktionen sind abgerundete Rechtecke. Eine Raute ist eine Verzweigung, und an die Pfeile schreibst du die Bedingungen in eckigen Klammern. Ein dicker Balken bedeutet parallele Abläufe. Swimlanes trennen, wer was macht.",
      "v": {
       "table": [
        [
@@ -1473,7 +1473,7 @@
        ],
        [
         "◇ Raute",
-        "Verzweigung / Zusammenführung"
+        "Entscheidung (ein Pfeil rein, mehrere raus) oder Zusammenführung (mehrere rein, einer raus)"
        ],
        [
         "[Bedingung]",
@@ -1492,9 +1492,9 @@
     },
     {
      "h": "Beispiel: Login",
-     "say": "Ein Beispiel. Start, Zugangsdaten eingeben, dann eine Raute. Wenn falsch, Fehlermeldung und zurück zur Eingabe. Das ist eine Schleife. Wenn richtig, Dashboard anzeigen und Ende. Achte darauf, dass jeder Pfeil aus einer Raute eine Bedingung hat.",
+     "say": "Ein Beispiel. Start, Zugangsdaten eingeben, dann eine Entscheidungsraute. Wenn falsch, Fehlermeldung und zurück. Der Rückpfeil geht in eine Zusammenführungsraute vor der Eingabe, nicht direkt in die Aktion. Denn zwei Pfeile in eine Aktion bedeuten in UML, dass beide gleichzeitig ankommen müssen. Wenn richtig, Dashboard anzeigen und Ende. Jeder Pfeil aus einer Entscheidungsraute braucht eine Bedingung.",
      "v": {
-      "code": "●\n↓\n( Zugangsdaten eingeben )\n↓\n◇ ── [falsch] ──→ ( Fehlermeldung ) ─┐\n│ [richtig]                         │\n↓                                   │\n( Dashboard anzeigen )    ←── zurück zur Eingabe\n↓\n◉"
+      "code": "●\n↓\n◇ ←──────────────────────────────┐  (Zusammenführung)\n↓                                │\n( Zugangsdaten eingeben )        │\n↓                                │\n◇ ── [falsch] ──→ ( Fehlermeldung ) ─┘\n│ [richtig]\n↓\n( Dashboard anzeigen )\n↓\n◉"
      }
     },
     {
@@ -1506,9 +1506,9 @@
     },
     {
      "h": "Zustandsdiagramm",
-     "say": "Das Zustandsdiagramm zeigt, welche Zustände ein Objekt haben kann und welche Ereignisse es wechseln lassen. Zum Beispiel ein Dokument: Entwurf, einreichen, In Prüfung, dann freigeben oder ablehnen. An den Pfeil schreibst du das Ereignis, optional eine Bedingung in eckigen Klammern und eine Aktion nach dem Schrägstrich.",
+     "say": "Das Zustandsdiagramm zeigt, welche Zustände ein Objekt haben kann und welche Ereignisse es wechseln lassen. Zum Beispiel ein Dokument: Entwurf, einreichen, In Prüfung, dann freigeben nach Freigegeben oder ablehnen zurück nach Entwurf. An den Pfeil schreibst du das Ereignis, optional eine Bedingung in eckigen Klammern und eine Aktion nach dem Schrägstrich.",
      "v": {
-      "code": "●→ [Entwurf] ──einreichen──→ [In Prüfung]\n                               │      │\n                   ablehnen ←──┘      └──freigeben──→ [Freigegeben] →◉\n\nZustand = abgerundetes Rechteck\nÜbergang = Pfeil mit Ereignis [Bedingung] / Aktion"
+      "code": "●→ [Entwurf] ──einreichen──→ [In Prüfung]\n      ↑                        │      │\n      └──────── ablehnen ──────┘      └──freigeben──→ [Freigegeben] →◉\n\nZustand = abgerundetes Rechteck\nÜbergang = Pfeil mit Ereignis [Bedingung] / Aktion"
      }
     },
     {
@@ -1650,7 +1650,7 @@
    "write": [
     {
      "task": "Beschreibe in Textform ein Aktivitätsdiagramm für: Kunde gibt Bestellmenge ein. Ist die Menge größer als der Lagerbestand, wird ein Hinweis angezeigt und erneut eingegeben. Sonst wird die Bestellung gespeichert. Nenne Start, Aktionen, Verzweigung mit Bedingungen und Ende.",
-     "model": "Startknoten → Aktion \"Bestellmenge eingeben\" → Raute. Pfeil [Menge > Lagerbestand] → Aktion \"Hinweis anzeigen\" → zurück zu \"Bestellmenge eingeben\". Pfeil [Menge <= Lagerbestand] → Aktion \"Bestellung speichern\" → Endknoten.",
+     "model": "Startknoten → Zusammenführungsraute → Aktion \"Bestellmenge eingeben\" → Entscheidungsraute. Pfeil [Menge > Lagerbestand] → Aktion \"Hinweis anzeigen\" → zurück zur Zusammenführungsraute vor \"Bestellmenge eingeben\". Pfeil [Menge <= Lagerbestand] → Aktion \"Bestellung speichern\" → Endknoten.",
      "alt": null,
      "keys": [
       {
@@ -1815,7 +1815,7 @@
     },
     {
      "h": "Abstrakte Klasse vs. Interface",
-     "say": "Abstrakte Klasse gegen Interface. Von beiden kannst du keine Objekte erzeugen. Eine abstrakte Klasse kann Attribute und fertige Methoden haben, aber du kannst nur von einer erben. Ein Interface gibt nur Methodensignaturen vor, dafür kann eine Klasse mehrere implementieren. In UML ist die abstrakte Klasse kursiv, das Interface hat den Stereotyp interface in spitzen Klammern.",
+     "say": "Abstrakte Klasse gegen Interface. Von beiden kannst du keine Objekte erzeugen. Eine abstrakte Klasse kann Attribute und fertige Methoden haben, aber du kannst nur von einer erben. Ein Interface gibt klassisch nur Methodensignaturen vor, dafür kann eine Klasse mehrere implementieren. Neuere Sprachen erlauben im Interface auch Standard-Implementierungen, für die Prüfung reicht die klassische Sicht. In UML ist die abstrakte Klasse kursiv, das Interface hat den Stereotyp interface in spitzen Klammern.",
      "v": {
       "table": [
        [
@@ -1831,12 +1831,12 @@
        [
         "Attribute",
         "ja",
-        "nein (nur Konstanten)"
+        "klassisch nein (nur Konstanten)"
        ],
        [
         "Implementierte Methoden",
         "ja, gemischt",
-        "nur Signaturen"
+        "klassisch nur Signaturen (Java ab 8: auch default-Methoden)"
        ],
        [
         "Mehrfach?",
@@ -2100,7 +2100,7 @@
     },
     {
      "h": "Die 3 Normalformen",
-     "say": "Die drei Normalformen. Erste: Alle Werte sind atomar. Keine Listen wie Telefon eins Komma Telefon zwei in einer Zelle, und Name in Vor- und Nachname trennen. Zweite: Alles hängt vom ganzen Schlüssel ab, nicht nur von einem Teil. Das betrifft nur zusammengesetzte Schlüssel. Dritte: Kein Nicht-Schlüsselattribut hängt von einem anderen Nicht-Schlüsselattribut ab. Klassiker: Postleitzahl bestimmt den Ort. Also Ort in eine eigene Tabelle.",
+     "say": "Die drei Normalformen. Erste: Alle Werte sind atomar. Keine Listen wie Telefon eins Komma Telefon zwei in einer Zelle, und Name in Vor- und Nachname trennen. Zweite: Alles hängt vom ganzen Schlüssel ab, nicht nur von einem Teil. Das betrifft nur zusammengesetzte Schlüssel. Dritte: Kein Nicht-Schlüsselattribut hängt von einem anderen Nicht-Schlüsselattribut ab. Klassiker, als vereinfachende Annahme: Postleitzahl bestimmt den Ort. Also Ort in eine eigene Tabelle.",
      "v": {
       "table": [
        [
@@ -2278,7 +2278,7 @@
    "clip": [
     {
      "h": "Klassisch vs. agil",
-     "say": "Klassische Modelle wie Wasserfall planen alles am Anfang und liefern am Ende. Das ist gut bei festen Anforderungen, aber Änderungen sind teuer. Agile Modelle wie Scrum liefern alle paar Wochen ein funktionierendes Stück. Gut, wenn der Kunde noch nicht genau weiß, was er will.",
+     "say": "Klassische Modelle wie Wasserfall planen alles am Anfang und liefern am Ende. Das ist gut bei festen Anforderungen, aber Änderungen sind teuer. Agile Modelle wie Scrum liefern nach jedem Sprint ein funktionierendes Stück. Gut, wenn der Kunde noch nicht genau weiß, was er will.",
      "v": {
       "table": [
        [
@@ -2294,7 +2294,7 @@
        [
         "Ergebnis",
         "am Ende",
-        "alle 1 bis 4 Wochen"
+        "nach jedem Sprint, spätestens alle 4 Wochen"
        ],
        [
         "Änderungen",
@@ -2311,23 +2311,23 @@
     },
     {
      "h": "Wasserfall und V-Modell",
-     "say": "Beim Wasserfall läuft eine Phase nach der anderen. Das V-Modell ist ein Wasserfall mit eingebauter Qualität: Zu jeder Entwurfsphase links gehört rechts eine Teststufe. Zu den Anforderungen gehört der Abnahmetest, zum Modulentwurf der Unit-Test.",
+     "say": "Beim Wasserfall läuft eine Phase nach der anderen. Das V-Modell ist ein Wasserfall mit eingebauter Qualität: Zu jeder Entwurfsphase links gehört rechts eine Teststufe. Zu den Anforderungen gehört der Abnahmetest, zum Systementwurf der Systemtest, zur Architektur der Integrationstest und zum Modulentwurf der Unit-Test. Die Implementierung ist die Spitze des V.",
      "v": {
-      "code": "Wasserfall: Analyse → Entwurf → Implementierung → Test → Betrieb\n            (jede Phase erst nach Abschluss der vorigen)\n\nV-Modell: zu jeder Entwurfsphase gehört eine Teststufe\n Anforderungen ────────── Abnahmetest\n   Systementwurf ───── Systemtest\n     Modulentwurf ─ Integrationstest\n        Implementierung → Unit-Test"
+      "code": "Wasserfall: Analyse → Entwurf → Implementierung → Test → Betrieb\n            (jede Phase erst nach Abschluss der vorigen)\n\nV-Modell: zu jeder Entwurfsphase gehört eine Teststufe\n Anforderungen ──────────── Abnahmetest\n   Systementwurf ───────── Systemtest\n     Architektur/Grobentwurf ─ Integrationstest\n       Modulentwurf ──── Unit-Test\n          Implementierung (Spitze des V)"
      }
     },
     {
-     "h": "Scrum: 3 Rollen",
-     "say": "Scrum hat drei Rollen. Der Product Owner verantwortet und priorisiert das Product Backlog. Der Scrum Master räumt Hindernisse aus dem Weg und achtet auf die Regeln. Er ist kein Chef. Die Developers organisieren sich selbst und setzen um.",
+     "h": "Scrum: 3 Verantwortlichkeiten",
+     "say": "Scrum hat drei Verantwortlichkeiten, der Scrum Guide 2020 nennt sie nicht mehr Rollen. Der Product Owner verantwortet und priorisiert das Product Backlog. Der Scrum Master räumt Hindernisse aus dem Weg und achtet auf die Regeln. Er ist kein Chef. Die Developers setzen um. Das ganze Scrum Team managt sich selbst.",
      "v": {
       "table": [
        [
-        "Rolle",
+        "Verantwortlichkeit (früher Rolle)",
         "Aufgabe"
        ],
        [
         "Product Owner",
-        "verantwortet das Product Backlog, priorisiert, vertritt den Kunden"
+        "verantwortet das Product Backlog, priorisiert, vertritt die Stakeholder"
        ],
        [
         "Scrum Master",
@@ -2335,14 +2335,14 @@
        ],
        [
         "Developers",
-        "selbstorganisiertes Team, setzt um"
+        "setzen um, das ganze Scrum Team managt sich selbst"
        ]
       ]
      }
     },
     {
      "h": "Scrum: Events und Artefakte",
-     "say": "Die Events. Ein Sprint dauert eine bis vier Wochen. Am Anfang das Sprint Planning. Jeden Tag ein Daily von fünfzehn Minuten. Am Ende das Review, wo das Ergebnis gezeigt wird, und die Retrospektive, wo das Team über die Zusammenarbeit spricht. Die Artefakte: Product Backlog, Sprint Backlog und das Increment.",
+     "say": "Die Events. Ein Sprint dauert höchstens einen Monat, meist zwei bis vier Wochen, immer gleich lang. Am Anfang das Sprint Planning. Jeden Tag ein Daily von fünfzehn Minuten. Am Ende das Review, wo das Ergebnis mit den Stakeholdern geprüft wird, und die Retrospektive, wo das Team über die Zusammenarbeit spricht. Die Artefakte: Product Backlog mit dem Product Goal, Sprint Backlog mit dem Sprint Goal und das Increment mit der Definition of Done.",
      "v": {
       "table": [
        [
@@ -2351,7 +2351,7 @@
        ],
        [
         "Sprint",
-        "1 bis 4 Wochen, feste Länge"
+        "höchstens 1 Monat, feste Länge"
        ],
        [
         "Sprint Planning",
@@ -2363,7 +2363,7 @@
        ],
        [
         "Sprint Review",
-        "Ende: Ergebnis dem Kunden zeigen"
+        "Ende: Ergebnis mit Stakeholdern prüfen, Feedback einholen"
        ],
        [
         "Retrospektive",
@@ -2373,19 +2373,19 @@
       "table2": [
        [
         "Artefakt",
-        ""
+        "Commitment dazu"
        ],
        [
         "Product Backlog",
-        "alle Anforderungen, priorisiert"
+        "Product Goal"
        ],
        [
         "Sprint Backlog",
-        "Aufgaben für diesen Sprint"
+        "Sprint Goal"
        ],
        [
         "Increment",
-        "fertiges, nutzbares Ergebnis"
+        "Definition of Done"
        ]
       ]
      }
@@ -2648,9 +2648,9 @@
     },
     {
      "h": "Hybrid, Signatur, Hash",
-     "say": "In der Praxis nutzt man hybride Verfahren wie bei HTTPS. Asymmetrisch wird ein Sitzungsschlüssel ausgetauscht, dann wird symmetrisch schnell verschlüsselt. Ein Hash ist eine Einwegfunktion. Passwörter speichert man nur gehasht und mit Salt. Bei der digitalen Signatur verschlüsselt der Absender den Hash mit seinem privaten Schlüssel. Jeder kann mit dem öffentlichen Schlüssel prüfen. Das sichert Integrität und Authentizität.",
+     "say": "In der Praxis nutzt man hybride Verfahren wie bei HTTPS. Asymmetrisch wird ein Sitzungsschlüssel ausgehandelt und der Server über sein Zertifikat geprüft, dann wird symmetrisch schnell verschlüsselt. Ein Hash ist eine Einwegfunktion. Passwörter speichert man nur gehasht und mit Salt. Bei der digitalen Signatur signiert der Absender den Hash mit seinem privaten Schlüssel. Jeder kann mit dem öffentlichen Schlüssel prüfen. Das sichert Integrität, Authentizität und Nichtabstreitbarkeit.",
      "v": {
-      "code": "Hybrid (z. B. TLS/HTTPS):\n  asymmetrisch → Sitzungsschlüssel austauschen\n  symmetrisch  → Daten schnell verschlüsseln\n\nHash: Einwegfunktion, gleiche Eingabe = gleicher Hash\n  Passwörter nur gehasht + Salt speichern (bcrypt, Argon2)\n\nDigitale Signatur:\n  Hash der Nachricht mit PRIVATEM Schlüssel des Absenders\n  Prüfen mit ÖFFENTLICHEM Schlüssel des Absenders\n  → Integrität + Authentizität"
+      "code": "Hybrid (z. B. TLS/HTTPS):\n  asymmetrisch → Sitzungsschlüssel aushandeln + Server per Zertifikat prüfen\n  symmetrisch  → Daten schnell verschlüsseln\n\nHash: Einwegfunktion, gleiche Eingabe = gleicher Hash\n  Passwörter nur gehasht + Salt speichern (bcrypt, Argon2)\n\nDigitale Signatur:\n  Hash der Nachricht mit PRIVATEM Schlüssel des Absenders signieren\n  Prüfen mit ÖFFENTLICHEM Schlüssel des Absenders\n  → Integrität + Authentizität + Nichtabstreitbarkeit"
      }
     },
     {
@@ -2695,13 +2695,13 @@
     },
     {
      "h": "DSGVO: das Wichtigste",
-     "say": "Die DSGVO schützt personenbezogene Daten. Wichtige Grundsätze: Zweckbindung, Datenminimierung, also nur so viele Daten wie nötig, und Speicherbegrenzung. Betroffene haben Rechte auf Auskunft, Berichtigung und Löschung. Eine Datenpanne muss innerhalb von zweiundsiebzig Stunden gemeldet werden. Wer Daten für andere verarbeitet, braucht einen Auftragsverarbeitungsvertrag.",
+     "say": "Die DSGVO schützt personenbezogene Daten. Wichtige Grundsätze: Zweckbindung, Datenminimierung, also nur so viele Daten wie nötig, und Speicherbegrenzung. Betroffene haben Rechte auf Auskunft, Berichtigung und Löschung. Eine Datenpanne muss unverzüglich gemeldet werden, möglichst innerhalb von zweiundsiebzig Stunden, außer es besteht voraussichtlich kein Risiko für die Betroffenen. Wer Daten für andere verarbeitet, braucht einen Auftragsverarbeitungsvertrag.",
      "v": {
       "list": [
-       "Personenbezogene Daten: alles, was eine Person identifiziert",
+       "Personenbezogene Daten: alle Infos, die sich auf eine identifizierte oder identifizierbare Person beziehen",
        "Grundsätze: Zweckbindung, Datenminimierung, Speicherbegrenzung, Rechtmäßigkeit",
        "Rechte: Auskunft, Berichtigung, Löschung, Datenübertragbarkeit, Widerspruch",
-       "Datenpanne: Meldung an Aufsichtsbehörde binnen 72 Stunden",
+       "Datenpanne: Meldung an Aufsichtsbehörde unverzüglich, möglichst binnen 72 Stunden (außer voraussichtlich kein Risiko)",
        "Privacy by Design / by Default",
        "Auftragsverarbeitung braucht AV-Vertrag",
        "TOM: technische und organisatorische Maßnahmen"
@@ -2918,7 +2918,7 @@
        ],
        [
         "Factory",
-        "Eine Methode erzeugt Objekte, der Aufrufer muss die konkrete Klasse nicht kennen. erzeugeExport(\"pdf\") → PdfExport"
+        "Eine Fabrik erzeugt Objekte, der Aufrufer muss die konkrete Klasse nicht kennen. erzeugeExport(\"pdf\") → PdfExport. Bei der GoF Factory Method entscheidet eine Unterklasse per überschriebener Methode, welche Klasse erzeugt wird"
        ],
        [
         "Facade",
@@ -3323,23 +3323,24 @@
    "clip": [
     {
      "h": "ISO 25010: Softwarequalität",
-     "say": "Die ISO 25010 definiert acht Qualitätsmerkmale. Funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Übertragbarkeit. In der Prüfung sollst du oft eins nennen und mit einer Maßnahme verbinden, zum Beispiel Wartbarkeit durch Kommentare, Tests und sauberen Code.",
+     "say": "Die ISO 25010 definiert in der Fassung von 2011 acht Qualitätsmerkmale, die Fassung von 2023 hat neun. In der Prüfung reichen die klassischen acht Begriffe. Funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Übertragbarkeit. In der Prüfung sollst du oft eins nennen und mit einer Maßnahme verbinden, zum Beispiel Wartbarkeit durch Kommentare, Tests und sauberen Code.",
      "v": {
       "list": [
        "Funktionale Eignung",
        "Leistungseffizienz (Performance)",
        "Kompatibilität",
-       "Benutzbarkeit (Usability)",
+       "Benutzbarkeit (Usability, in der Fassung 2023: Interaction Capability)",
        "Zuverlässigkeit",
        "Sicherheit",
        "Wartbarkeit",
-       "Übertragbarkeit (Portabilität)"
+       "Übertragbarkeit (Portabilität, 2023: Flexibility)",
+       "Neu in der Fassung 2023: Safety (Sicherheit für Mensch und Umwelt)"
       ]
      }
     },
     {
      "h": "Barrierefreiheit",
-     "say": "Barrierefreiheit heißt, alle Menschen können die Software nutzen. Guter Kontrast, Farbe nie als einzige Information, Alternativtexte für Screenreader, Bedienung per Tastatur und einfache Sprache. Seit Juni 2025 gilt in Deutschland das Barrierefreiheitsstärkungsgesetz. Der Standard dazu heißt WCAG.",
+     "say": "Barrierefreiheit heißt, alle Menschen können die Software nutzen. Guter Kontrast, Farbe nie als einzige Information, Alternativtexte für Screenreader, Bedienung per Tastatur und einfache Sprache. Seit Juni 2025 gilt in Deutschland das Barrierefreiheitsstärkungsgesetz für bestimmte Produkte und Dienste wie Onlineshops und Banking. Der technische Standard ist die EN 301 549, die auf den WCAG aufbaut.",
      "v": {
       "list": [
        "Ausreichender Kontrast, nicht nur Farbe als Info",
@@ -3347,7 +3348,7 @@
        "Alternativtexte für Bilder (Screenreader)",
        "Bedienbar nur mit Tastatur",
        "Klare, einfache Sprache",
-       "Gesetzlich: BFSG seit 28.06.2025, Standard WCAG"
+       "Gesetzlich: BFSG seit 28.06.2025 für bestimmte Produkte und Dienste (z. B. Onlineshops, Banking), Norm EN 301 549 mit WCAG 2.1 AA; öffentliche Stellen: BITV 2.0"
       ]
      }
     },
@@ -3388,9 +3389,9 @@
     },
     {
      "h": "Nutzwertanalyse",
-     "say": "Bei der Nutzwertanalyse gibst du jedem Kriterium ein Gewicht, die Summe ist hundert Prozent. Dann bewertest du jede Alternative, multiplizierst Note mal Gewicht und addierst. Die höchste Summe gewinnt.",
+     "say": "Bei der Nutzwertanalyse gibst du jedem Kriterium ein Gewicht, die Summe ist hundert Prozent. Dann bewertest du jede Alternative mit Punkten, zum Beispiel eins bis fünf, wobei fünf am besten ist. Punkte mal Gewicht, dann addieren. Die höchste Summe gewinnt.",
      "v": {
-      "code": "Kriterium   Gewicht | A Note | A Pkt | B Note | B Pkt\nKosten        40 %  |   3    |  1,2  |   5    |  2,0\nFunktionen    35 %  |   5    |  1,75 |   3    |  1,05\nSupport       25 %  |   4    |  1,0  |   2    |  0,5\nSumme                         3,95            3,55  → A gewinnt"
+      "code": "Bewertung 1 bis 5, 5 = am besten\nKriterium   Gewicht | A Bew. | A Pkt | B Bew. | B Pkt\nKosten        40 %  |   3    |  1,2  |   5    |  2,0\nFunktionen    35 %  |   5    |  1,75 |   3    |  1,05\nSupport       25 %  |   4    |  1,0  |   2    |  0,5\nSumme                         3,95            3,55  → A gewinnt"
      }
     }
    ],
@@ -3454,7 +3455,7 @@
     },
     {
      "key": "quali:4",
-     "q": "Gewicht 40 %, Note 5. Welcher gewichtete Punktwert?",
+     "q": "Gewicht 40 %, Bewertung 5 Punkte. Welcher gewichtete Punktwert?",
      "accept": [
       "2",
       "2,0",
@@ -3543,13 +3544,13 @@
     },
     {
      "h": "Der Ausbildungsvertrag",
-     "say": "Der Ausbildungsvertrag muss vor Beginn schriftlich festgehalten werden. Drin stehen unter anderem Beruf, Beginn und Dauer, die tägliche Ausbildungszeit, die Probezeit, Vergütung, Urlaub und die Kündigungsvoraussetzungen. Die IHK trägt ihn ins Verzeichnis ein. Bei Minderjährigen unterschreiben die Eltern mit.",
+     "say": "Der Ausbildungsvertrag muss vor Beginn schriftlich oder seit 2024 auch in Textform, also zum Beispiel als PDF, festgehalten werden. Drin stehen unter anderem Beruf, Beginn und Dauer, die tägliche Ausbildungszeit, die Probezeit, Vergütung, Urlaub und die Kündigungsvoraussetzungen. Die IHK trägt ihn ins Verzeichnis ein. Bei Minderjährigen müssen die Eltern zustimmen und bekommen den Vertrag ebenfalls.",
      "v": {
       "list": [
        "Muss vor Beginn schriftlich bzw. in Textform festgehalten werden",
        "Inhalte u. a.: Beruf, Beginn und Dauer, tägliche Ausbildungszeit, Probezeit, Vergütung, Urlaub, Kündigungsvoraussetzungen",
        "Wird bei der IHK ins Verzeichnis eingetragen",
-       "Bei Minderjährigen unterschreiben auch die Eltern"
+       "Bei Minderjährigen stimmen die gesetzlichen Vertreter zu und erhalten den Vertrag"
       ]
      }
     },
@@ -3653,7 +3654,7 @@
     },
     {
      "h": "Jugendarbeitsschutz (unter 18)",
-     "say": "Für Jugendliche unter achtzehn gilt das Jugendarbeitsschutzgesetz. Maximal acht Stunden am Tag und vierzig in der Woche, Fünf-Tage-Woche. Pausen: dreißig Minuten ab viereinhalb Stunden, sechzig Minuten ab sechs Stunden. Zwölf Stunden Freizeit zwischen zwei Arbeitstagen. Ein Berufsschultag mit mehr als fünf Unterrichtsstunden zählt einmal pro Woche als acht Stunden. Urlaub: dreißig, siebenundzwanzig oder fünfundzwanzig Werktage, je nach Alter.",
+     "say": "Für Jugendliche unter achtzehn gilt das Jugendarbeitsschutzgesetz. Maximal acht Stunden am Tag und vierzig in der Woche, Fünf-Tage-Woche. Pausen: dreißig Minuten bei mehr als viereinhalb Stunden, sechzig Minuten bei mehr als sechs Stunden. Zwölf Stunden Freizeit zwischen zwei Arbeitstagen. Ein Berufsschultag mit mehr als fünf Unterrichtsstunden zählt einmal pro Woche als acht Stunden. Urlaub: dreißig, siebenundzwanzig oder fünfundzwanzig Werktage, je nach Alter.",
      "v": {
       "table": [
        [
@@ -3666,7 +3667,7 @@
        ],
        [
         "Pausen",
-        "30 min ab 4,5 h, 60 min ab 6 h"
+        "30 min bei mehr als 4,5 h, 60 min bei mehr als 6 h"
        ],
        [
         "Freizeit zwischen zwei Tagen",
@@ -3887,7 +3888,7 @@
     },
     {
      "h": "Arbeitszeit und Urlaub (Erwachsene)",
-     "say": "Für Erwachsene gilt das Arbeitszeitgesetz: acht Stunden am Tag, bis zu zehn, wenn es im Durchschnitt auf acht ausgeglichen wird. Pause dreißig Minuten ab sechs Stunden, fünfundvierzig ab neun. Elf Stunden Ruhezeit. Mindesturlaub sind vierundzwanzig Werktage, bei einer Fünf-Tage-Woche also zwanzig Arbeitstage.",
+     "say": "Für Erwachsene gilt das Arbeitszeitgesetz: acht Stunden am Tag, bis zu zehn, wenn es im Durchschnitt auf acht ausgeglichen wird. Pause dreißig Minuten bei mehr als sechs Stunden, fünfundvierzig bei mehr als neun. Elf Stunden Ruhezeit. Mindesturlaub sind vierundzwanzig Werktage, bei einer Fünf-Tage-Woche also zwanzig Arbeitstage.",
      "v": {
       "table": [
        [
@@ -3900,7 +3901,7 @@
        ],
        [
         "Pause",
-        "30 min ab 6 h, 45 min ab 9 h"
+        "30 min bei mehr als 6 h, 45 min bei mehr als 9 h"
        ],
        [
         "Ruhezeit",
@@ -3915,7 +3916,7 @@
     },
     {
      "h": "Kündigung",
-     "say": "Eine Kündigung muss immer schriftlich auf Papier mit Unterschrift sein. E-Mail reicht nicht. Die Grundfrist ist vier Wochen zum fünfzehnten oder zum Monatsende. Für den Arbeitgeber wird sie länger, je länger du im Betrieb bist. Fristlos geht nur aus wichtigem Grund, innerhalb von zwei Wochen. Vor einer verhaltensbedingten Kündigung kommt meist eine Abmahnung. Und der Betriebsrat muss vorher angehört werden, sonst ist die Kündigung unwirksam.",
+     "say": "Eine Kündigung muss immer schriftlich auf Papier mit Unterschrift sein. E-Mail reicht nicht. Die Grundfrist ist vier Wochen zum fünfzehnten oder zum Monatsende. Für den Arbeitgeber wird sie länger, je länger du im Betrieb bist. Fristlos geht nur aus wichtigem Grund, innerhalb von zwei Wochen. Vor einer verhaltensbedingten Kündigung kommt meist eine Abmahnung. Und gibt es einen Betriebsrat, muss er vor jeder Kündigung durch den Arbeitgeber angehört werden, sonst ist die Kündigung unwirksam.",
      "v": {
       "table": [
        [
@@ -3944,7 +3945,7 @@
        ],
        [
         "Betriebsrat",
-        "muss vor JEDER Kündigung angehört werden"
+        "muss vor jeder Kündigung durch den Arbeitgeber angehört werden, wenn es einen gibt"
        ]
       ]
      }
@@ -3963,7 +3964,7 @@
     },
     {
      "h": "Betriebsrat",
-     "say": "Ein Betriebsrat kann gewählt werden, wenn ein Betrieb mindestens fünf ständige wahlberechtigte Arbeitnehmer hat. Die Amtszeit beträgt vier Jahre. Wählen darf man ab sechzehn, gewählt werden ab achtzehn und nach sechs Monaten im Betrieb.",
+     "say": "Ein Betriebsrat kann gewählt werden, wenn ein Betrieb mindestens fünf ständige wahlberechtigte Arbeitnehmer hat, von denen drei wählbar sind. Die Amtszeit beträgt vier Jahre. Wählen darf man ab sechzehn, gewählt werden ab achtzehn und nach sechs Monaten im Betrieb.",
      "v": {
       "table": [
        [
@@ -3972,7 +3973,7 @@
        ],
        [
         "Wählbar ab",
-        "5 ständigen wahlberechtigten Arbeitnehmern"
+        "5 ständigen wahlberechtigten Arbeitnehmern, davon 3 wählbar"
        ],
        [
         "Amtszeit",
@@ -4319,7 +4320,7 @@
        ],
        [
         "Unfallversicherung",
-        "Berufsgenossenschaften",
+        "Berufsgenossenschaften und Unfallkassen",
         "zahlt nur der Arbeitgeber"
        ]
       ]
@@ -4330,7 +4331,7 @@
      "say": "Die ersten vier Versicherungen teilen sich Arbeitgeber und Arbeitnehmer zur Hälfte. Ausnahme: Kinderlose ab dreiundzwanzig zahlen einen Pflegezuschlag von null Komma sechs Prozent allein. Die Unfallversicherung zahlt nur der Arbeitgeber. Und bei Azubis mit höchstens dreihundertfünfundzwanzig Euro im Monat zahlt der Arbeitgeber alles allein.",
      "v": {
       "list": [
-       "Kranken-, Renten-, Arbeitslosen-, Pflegeversicherung: Arbeitgeber und Arbeitnehmer je zur Hälfte",
+       "Kranken-, Renten-, Arbeitslosen-, Pflegeversicherung: Arbeitgeber und Arbeitnehmer je zur Hälfte (Ausnahme Pflege in Sachsen: AN 2,3 %, AG 1,3 %)",
        "Ausnahme Pflege: Kinderlose ab 23 zahlen 0,6 % Zuschlag allein",
        "Unfallversicherung: nur Arbeitgeber",
        "Azubis bis 325 € Vergütung im Monat: Arbeitgeber zahlt alles allein"
@@ -4412,7 +4413,7 @@
        ],
        [
         "Versicherungspflicht",
-        "gilt automatisch für Arbeitnehmer"
+        "gilt automatisch für Arbeitnehmer und Azubis; in KV/PV nur bis zur Versicherungspflichtgrenze (2026: 77.400 €/Jahr)"
        ],
        [
         "Beitragsbemessungsgrenze",
@@ -4639,7 +4640,7 @@
        [
         "UG (haftungsbeschränkt)",
         "ab 1",
-        "ab 1 €",
+        "ab 1 €, Rücklagepflicht 25 % des Jahresüberschusses",
         "nur Gesellschaftsvermögen"
        ],
        [
@@ -4668,7 +4669,7 @@
        ],
        [
         "Kontrolle",
-        "(Aufsichtsrat ab 500 AN)",
+        "(Aufsichtsrat Pflicht bei mehr als 500 AN)",
         "Aufsichtsrat"
        ],
        [
@@ -4754,13 +4755,13 @@
      "v": {
       "table": [
        [
-        "Anbieter / Nachfrager",
-        "viele",
-        "wenige",
-        "einer"
+        "Nachfrager ↓ / Anbieter →",
+        "viele Anbieter",
+        "wenige Anbieter",
+        "ein Anbieter"
        ],
        [
-        "viele",
+        "viele Nachfrager",
         "Polypol",
         "Oligopol",
         "Monopol"
@@ -4770,7 +4771,7 @@
     },
     {
      "h": "Kaufvertrag",
-     "say": "Ein Kaufvertrag entsteht durch zwei übereinstimmende Willenserklärungen: Antrag und Annahme. Ein Schaufenster oder ein Onlineshop ist noch kein Angebot, sondern nur eine Aufforderung, ein Angebot zu machen. Geschäftsfähigkeit: unter sieben geschäftsunfähig, sieben bis siebzehn beschränkt, ab achtzehn voll. Die Gewährleistung beträgt zwei Jahre. Zuerst hat der Verkäufer das Recht auf Nacherfüllung, also Reparatur oder Ersatz. Erst danach Rücktritt oder Minderung. Online gekauft hast du vierzehn Tage Widerrufsrecht. Garantie ist freiwillig, Gewährleistung ist Gesetz.",
+     "say": "Ein Kaufvertrag entsteht durch zwei übereinstimmende Willenserklärungen: Antrag und Annahme. Ein Schaufenster oder ein Onlineshop ist noch kein Angebot, sondern nur eine Aufforderung, ein Angebot zu machen. Geschäftsfähigkeit: unter sieben geschäftsunfähig, sieben bis siebzehn beschränkt, ab achtzehn voll. Die Gewährleistung beträgt zwei Jahre. Zuerst hat der Verkäufer das Recht auf Nacherfüllung, also Reparatur oder Ersatz. Erst danach Rücktritt oder Minderung. Kaufst du als Verbraucher online bei einem Unternehmer, hast du vierzehn Tage Widerrufsrecht. Bei einem Privatverkauf nicht. Garantie ist freiwillig, Gewährleistung ist Gesetz.",
      "v": {
       "list": [
        "Entsteht durch zwei übereinstimmende Willenserklärungen: Antrag + Annahme",
@@ -4778,7 +4779,7 @@
        "Geschäftsfähigkeit: unter 7 geschäftsunfähig, 7 bis 17 beschränkt (Taschengeldparagraf), ab 18 voll",
        "Gewährleistung: 2 Jahre, zuerst Nacherfüllung (Reparatur oder Ersatz)",
        "Danach: Rücktritt, Minderung oder Schadensersatz",
-       "Online gekauft: 14 Tage Widerrufsrecht",
+       "Online bei einem Unternehmer gekauft (Verbraucher): 14 Tage Widerrufsrecht, nicht bei Privatverkauf",
        "Garantie = freiwillig vom Hersteller, Gewährleistung = gesetzlich vom Verkäufer"
       ]
      }
@@ -4914,12 +4915,12 @@
     },
     {
      "key": "unternehmen:10",
-     "q": "Wie viele Tage Widerrufsrecht gibt es beim Online-Kauf?",
+     "q": "Wie viele Tage Widerrufsrecht hat ein Verbraucher beim Online-Kauf bei einem Unternehmer?",
      "accept": [
       "14",
       "14 tage"
      ],
-     "e": "14 Tage."
+     "e": "14 Tage nach § 355 BGB. Bei Privatverkäufen gibt es kein Widerrufsrecht."
     },
     {
      "key": "unternehmen:11",
@@ -4937,7 +4938,7 @@
    "write": [
     {
      "task": "Ein Freund will eine IT-Firma gründen und wenig persönlich haften, hat aber nur 2.000 € Startkapital. Welche Rechtsform empfiehlst du? Begründe mit Haftung und Kapital.",
-     "model": "Ich empfehle die UG (haftungsbeschränkt). Sie kann schon mit 1 € Stammkapital gegründet werden, die 2.000 € reichen also. Es haftet nur das Gesellschaftsvermögen, nicht das Privatvermögen. Die UG muss jedes Jahr 25 % des Gewinns in eine Rücklage stecken, bis 25.000 € erreicht sind, dann kann sie zur GmbH werden.",
+     "model": "Ich empfehle die UG (haftungsbeschränkt). Sie kann schon mit 1 € Stammkapital gegründet werden, die 2.000 € reichen also. Es haftet nur das Gesellschaftsvermögen, nicht das Privatvermögen. Die UG muss jedes Jahr ein Viertel des Jahresüberschusses in eine Rücklage stecken, bis das Stammkapital auf mindestens 25.000 € erhöht wurde, dann wird sie zur GmbH.",
      "alt": null,
      "keys": [
       {
@@ -4957,7 +4958,7 @@
       },
       {
        "label": "Rücklage / später GmbH",
-       "pattern": "r(ü|ue)cklage|25\\s*%|gmbh",
+       "pattern": "r(ü|ue)cklage|25\\s*%|viertel|gmbh",
        "flags": "i"
       }
      ]

@@ -71,6 +71,11 @@ final class AppStore {
         DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.4, execute: work)
     }
 
+    func flush() {
+        saveWork?.cancel(); saveWork = nil
+        if let data = try? JSONEncoder().encode(state) { try? data.write(to: url, options: .atomic) }
+    }
+
     // MARK: progress
     func progress(_ id: String) -> LessonProgress { state.lessons[id] ?? LessonProgress() }
     func update(_ id: String, _ f: (inout LessonProgress) -> Void) {

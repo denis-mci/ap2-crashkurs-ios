@@ -74,6 +74,7 @@ struct WriteTaskCard: View {
                     .textInputAutocapitalization(.never)
                     .scrollContentBackground(.hidden)
                     .focused($focused)
+                    .toolbar { ToolbarItemGroup(placement: .keyboard) { Spacer(); Button("Fertig") { focused = false } } }
                     .frame(minHeight: 200)
                     .padding(8)
                 if text.isEmpty {

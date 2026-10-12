@@ -20,9 +20,9 @@ struct AP2CrashkursApp: App {
 }
 
 extension Color {
-    static let cobalt = Color(red: 0.14, green: 0.27, blue: 0.88)
+    static let cobalt = Color("Cobalt")
     static let marker = Color(red: 1.0, green: 0.88, blue: 0.30)
-    static let ink = Color(red: 0.07, green: 0.10, blue: 0.18)
+    static let ink = Color("Ink")
     static func area(_ a: Area) -> Color {
         switch a {
         case .GA1: return Color(red: 0.48, green: 0.25, blue: 0.82)
@@ -66,12 +66,13 @@ struct Pips: View {
 
 struct RootView: View {
     @Environment(AppStore.self) private var store
+    @Environment(\.scenePhase) private var phase
     @State private var tab = 0
 
     var body: some View {
         TabView(selection: $tab) {
             HomeView(tab: $tab)
-                .tabItem { Label("Heute", systemImage: "house.fill") }.tag(0)
+                .tabItem { Label("Heute", systemImage: "house") }.tag(0)
             TopicsView()
                 .tabItem { Label("Themen", systemImage: "list.bullet.rectangle") }.tag(1)
             ReviewView()
@@ -80,5 +81,6 @@ struct RootView: View {
             ExamView()
                 .tabItem { Label("Prüfung", systemImage: "timer") }.tag(3)
         }
+        .onChange(of: phase) { _, p in if p != .active { store.flush() } }
     }
 }
