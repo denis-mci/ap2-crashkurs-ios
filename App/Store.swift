@@ -145,15 +145,37 @@ final class AppStore {
         return 0
     }
 
-    struct PlanItem: Identifiable { let lesson: Lesson; let date: Date; var id: String { lesson.id } }
+    struct PlanItem: Identifiable { let lesson: Lesson; let date: Date?; var id: String { lesson.id } }
 
+    /// Rechnet jeden Tag neu: offene Lektionen ab heute gleichmäßig bis 15.11. verteilt, erledigte ohne Datum
     var plan: [PlanItem] {
-        let start = Dates.parse(state.planStart ?? Dates.key()) ?? Date()
-        let span = max(1, Dates.planEnd.timeIntervalSince(start) / 86400)
+        let cal = Dates.cal
+        let today = cal.date(bySettingHour: 12, minute: 0, second: 0, of: Date()) ?? Date()
+        let end = max(Dates.planEnd, today)
+        let days = max(1, (cal.dateComponents([.day], from: cal.startOfDay(for: today), to: cal.startOfDay(for: end)).day ?? 0) + 1)
         let ls = Content.shared.ordered
-        return ls.enumerated().map { i, l in
-            PlanItem(lesson: l, date: start.addingTimeInterval(floor(Double(i) * span / Double(ls.count)) * 86400 + 12 * 3600))
+        let open = ls.filter { !isDone($0) }
+        var dates: [String: Date] = [:]
+        for (i, l) in open.enumerated() {
+            dates[l.id] = cal.date(byAdding: .day, value: i * days / max(1, open.count), to: today)
         }
+        let items = ls.map { PlanItem(lesson: $0, date: dates[$0.id]) }
+        return items.sorted { ($0.date ?? .distantPast) < ($1.date ?? .distantPast) }
+    }
+
+    var planDays: Int {
+        let cal = Dates.cal
+        let end = max(Dates.planEnd, Date())
+        return max(1, (cal.dateComponents([.day], from: cal.startOfDay(for: Date()), to: cal.startOfDay(for: end)).day ?? 0) + 1)
+    }
+
+    var paceText: String {
+        let open = Content.shared.ordered.filter { !isDone($0) }.count
+        guard open > 0 else { return "Alle Lektionen erledigt." }
+        let d = planDays
+        if open >= d { return "\(open) Lektionen offen, \(d) Tage bis 15.11.: etwa \(Int((Double(open) / Double(d)).rounded(.up))) pro Tag." }
+        let every = d / open
+        return "\(open) Lektionen offen, \(d) Tage bis 15.11.: " + (every <= 1 ? "etwa eine pro Tag." : "eine alle \(every) Tage.")
     }
 
     // MARK: review (Leitner)

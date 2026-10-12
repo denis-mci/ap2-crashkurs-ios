@@ -81,33 +81,12 @@ struct HomeView: View {
 
                 Section {
                     ForEach(store.plan) { item in
-                        let done = store.isDone(item.lesson)
-                        let late = !done && item.date < Date().addingTimeInterval(-86400)
-                        NavigationLink(value: LessonRoute(id: item.lesson.id, step: store.nextStep(item.lesson))) {
-                            HStack(spacing: 12) {
-                                Text(Dates.short.string(from: item.date))
-                                    .font(.caption.monospacedDigit().weight(.semibold))
-                                    .foregroundStyle(.secondary)
-                                    .fixedSize()
-                                Text(item.lesson.title)
-                                    .font(.subheadline)
-                                    .strikethrough(done)
-                                    .foregroundStyle(done ? .secondary : .primary)
-                                Spacer(minLength: 4)
-                                if done {
-                                    Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
-                                } else if late {
-                                    Text("nachholen").font(.caption2.weight(.bold)).foregroundStyle(.red)
-                                } else {
-                                    Text("\(store.lessonPct(item.lesson)) %").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
-                                }
-                            }
-                        }
+                        PlanRow(item: item)
                     }
                 } header: {
                     Text("Dein Plan bis 15.11.")
                 } footer: {
-                    Text("Danach nur noch Wiederholen und Prüfungsmodus.")
+                    Text(store.paceText + " Der Plan rechnet sich jeden Tag neu. Danach nur noch Wiederholen und Prüfungsmodus.")
                 }
             }
             .navigationTitle("Heute")
@@ -119,6 +98,39 @@ struct HomeView: View {
 }
 
 struct LessonRoute: Hashable { let id: String; let step: Int }
+
+struct PlanRow: View {
+    @Environment(AppStore.self) private var store
+    let item: AppStore.PlanItem
+
+    private var dateLabel: String {
+        guard let d = item.date else { return "erledigt" }
+        return Dates.cal.isDateInToday(d) ? "heute" : Dates.short.string(from: d)
+    }
+
+    var body: some View {
+        let done = item.date == nil
+        let isToday = item.date.map { Dates.cal.isDateInToday($0) } ?? false
+        NavigationLink(value: LessonRoute(id: item.lesson.id, step: store.nextStep(item.lesson))) {
+            HStack(spacing: 12) {
+                Text(dateLabel)
+                    .font(.caption.monospacedDigit().weight(isToday ? .heavy : .semibold))
+                    .foregroundStyle(isToday ? Color.primary : Color.secondary)
+                    .frame(minWidth: 64, alignment: .leading)
+                Text(item.lesson.title)
+                    .font(.subheadline)
+                    .strikethrough(done)
+                    .foregroundStyle(done ? Color.secondary : Color.primary)
+                Spacer(minLength: 4)
+                if done {
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(.green)
+                } else {
+                    Text("\(store.lessonPct(item.lesson)) %").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                }
+            }
+        }
+    }
+}
 
 struct CountdownHero: View {
     @ScaledMetric(relativeTo: .largeTitle) private var heroSize = 72.0
