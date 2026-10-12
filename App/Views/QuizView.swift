@@ -4,6 +4,7 @@ struct QuizRunner<EndContent: View>: View {
     @Environment(AppStore.self) private var store
     let items: [Question]
     var timer: Double? = nil
+    var totalTime: Double? = nil
     var showLesson = false
     var onEnd: (Int, Int) -> Void
     @ViewBuilder var endContent: () -> EndContent
@@ -20,6 +21,8 @@ struct QuizRunner<EndContent: View>: View {
     @State private var finished = false
     @State private var wrongCount = 0
     @State private var preparedIdx = -1
+    @State private var runStart: Date? = nil
+    @State private var timeUp = false
     @FocusState private var inputFocused: Bool
     private let tick = Timer.publish(every: 0.2, on: .main, in: .common).autoconnect()
 
@@ -27,8 +30,13 @@ struct QuizRunner<EndContent: View>: View {
         Group {
             if finished { resultView } else if idx < items.count { questionView(items[idx]) }
         }
-        .onAppear { if preparedIdx != idx { prepare() } }
+        .onAppear { if preparedIdx != idx { prepare() }; if runStart == nil { runStart = Date() } }
         .onReceive(tick) { _ in
+            if let tt = totalTime, let rs = runStart, !finished, Date().timeIntervalSince(rs) >= tt {
+                timeUp = true
+                finishRun()
+                return
+            }
             guard let t = timer, !answered, !finished else { return }
             if Date().timeIntervalSince(startTime) >= t { timedOut = true; answer(false, chosen: nil) }
         }
@@ -53,7 +61,17 @@ struct QuizRunner<EndContent: View>: View {
                 Text("FRAGE \(idx + 1) / \(items.count)")
                     .font(.caption.weight(.bold)).tracking(1).foregroundStyle(.secondary).monospacedDigit()
                 Spacer()
-                if showLesson, let l = Content.shared.lesson(q.lessonID) { AreaTag(area: l.area) }
+                if let tt = totalTime, let rs = runStart {
+                    TimelineView(.periodic(from: rs, by: 1)) { ctx in
+                        Text(remainingText(tt - ctx.date.timeIntervalSince(rs)))
+                            .font(.subheadline.weight(.bold)).monospacedDigit()
+                            .padding(.horizontal, 8).padding(.vertical, 3)
+                            .background(Color.marker, in: Capsule())
+                            .foregroundStyle(.black)
+                    }
+                } else if showLesson {
+                    AreaTag(area: Content.shared.lesson(q.lessonID)?.area ?? .WISO)
+                }
             }
             if let t = timer {
                 TimelineView(.periodic(from: startTime, by: 0.1)) { ctx in
@@ -159,11 +177,22 @@ struct QuizRunner<EndContent: View>: View {
         withAnimation(.easeOut(duration: 0.2)) { answered = true }
     }
 
+    private func remainingText(_ s: Double) -> String {
+        let r = max(0, Int(s))
+        return String(format: "%d:%02d", r / 60, r % 60)
+    }
+
+    private func finishRun() {
+        guard !finished else { return }
+        inputFocused = false
+        let pct = Int((Double(right) / Double(max(1, items.count)) * 100).rounded())
+        withAnimation { finished = true }
+        onEnd(pct, right)
+    }
+
     private func next() {
         if idx + 1 >= items.count {
-            let pct = Int((Double(right) / Double(max(1, items.count)) * 100).rounded())
-            withAnimation { finished = true }
-            onEnd(pct, right)
+            finishRun()
         } else {
             idx += 1
             prepare()
@@ -186,7 +215,7 @@ struct QuizRunner<EndContent: View>: View {
             .padding(.vertical, 10)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel("Ergebnis \(pct) Prozent")
-            Text("\(right) von \(items.count) richtig").font(.headline)
+            Text("\(right) von \(items.count) richtig" + (timeUp ? " · Zeit abgelaufen" : "")).font(.headline)
             Text(pass ? "Bestehens-Niveau erreicht" : "Unter 50 %, nochmal ran")
                 .font(.subheadline.weight(.bold))
                 .padding(.horizontal, 10).padding(.vertical, 4)
@@ -276,13 +305,14 @@ struct RunView: View {
     let title: String
     let items: [Question]
     var timer: Double? = nil
+    var totalTime: Double? = nil
     var showLesson = true
     var xpEach = 5
     @State private var confirmExit = false
 
     var body: some View {
         ScrollView {
-            QuizRunner(items: items, timer: timer, showLesson: showLesson, onEnd: { _, right in
+            QuizRunner(items: items, timer: timer, totalTime: totalTime, showLesson: showLesson, onEnd: { _, right in
                 store.gain(right * xpEach)
             }) {
                 Button { dismiss() } label: { Text("Fertig").frame(maxWidth: .infinity) }
@@ -293,9 +323,9 @@ struct RunView: View {
         .background(Color(.systemGroupedBackground))
         .navigationTitle(title)
         .navigationBarTitleDisplayMode(.inline)
-        .navigationBarBackButtonHidden(timer != nil)
+        .navigationBarBackButtonHidden(timer != nil || totalTime != nil)
         .toolbar {
-            if timer != nil {
+            if timer != nil || totalTime != nil {
                 ToolbarItem(placement: .cancellationAction) { Button("Abbrechen") { confirmExit = true } }
             }
         }

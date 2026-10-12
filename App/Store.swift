@@ -21,6 +21,14 @@ struct AppState: Codable {
     var sound = true
     var rate: Double = 1.0
     var planStart: String?
+    var cases: [String: CaseProgress]?
+}
+
+struct CaseProgress: Codable {
+    var ans: [String: String] = [:]
+    var crit: [String: [Bool]] = [:]
+    var shown: Set<String> = []
+    var left: Double? = nil
 }
 
 enum Dates {
@@ -195,6 +203,23 @@ final class AppStore {
             state.review[key] = ReviewItem(box: box, due: Date().addingTimeInterval(days[box] * 86400))
         }
         save()
+    }
+
+    func caseProgress(_ id: String) -> CaseProgress { state.cases?[id] ?? CaseProgress() }
+    func updateCase(_ id: String, _ f: (inout CaseProgress) -> Void) {
+        var c = caseProgress(id); f(&c)
+        if state.cases == nil { state.cases = [:] }
+        state.cases?[id] = c; save()
+    }
+    func caseScore(_ c: ExamCase) -> (points: Int, checked: Bool) {
+        let p = caseProgress(c.id)
+        var pts = 0
+        for t in c.tasks { for s in t.sub {
+            let k = "\(t.nr)\(s.id)"
+            let cr = p.crit[k] ?? []
+            for (i, x) in s.criteria.enumerated() where i < cr.count && cr[i] { pts += x.points }
+        } }
+        return (pts, !p.shown.isEmpty)
     }
 
     func writeText(_ key: String) -> String { state.writes[key] ?? "" }

@@ -5,7 +5,11 @@ struct RunRoute: Hashable {
     let keys: [String]
     let timer: Double?
     let showLesson: Bool
+    var total: Double? = nil
 }
+
+struct CaseRoute: Hashable { let id: String }
+struct BelegRoute: Hashable {}
 
 struct ReviewView: View {
     @Environment(AppStore.self) private var store
@@ -67,6 +71,7 @@ struct ReviewView: View {
 }
 
 struct ExamView: View {
+    @Environment(AppStore.self) private var store
     @State private var ap1 = 60.0
     @State private var proj = 70.0
     @State private var ga1 = 45.0
@@ -81,11 +86,33 @@ struct ExamView: View {
         NavigationStack {
             List {
                 Section {
+                    ForEach(ExtraContent.cases) { c in
+                        NavigationLink(value: CaseRoute(id: c.id)) {
+                            let sc = store.caseScore(c)
+                            VStack(alignment: .leading, spacing: 4) {
+                                HStack { AreaTag(area: c.area); Spacer() }
+                                Text(c.title).font(.headline)
+                                Text(sc.checked ? "\(sc.points) von 100 Punkten · Note \(ihkGrade(sc.points))" : "90 Minuten · 4 Handlungsschritte · 100 Punkte")
+                                    .font(.caption).foregroundStyle(sc.checked ? (sc.points >= 50 ? Color.green : Color.red) : Color.secondary)
+                            }
+                            .padding(.vertical, 4)
+                        }
+                    }
+                    NavigationLink(value: BelegRoute()) {
+                        ModeRow(title: "Belegsatz-Spickzettel", sub: "SQL, Pseudocode, UML, ERM, Notenschlüssel", icon: "doc.text.magnifyingglass", color: .gray)
+                    }
+                } header: {
+                    Text("Prüfungsfälle wie in der AP2")
+                } footer: {
+                    Text("Szenario, 4 Handlungsschritte à 25 Punkte, 90 Minuten. Lösung schreiben, Musterlösung aufdecken, Bewertungsschema ehrlich abhaken.")
+                }
+
+                Section {
+                    NavigationLink(value: RunRoute(title: "WiSo-Prüfung", keys: keys([.WISO], 30), timer: nil, showLesson: false, total: 3600)) {
+                        ModeRow(title: "WiSo-Prüfung simulieren", sub: "30 Fragen aus dem ganzen Pool, 60 Minuten Gesamtzeit", icon: "building.columns.fill", color: Color.area(.WISO))
+                    }
                     NavigationLink(value: RunRoute(title: "Blitzrunde", keys: keys(nil, 10), timer: 20, showLesson: true)) {
                         ModeRow(title: "Blitzrunde", sub: "10 Fragen quer durch alles, 20 s pro Frage", icon: "bolt.fill", color: .yellow)
-                    }
-                    NavigationLink(value: RunRoute(title: "WiSo-Simulation", keys: keys([.WISO], 25), timer: 60, showLesson: false)) {
-                        ModeRow(title: "WiSo-Simulation", sub: "25 Fragen, 60 s pro Frage. Die echte WiSo ist maschinell auswertbar, keine Freitexte.", icon: "building.columns.fill", color: Color.area(.WISO))
                     }
                     NavigationLink(value: RunRoute(title: "GA-Mix", keys: keys([.GA1, .GA2], 15), timer: 45, showLesson: true)) {
                         ModeRow(title: "GA-Mix", sub: "15 Fragen aus GA1 und GA2, 45 s pro Frage", icon: "chevron.left.forwardslash.chevron.right", color: .cobalt)
@@ -133,8 +160,12 @@ struct ExamView: View {
             }
             .navigationTitle("Prüfung")
             .navigationDestination(for: RunRoute.self) { r in
-                RunView(title: r.title, items: r.keys.compactMap { Content.shared.question($0) }, timer: r.timer, showLesson: r.showLesson)
+                RunView(title: r.title, items: r.keys.compactMap { Content.shared.question($0) }, timer: r.timer, totalTime: r.total, showLesson: r.showLesson)
             }
+            .navigationDestination(for: CaseRoute.self) { r in
+                if let c = ExtraContent.cases.first(where: { $0.id == r.id }) { CaseView(exam: c) }
+            }
+            .navigationDestination(for: BelegRoute.self) { _ in BelegView() }
         }
     }
 }

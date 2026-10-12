@@ -89,12 +89,14 @@ struct Lesson: Codable, Hashable, Identifiable {
 struct ContentFile: Codable {
     var order: [String]
     var lessons: [Lesson]
+    var bank: [Question]?
 }
 
 final class Content {
     static let shared = Content()
     let order: [String]
     let lessons: [Lesson]
+    let bank: [Question]
     private let byID: [String: Lesson]
     private let byKey: [String: Question]
 
@@ -107,6 +109,8 @@ final class Content {
         byID = Dictionary(uniqueKeysWithValues: file.lessons.map { ($0.id, $0) })
         var k: [String: Question] = [:]
         for l in file.lessons { for q in l.quiz { k[q.key] = q } }
+        bank = file.bank ?? []
+        for q in bank { k[q.key] = q }
         byKey = k
     }
 
@@ -117,6 +121,67 @@ final class Content {
         ordered.filter { $0.area == area }.sorted { $0.prio < $1.prio }
     }
     func allQuestions(_ areas: [Area]? = nil) -> [Question] {
-        lessons.filter { areas == nil || areas!.contains($0.area) }.flatMap { $0.quiz }
+        let fromLessons = lessons.filter { areas == nil || areas!.contains($0.area) }.flatMap { $0.quiz }
+        let withBank = areas == nil || areas!.contains(.WISO)
+        return fromLessons + (withBank ? bank : [])
     }
 }
+
+
+// MARK: Prüfungsfälle
+
+struct CaseMaterial: Codable, Hashable {
+    var title: String?
+    var code: String?
+    var table: [[Flex]]?
+}
+
+struct Criterion: Codable, Hashable {
+    var text: String
+    var points: Int
+}
+
+struct CaseSub: Codable, Hashable {
+    var id: String
+    var points: Int
+    var q: String
+    var material: CaseMaterial?
+    var kind: String?
+    var model: String
+    var criteria: [Criterion]
+}
+
+struct CaseTask: Codable, Hashable {
+    var nr: Int
+    var title: String
+    var points: Int
+    var intro: String?
+    var sub: [CaseSub]
+}
+
+struct ExamCase: Codable, Hashable, Identifiable {
+    var id: String
+    var area: Area
+    var title: String
+    var minutes: Int
+    var scenario: String
+    var material: [CaseMaterial]?
+    var tasks: [CaseTask]
+}
+
+struct BelegSection: Codable, Hashable {
+    var title: String
+    var code: String
+}
+
+enum ExtraContent {
+    static let cases: [ExamCase] = load("cases") ?? []
+    static let beleg: [BelegSection] = load("belegsatz") ?? []
+    private static func load<T: Decodable>(_ name: String) -> T? {
+        guard let url = Bundle.main.url(forResource: name, withExtension: "json"),
+              let data = try? Data(contentsOf: url) else { return nil }
+        return try? JSONDecoder().decode(T.self, from: data)
+    }
+}
+
+func ihkGrade(_ p: Int) -> Int { p >= 92 ? 1 : p >= 81 ? 2 : p >= 67 ? 3 : p >= 50 ? 4 : p >= 30 ? 5 : 6 }

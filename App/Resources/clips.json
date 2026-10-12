@@ -5473,5 +5473,4707 @@
     }
    ]
   }
+ ],
+ "pseudo3": [
+  {
+   "h": "Jeder Baustein zählt",
+   "v": {
+    "list": [
+     "Signatur: funktion name(parameter)",
+     "Initialisierung: summe = 0, max = erstes Element",
+     "Schleife mit richtigen Grenzen",
+     "Bedingung im falls",
+     "Rückgabe am Ende"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Pseudocode kommt in jeder AP2. Die Daten stecken oft in Objekten, 2D-Arrays oder Strings.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Gute Nachricht: Es gibt Teilpunkte. Signatur und Initialisierung bringen schon die ersten.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Dazu Schleife, Bedingung und Rückgabe. Wenn du nicht weiterweißt, schreib hin, so weit du kommst. Nie leer lassen.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Objekte: neu, get, set",
+   "v": {
+    "code": "k = neu Konto(\"Gies\", 500.0)\nk.einzahlen(200.0)\nausgabe(k.getSaldo())      // 700.0\nk.setInhaber(\"Ruf\")\n\nfunktion summeSalden(konten)\n  summe = 0\n  für jedes k in konten\n    falls k.getSaldo() > 0 dann\n      summe = summe + k.getSaldo()\n    ende falls\n  ende für\n  rückgabe summe\nende funktion"
+   },
+   "beats": [
+    {
+     "say": "Ein Objekt erzeugst du mit neu und dem Konstruktor. Danach rufst du Methoden mit Punkt auf.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Attribute sind privat. Also liest du sie mit dem Getter und änderst sie mit dem Setter.",
+     "show": {
+      "lines": [
+       3,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Über eine Liste von Objekten läufst du mit für jedes und rufst pro Objekt den Getter auf.",
+     "show": {
+      "lines": [
+       6,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Filtern und Summieren wie gewohnt. Maximum geht genauso: mit dem ersten Objekt starten und per Getter vergleichen.",
+     "show": {
+      "lines": [
+       9,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Methode aus dem Klassendiagramm",
+   "v": {
+    "code": "Konto\n- saldo: Double\n- dispo: Double\n+ abheben(betrag: Double): Boolean\nmethode abheben(betrag)\n  falls betrag <= 0 dann\n    werfe Fehler(\"Betrag ungültig\")\n  ende falls\n  falls saldo + dispo < betrag dann\n    rückgabe falsch\n  ende falls\n  saldo = saldo - betrag\n  rückgabe wahr\nende methode"
+   },
+   "beats": [
+    {
+     "say": "Gegeben ist ein Klassendiagramm. Minus heißt privat, Plus heißt öffentlich. Du sollst abheben implementieren.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Erst die Eingabe prüfen: Betrag null oder negativ? Dann wirfst du einen Fehler. Null oder leere Werte prüfst du genauso.",
+     "show": {
+      "lines": [
+       5,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Der Aufrufer fängt den Fehler mit versuche und fange ab. Das ist try und catch.",
+     "show": {
+      "lines": [
+       5,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Dann die Deckungsprüfung. Reichen saldo plus dispo nicht, gibst du falsch zurück. Sonst abbuchen und wahr. Das sind Return-Codes.",
+     "show": {
+      "lines": [
+       9,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "2D-Array: erst Zeile, dann Spalte",
+   "v": {
+    "code": "m = [[3, 5, 2],\n     [1, 4, 6]]\nm[1][2]          → 6\nlaenge(m)        → 2 Zeilen\nlaenge(m[0])     → 3 Spalten\nfür z = 0 bis laenge(m) - 1\n  summe = 0\n  für s = 0 bis laenge(m[0]) - 1\n    summe = summe + m[z][s]\n  ende für\n  ausgabe(summe)       // 10, dann 11\nende für"
+   },
+   "beats": [
+    {
+     "say": "Ein 2D-Array ist eine Tabelle. Der erste Index ist die Zeile, der zweite die Spalte. m 1 2 ist also die 6.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "laenge von m liefert die Zeilen, laenge von m 0 die Spalten der ersten Zeile.",
+     "show": {
+      "lines": [
+       4,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Für die Zeilensumme zwei verschachtelte Schleifen. summe startet in jeder Zeile neu bei 0. Raus kommt 10, dann 11.",
+     "show": {
+      "lines": [
+       6,
+       12
+      ]
+     }
+    },
+    {
+     "say": "Für Spaltensummen tauschst du die Schleifen. Duplikate findest du auch mit zwei Schleifen: jedes Element mit allen danach vergleichen.",
+     "show": {
+      "lines": [
+       6,
+       12
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Welchen Wert hat m 0 1?",
+    "o": [
+     "5",
+     "1",
+     "3"
+    ],
+    "a": 0,
+    "e": "Zeile 0 ist 3, 5, 2. Spalte 1 davon ist die 5."
+   }
+  },
+  {
+   "h": "Strings und CSV",
+   "v": {
+    "code": "s = \"Anna\"\nlaenge(s)             → 4\ns[0]                  → \"A\"\nteilstring(s, 1, 3)   → \"nn\"\nzeile = \"4711;Gies;1200\"\nteile = zeile.split(\";\")\nteile[1]              → \"Gies\"\numgedreht = \"\"\nfür i = laenge(s) - 1 bis 0 schritt -1\n  umgedreht = umgedreht + s[i]\nende für\nfalls klein(s) == klein(umgedreht) dann\n  ausgabe(\"Palindrom\")\nende falls"
+   },
+   "beats": [
+    {
+     "say": "Ein String ist wie ein Array aus Zeichen. Index startet bei 0, das letzte Zeichen hat Index Länge minus 1. Teilstring hier bis ausschließlich 3.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Eine CSV-Zeile zerlegst du mit split am Semikolon. Index 1 ist der zweite Wert, hier Gies.",
+     "show": {
+      "lines": [
+       5,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Umdrehen: rückwärts von hinten nach vorn laufen und Zeichen anhängen. Zeichen zählen ist das Zählmuster mit einem Zähler.",
+     "show": {
+      "lines": [
+       8,
+       11
+      ]
+     }
+    },
+    {
+     "say": "Ist der umgedrehte String gleich dem Original, ist es ein Palindrom. Schreib dazu, ob Groß und klein egal sind.",
+     "show": {
+      "lines": [
+       12,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Zinsen über n Jahre",
+   "v": {
+    "anim": "trace",
+    "code": "kapital = 1000\nzins = 0.05\nfür jahr = 1 bis 3\n  kapital = kapital + kapital * zins\nende für",
+    "vars": [
+     "jahr",
+     "kapital"
+    ],
+    "rows": [
+     [
+      "-",
+      "1000"
+     ],
+     [
+      "1",
+      "1050"
+     ],
+     [
+      "2",
+      "1102,5"
+     ],
+     [
+      "3",
+      "1157,63"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Klassiker: Zinsen über mehrere Jahre. Jedes Jahr kommen 5 Prozent auf das aktuelle Kapital. Das ist der Zinseszins.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Jahr 1: 1000 plus 50 ergibt 1050.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Jahr 2: 1050 plus 52,50 ergibt 1102,50.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Jahr 3: rund 1157,63 Euro. Genau so spielst du jeden Code im Schreibtischtest Zeile für Zeile durch.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ]
+  },
+  {
+   "h": "Fehlersuche: 3 Fehler finden",
+   "v": {
+    "code": "funktion login(pw)\n  versuche = 1\n  ok = falsch\n  solange versuche < 3 und nicht ok\n    eingabe = lies()\n    falls eingabe = pw dann\n      ok = wahr\n    ende falls\n  ende solange\n  rückgabe ok\nende funktion"
+   },
+   "beats": [
+    {
+     "say": "Typische Aufgabe: Markieren und korrigieren Sie 3 Fehler. Ein Login mit maximal 3 Versuchen.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Fehler 1: Start bei 1 und kleiner als 3 ergibt nur 2 Versuche. Off by one. Start bei 0 wäre richtig.",
+     "show": {
+      "lines": [
+       2,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Fehler 2: Im falls steht ein einfaches Gleich. Das ist eine Zuweisung. Zum Vergleichen brauchst du das doppelte Gleich.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Fehler 3: versuche wird nie erhöht. Bei falschem Passwort ist das eine Endlosschleife. Achte auch auf fehlende Rückgabe.",
+     "show": {
+      "lines": [
+       7,
+       11
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Angenommen, versuche wird erhöht. Wie viele Versuche erlaubt die Schleife dann?",
+    "o": [
+     "2",
+     "3",
+     "4"
+    ],
+    "a": 0,
+    "e": "versuche ist 1 und 2, bei 3 ist Schluss. Also nur 2 Versuche."
+   }
+  }
+ ],
+ "sql4": [
+  {
+   "h": "Daten übertragen",
+   "v": {
+    "code": "INSERT INTO AuftragArchiv\n  (AuftragID, MandantID, Honorar)\nSELECT AuftragID, MandantID, Honorar\nFROM Auftrag\nWHERE Datum < '2025-01-01';"
+   },
+   "beats": [
+    {
+     "say": "Im Sommer 2026 kam genau das dran: Daten von einer Tabelle in eine andere übertragen.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Statt VALUES schreibst du einfach ein SELECT. Spaltenzahl und Reihenfolge müssen zur Zielliste passen.",
+     "show": {
+      "lines": [
+       3,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Alle Zeilen, die das SELECT liefert, landen im Archiv. Danach löschst du sie mit DELETE und demselben WHERE.",
+     "show": {
+      "lines": [
+       1,
+       5
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Subselect in UPDATE und DELETE",
+   "v": {
+    "code": "UPDATE Auftrag SET Honorar = Honorar * 1.1\nWHERE MandantID IN\n  (SELECT MandantID FROM Mandant\n   WHERE Ort = 'Fulda');\n\nDELETE FROM Mandant\nWHERE NOT EXISTS\n  (SELECT * FROM Auftrag a\n   WHERE a.MandantID = Mandant.MandantID);"
+   },
+   "beats": [
+    {
+     "say": "UPDATE mit Subselect: Erhöhe die Honorare aller Mandanten aus Fulda. IN prüft gegen die Liste aus dem Subselect.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "NOT EXISTS ist wahr, wenn das Subselect keine einzige Zeile liefert. Hier werden Mandanten ohne Auftrag gelöscht.",
+     "show": {
+      "lines": [
+       6,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Das Subselect greift auf die äußere Zeile zu. Das heißt korrelierte Unterabfrage, sie läuft für jede Zeile neu.",
+     "show": {
+      "lines": [
+       8,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Falle bei NOT IN: Liefert das Subselect ein NULL, kommt gar keine Zeile raus. NOT EXISTS ist da sicherer.",
+     "show": {
+      "lines": [
+       1,
+       9
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Welche Mandanten löscht das DELETE?",
+    "o": [
+     "Mandanten ohne Auftrag",
+     "Mandanten mit Auftrag",
+     "Alle Mandanten"
+    ],
+    "a": 0,
+    "e": "NOT EXISTS ist wahr, wenn kein Auftrag zum Mandanten existiert."
+   }
+  },
+  {
+   "h": "Self-Join: Chef und Mitarbeiter",
+   "v": {
+    "anim": "join",
+    "left": {
+     "name": "Mitarbeiter m",
+     "cols": [
+      "m.MaID",
+      "m.Name",
+      "m.ChefID"
+     ],
+     "rows": [
+      [
+       1,
+       "Weber",
+       "NULL"
+      ],
+      [
+       2,
+       "Koch",
+       1
+      ],
+      [
+       3,
+       "Schmitt",
+       2
+      ],
+      [
+       4,
+       "Becker",
+       2
+      ]
+     ]
+    },
+    "right": {
+     "name": "Mitarbeiter c",
+     "cols": [
+      "c.MaID",
+      "c.Name",
+      "c.ChefID"
+     ],
+     "rows": [
+      [
+       1,
+       "Weber",
+       "NULL"
+      ],
+      [
+       2,
+       "Koch",
+       1
+      ],
+      [
+       3,
+       "Schmitt",
+       2
+      ],
+      [
+       4,
+       "Becker",
+       2
+      ]
+     ]
+    },
+    "on": [
+     2,
+     0
+    ],
+    "type": "inner"
+   },
+   "beats": [
+    {
+     "say": "Self-Join: Eine Tabelle wird mit sich selbst verbunden. ChefID zeigt auf die MaID derselben Tabelle.",
+     "show": {
+      "step": 0
+     }
+    },
+    {
+     "say": "Du nimmst die Tabelle zweimal mit zwei Aliasen, m und c. Verbunden wird ChefID von m mit MaID von c.",
+     "show": {
+      "step": 1
+     }
+    },
+    {
+     "say": "Koch hat Weber als Chef, Schmitt und Becker haben Koch. Weber hat keinen Chef und fehlt beim INNER JOIN.",
+     "show": {
+      "step": 2
+     }
+    },
+    {
+     "say": "Mit LEFT JOIN bleibt Weber drin. RIGHT JOIN behält alle Zeilen rechts, FULL JOIN alle von beiden Seiten.",
+     "show": {
+      "step": 2
+     }
+    }
+   ],
+   "check": {
+    "q": "Wer ist der Chef von Becker?",
+    "o": [
+     "Weber",
+     "Koch",
+     "Schmitt"
+    ],
+    "a": 1,
+    "e": "Becker hat ChefID 2, und MaID 2 ist Koch."
+   }
+  },
+  {
+   "h": "3 Tabellen und UNION",
+   "v": {
+    "code": "SELECT ma.Name, a.Art\nFROM Mitarbeiter ma\nJOIN Mitarbeiter_Auftrag ma_a\n  ON ma.MaID = ma_a.MaID\nJOIN Auftrag a\n  ON ma_a.AuftragID = a.AuftragID;\n\nSELECT Ort FROM Mandant\nUNION\nSELECT Ort FROM Interessent;\n-- Mandant: Fulda, Erfurt, Fulda\n-- Interessent: Fulda\n-- UNION: 2 Zeilen, UNION ALL: 4"
+   },
+   "beats": [
+    {
+     "say": "n zu m: Ein Mitarbeiter arbeitet an vielen Aufträgen und umgekehrt. Dazwischen liegt eine Zwischentabelle.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Also zwei JOINs: erst zur Zwischentabelle, dann weiter zum Auftrag. Bei 3 Tabellen brauchst du 2 ON-Bedingungen.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "UNION hängt Ergebnisse untereinander. Beide SELECTs brauchen gleich viele Spalten mit passenden Datentypen.",
+     "show": {
+      "lines": [
+       8,
+       10
+      ]
+     }
+    },
+    {
+     "say": "UNION entfernt Duplikate, also 2 Zeilen. UNION ALL behält alle, also 4. INTERSECT ist die Schnittmenge, EXCEPT die Differenz.",
+     "show": {
+      "lines": [
+       11,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Zählen, Rechnen, Muster",
+   "v": {
+    "code": "SELECT COUNT(*), COUNT(Ort),\n       COUNT(DISTINCT Ort)\nFROM Mandant;\n-- Orte: Fulda, Erfurt, Fulda, NULL\n-- Ergebnis: 4 | 3 | 2\n\nSELECT Art, Honorar * 1.19 AS Brutto\nFROM Auftrag\nWHERE Art LIKE '_o%'\nORDER BY Honorar DESC\nLIMIT 3;"
+   },
+   "beats": [
+    {
+     "say": "Die Orte sind Fulda, Erfurt, Fulda und einmal NULL. COUNT mit Stern zählt alle Zeilen, also 4.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "NULL-Falle: COUNT Ort zählt NULL nicht mit, also 3. COUNT DISTINCT zählt nur verschiedene Werte, also 2.",
+     "show": {
+      "lines": [
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Im SELECT darfst du rechnen, hier mal 1,19. Bei LIKE steht der Unterstrich für genau ein Zeichen, Prozent für beliebig viele.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    },
+    {
+     "say": "ORDER BY DESC mit LIMIT 3 liefert die 3 teuersten. LIMIT gibt es in MySQL, in SQL Server heißt das TOP.",
+     "show": {
+      "lines": [
+       10,
+       11
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Referentielle Integrität",
+   "v": {
+    "table": [
+     [
+      "ON DELETE",
+      "Mandant gelöscht, seine Aufträge"
+     ],
+     [
+      "CASCADE",
+      "werden mitgelöscht"
+     ],
+     [
+      "SET NULL",
+      "bekommen MandantID NULL"
+     ],
+     [
+      "RESTRICT",
+      "Löschen wird verweigert"
+     ],
+     [
+      "Reihenfolge",
+      "Einfügen: erst Mandant. Löschen: erst Auftrag"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Referentielle Integrität heißt: Jeder Fremdschlüssel zeigt auf einen existierenden Datensatz. Was passiert, wenn ein Mandant gelöscht wird?",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "CASCADE löscht seine Aufträge mit. SET NULL setzt den Fremdschlüssel auf NULL.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "RESTRICT verweigert das Löschen, solange noch Aufträge auf den Mandanten verweisen.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Einfügen immer erst den Mandanten, dann den Auftrag. Bei RESTRICT löschst du genau andersrum, erst die Aufträge.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ]
+  },
+  {
+   "h": "So knackst du schwere Abfragen",
+   "v": {
+    "list": [
+     "FROM und JOIN: welche Tabellen?",
+     "WHERE: welche Zeilen?",
+     "GROUP BY und HAVING: welche Gruppen?",
+     "SELECT und ORDER BY: was wird ausgegeben?",
+     "Gegen Beispieldaten durchspielen"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Geschrieben wird SELECT zuerst, ausgewertet aber FROM und JOIN. Bau deine Abfrage genau in dieser Reihenfolge.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Dann WHERE für die Zeilen, danach GROUP BY und HAVING für die Gruppen.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Erst ganz zum Schluss SELECT und ORDER BY. Und dann spielst du die Abfrage gegen die Beispieldaten durch.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  }
+ ],
+ "db2": [
+  {
+   "h": "500 Euro verschwunden",
+   "v": {
+    "code": "UPDATE Konto SET Saldo = Saldo - 500\nWHERE KontoID = 1;\n-- Stromausfall!\nUPDATE Konto SET Saldo = Saldo + 500\nWHERE KontoID = 2;"
+   },
+   "beats": [
+    {
+     "say": "Eine Überweisung. Die Abbuchung läuft durch, dann fällt der Strom aus.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Die Gutschrift passiert nie. 500 Euro sind weg. Genau dafür gibt es Transaktionen, und dazu kommen Theoriefragen mit schnellen Punkten.",
+     "show": {
+      "lines": [
+       4,
+       5
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Transaktion: alles oder nichts",
+   "v": {
+    "code": "BEGIN;\nUPDATE Konto SET Saldo = Saldo - 500\nWHERE KontoID = 1;\nUPDATE Konto SET Saldo = Saldo + 500\nWHERE KontoID = 2;\nCOMMIT;\n-- bei Fehler: ROLLBACK;"
+   },
+   "beats": [
+    {
+     "say": "BEGIN startet die Transaktion. In MySQL geht auch START TRANSACTION.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Beide Buchungen gehören zusammen in eine Transaktion.",
+     "show": {
+      "lines": [
+       2,
+       5
+      ]
+     }
+    },
+    {
+     "say": "COMMIT speichert alles dauerhaft. Geht etwas schief, nimmt ROLLBACK alles seit BEGIN zurück.",
+     "show": {
+      "lines": [
+       6,
+       7
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "ACID an der Überweisung",
+   "v": {
+    "table": [
+     [
+      "ACID",
+      "heißt",
+      "bei der Überweisung"
+     ],
+     [
+      "Atomarität",
+      "ganz oder gar nicht",
+      "beide Buchungen oder keine"
+     ],
+     [
+      "Konsistenz",
+      "gültig vorher und nachher",
+      "Summe der Salden stimmt"
+     ],
+     [
+      "Isolation",
+      "Parallele stören sich nicht",
+      "keiner sieht Zwischenstand"
+     ],
+     [
+      "Dauerhaftigkeit",
+      "nach COMMIT gespeichert",
+      "übersteht Absturz"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Atomarität: ganz oder gar nicht. Konsistenz: Die Datenbank ist vorher und nachher gültig.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Isolation: Parallele Transaktionen stören sich nicht. Dauerhaftigkeit: Nach dem COMMIT übersteht alles auch einen Absturz.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Ohne Isolation droht ein Lost Update. A und B lesen beide 1000, A bucht 200 dazu, B zieht 100 ab.",
+     "show": {
+      "rows": 4,
+      "hl": [
+       3,
+       1
+      ]
+     }
+    },
+    {
+     "say": "B schreibt zuletzt, also stehen 900 drin statt 1100. Die Änderung von A ist verloren. Dagegen helfen Sperren.",
+     "show": {
+      "rows": 4,
+      "hl": [
+       3,
+       1
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Abbuchung klappt, Gutschrift scheitert, beides wird zurückgenommen. Welche Eigenschaft?",
+    "o": [
+     "Atomarität",
+     "Dauerhaftigkeit",
+     "Isolation"
+    ],
+    "a": 0,
+    "e": "Atomarität heißt ganz oder gar nicht."
+   }
+  },
+  {
+   "h": "Dokument-Datenbank",
+   "v": {
+    "code": "{\n  \"_id\": 4711,\n  \"name\": \"Bäckerei Gies\",\n  \"ort\": \"Fulda\",\n  \"auftraege\": [\n    { \"art\": \"Steuer\", \"honorar\": 1200 },\n    { \"art\": \"Lohn\", \"honorar\": 400 }\n  ]\n}"
+   },
+   "beats": [
+    {
+     "say": "Eine dokumentenorientierte Datenbank wie MongoDB speichert JSON-Dokumente. Ein Dokument ist hier ein Mandant.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Die Aufträge stecken verschachtelt drin. Statt zwei Tabellen mit Fremdschlüssel bettest du sie ins Dokument ein.",
+     "show": {
+      "lines": [
+       5,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Schemafrei, jedes Dokument darf andere Felder haben. Du liest alles mit einem Zugriff, JOINs sind nur eingeschränkt möglich.",
+     "show": {
+      "lines": [
+       9,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Sie skaliert horizontal auf viele Server. Die Redundanz hier ist gewollt, für schnelles Lesen. Ungewollte Redundanz führt zu Anomalien.",
+     "show": {
+      "lines": [
+       1,
+       9
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "NoSQL-Typen, CAP und BASE",
+   "v": {
+    "table": [
+     [
+      "Typ",
+      "Prinzip",
+      "Beispiel"
+     ],
+     [
+      "Dokument",
+      "JSON-Dokumente",
+      "MongoDB"
+     ],
+     [
+      "Key-Value",
+      "Schlüssel und Wert",
+      "Redis, Session-Cache"
+     ],
+     [
+      "Spaltenorientiert",
+      "Spaltenfamilien, riesige Mengen",
+      "Cassandra"
+     ],
+     [
+      "Graph",
+      "Knoten und Kanten",
+      "Neo4j, Netzwerke"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Neben Dokument-Datenbanken gibt es Key-Value-Stores. Ein Schlüssel, ein Wert, extrem schnell, zum Beispiel für Sessions.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Spaltenorientierte Datenbanken für riesige Datenmengen. Graphdatenbanken für Beziehungen als Knoten und Kanten.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "CAP: Bei einer Netztrennung kann ein verteiltes System nicht gleichzeitig Konsistenz und Verfügbarkeit garantieren.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Darum oft BASE statt ACID. Eventually Consistent heißt: Die Daten sind nach einer Weile auf allen Knoten gleich.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ],
+   "check": {
+    "q": "Wer kennt wen in einem Netzwerk. Welcher Typ passt?",
+    "o": [
+     "Graph",
+     "Key-Value",
+     "Spaltenorientiert"
+    ],
+    "a": 0,
+    "e": "Beziehungen als Knoten und Kanten sind die Stärke von Graphdatenbanken."
+   }
+  },
+  {
+   "h": "Index, View, Trigger",
+   "v": {
+    "code": "CREATE INDEX idx_name ON Mandant(Name);\n\nCREATE VIEW FuldaMandanten AS\n  SELECT MandantID, Name FROM Mandant\n  WHERE Ort = 'Fulda';\n\nCREATE TRIGGER trg_log AFTER UPDATE\nON Auftrag FOR EACH ROW\n  INSERT INTO Protokoll (AuftragID, Zeit)\n  VALUES (NEW.AuftragID, NOW());"
+   },
+   "beats": [
+    {
+     "say": "Ein Index ist wie das Stichwortverzeichnis im Buch. Lesen und Suchen werden schneller.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Aber jedes INSERT und UPDATE muss den Index mitpflegen. Schreiben wird langsamer, und er braucht Speicher.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Eine View ist eine gespeicherte Abfrage, wie eine virtuelle Tabelle. Sie vereinfacht Abfragen, Rechte vergibst du nur auf die View.",
+     "show": {
+      "lines": [
+       3,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Ein Trigger läuft automatisch bei INSERT, UPDATE oder DELETE, hier fürs Protokoll. Eine Stored Procedure rufst du selbst auf.",
+     "show": {
+      "lines": [
+       7,
+       10
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Datenqualität beim Import",
+   "v": {
+    "list": [
+     "Vollständig: Pflichtfelder gefüllt?",
+     "Korrekt und plausibel: Gründungsjahr 2091?",
+     "Konsistent und eindeutig: keine Dubletten",
+     "Aktuell: Adresse noch gültig?",
+     "CSV-Fallen: Trennzeichen, Encoding, Kopfzeile"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Vor dem Import prüfst du die Datenqualität. Vollständig, korrekt, und plausibel. Ein Gründungsjahr 2091 fällt bei der Plausibilitätsprüfung auf.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Konsistent und eindeutig, also keine Dubletten. Und aktuell. Dazu Formatprüfungen, zum Beispiel PLZ mit 5 Ziffern.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "CSV-Fallen: Deutsches Excel trennt oft mit Semikolon statt Komma. Und die Kopfzeile ist kein Datensatz.",
+     "show": {
+      "item": 5
+     }
+    },
+    {
+     "say": "Das falsche Encoding zerschießt Umlaute. Dann steht statt Müller Zeichensalat da. Encoding vorher festlegen.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  }
+ ],
+ "qs": [
+  {
+   "h": "Tests schreiben, nicht nur erklären",
+   "v": {
+    "stat": "3 A",
+    "sub": "Arrange, Act, Assert: das Gerüst für jeden Unit-Test"
+   },
+   "beats": [
+    {
+     "say": "Testen kam in 6 von 9 Prüfungen seit Winter 2021. Unit-Tests musst du nicht nur erklären, sondern auch schreiben können.",
+     "show": {}
+    },
+    {
+     "say": "Das Gerüst ist immer gleich: Arrange, Act, Assert. Merk dir 3 A.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Ein Unit-Test in JUnit",
+   "v": {
+    "code": "@Test\nvoid brutto() {\n  var r = new Rechnung(100.0); // Arrange\n  double ist = r.brutto();     // Act\n  assertEquals(119.0, ist, 0.001); // Assert\n}\n\n@Test\nvoid negativWirft() {\n  assertThrows(\n    IllegalArgumentException.class,\n    () -> new Rechnung(-5.0));\n}"
+   },
+   "beats": [
+    {
+     "say": "Arrange: Du baust die Testdaten auf, hier eine Rechnung über 100 Euro netto.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Act: Du rufst genau die Methode auf, die du testest.",
+     "show": {
+      "lines": [
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Assert: assertEquals, erst der erwartete Wert, dann der tatsächliche. Bei Kommazahlen kommt eine Toleranz dazu.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Fehlerfälle testest du mit assertThrows. Bei negativem Betrag muss eine Exception fliegen, sonst schlägt der Test fehl.",
+     "show": {
+      "lines": [
+       8,
+       13
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Was steht in assertEquals zuerst?",
+    "o": [
+     "Der erwartete Wert",
+     "Der tatsächliche Wert"
+    ],
+    "a": 0,
+    "e": "assertEquals erwartet, ist. Hier 119 erwartet."
+   }
+  },
+  {
+   "h": "Gute Unit-Tests",
+   "v": {
+    "table": [
+     [
+      "Eigenschaft",
+      "heißt"
+     ],
+     [
+      "schnell",
+      "Millisekunden, oft ausführbar"
+     ],
+     [
+      "isoliert",
+      "keine echte Datenbank, kein Netz"
+     ],
+     [
+      "wiederholbar",
+      "immer gleiches Ergebnis"
+     ],
+     [
+      "selbstprüfend",
+      "grün oder rot, ohne Nachschauen"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Gute Unit-Tests sind schnell und isoliert. Kein Zugriff auf die echte Datenbank, kein Netz.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Sie sind wiederholbar und selbstprüfend. Der Test sagt selbst grün oder rot.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Statt der echten Datenbank nimmst du ein Testdouble. Ein Stub liefert nur feste Antworten.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Ein Mock prüft zusätzlich, ob und wie er aufgerufen wurde.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ]
+  },
+  {
+   "h": "Die Testpyramide",
+   "v": {
+    "table": [
+     [
+      "Ebene",
+      "Anzahl",
+      "Tempo"
+     ],
+     [
+      "End-to-End, UI",
+      "wenige",
+      "langsam"
+     ],
+     [
+      "Integration",
+      "mittel",
+      "mittel"
+     ],
+     [
+      "Unit",
+      "viele",
+      "schnell"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Oben wenige End-to-End-Tests über die Oberfläche. Die sind langsam und teuer.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "In der Mitte Integrationstests. Unten das breite Fundament: viele schnelle Unit-Tests.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Ein Smoke-Test prüft nach dem Deployment nur grob, ob die Anwendung startet und der Login geht.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Ein Lasttest prüft viele Nutzer gleichzeitig. Der Regressionstest prüft, ob nach einer Änderung Altes kaputt ist.",
+     "show": {
+      "rows": 3
+     }
+    }
+   ],
+   "check": {
+    "q": "Wovon schreibst du am meisten?",
+    "o": [
+     "Unit-Tests",
+     "End-to-End-Tests",
+     "Integrationstests"
+    ],
+    "a": 0,
+    "e": "Unit-Tests bilden das breite Fundament der Pyramide."
+   }
+  },
+  {
+   "h": "Testkonzept und Testprotokoll",
+   "v": {
+    "table": [
+     [
+      "Testfall",
+      "Soll",
+      "Ist",
+      "Ergebnis"
+     ],
+     [
+      "T1 gültig: 100",
+      "119",
+      "119",
+      "bestanden"
+     ],
+     [
+      "T2 Grenze: 0",
+      "0",
+      "0",
+      "bestanden"
+     ],
+     [
+      "T3 ungültig: -5",
+      "Exception",
+      "-5,95",
+      "nicht bestanden"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Vorher legt ein Testkonzept fest: Testobjekte, Testziele, Teststufen und Testumgebung.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Dazu Testdaten, anonymisiert, nie echte Mandantendaten. Und Endekriterien und wer verantwortlich ist.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Die Testfälle kommen aus Äquivalenzklassen und Grenzwerten. Im Protokoll stehen Soll, Ist, Ergebnis, Datum und Tester.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "T3 ist nicht bestanden. Soll war eine Exception, Ist ist minus 5,95. Das geht als Fehler an die Entwicklung.",
+     "show": {
+      "rows": 3,
+      "hl": [
+       3,
+       4
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Clean Code und Review",
+   "v": {
+    "code": "// vorher\ndouble b(double x) {\n  return x * 1.19;\n}\n// nachher\nstatic final double UST = 0.19;\ndouble brutto(double netto) {\n  return netto * (1 + UST);\n}"
+   },
+   "beats": [
+    {
+     "say": "Was macht b von x? Keiner weiß es. Clean Code heißt zuerst: sprechende Namen.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Nachher ist es klar. Das ist Refactoring: Struktur verbessern, Verhalten bleibt gleich, abgesichert durch Tests.",
+     "show": {
+      "lines": [
+       5,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Dazu kleine Funktionen. DRY: nichts doppelt. KISS: so einfach wie möglich. YAGNI: nichts auf Vorrat bauen.",
+     "show": {
+      "lines": [
+       1,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Vor dem Merge prüft ein Kollege den Pull Request, Vier-Augen-Prinzip mit Checkliste. Ein Linter findet Probleme ohne Ausführung.",
+     "show": {
+      "lines": [
+       1,
+       9
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Fehlerarten und Debugging",
+   "v": {
+    "table": [
+     [
+      "Fehlerart",
+      "Wann",
+      "Beispiel"
+     ],
+     [
+      "Syntaxfehler",
+      "beim Kompilieren",
+      "Semikolon fehlt"
+     ],
+     [
+      "Laufzeitfehler",
+      "beim Ausführen, Absturz",
+      "Division durch 0"
+     ],
+     [
+      "Logikfehler",
+      "läuft, Ergebnis falsch",
+      "> statt >="
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Syntaxfehler findet schon der Compiler, zum Beispiel ein fehlendes Semikolon.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Laufzeitfehler knallen beim Ausführen, etwa Division durch 0 oder ein Index außerhalb des Arrays.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Logikfehler sind gemein: Das Programm läuft, rechnet aber falsch. Zum Beispiel größer statt größer gleich.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Zum Debuggen setzt du einen Breakpoint. Step over führt die Zeile aus, Step into springt in die aufgerufene Methode.",
+     "show": {
+      "rows": 3
+     }
+    }
+   ]
+  }
+ ],
+ "ui": [
+  {
+   "h": "Mockups bringen Punkte",
+   "v": {
+    "stat": "4 Mal",
+    "sub": "Mockups in der AP2, zuletzt Sommer 2026"
+   },
+   "beats": [
+    {
+     "say": "Mockups kamen in 3 älteren Prüfungen dran und wieder im Sommer 2026. Bedienoberflächen konzipieren steht im Katalog.",
+     "show": {}
+    },
+    {
+     "say": "Typischer Fehler: Die Maske ist hübsch gemalt, aber kein Steuerelement ist begründet. Die Punkte gibt es für die Begründung.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Wireframe, Mockup, Prototyp",
+   "v": {
+    "table": [
+     [
+      "Begriff",
+      "Bedeutung"
+     ],
+     [
+      "Wireframe",
+      "grobes Layout aus Kästen, Low Fidelity"
+     ],
+     [
+      "Mockup",
+      "statisch, mit Farben und Schrift, High Fidelity"
+     ],
+     [
+      "Prototyp",
+      "klickbar, Abläufe testbar"
+     ],
+     [
+      "horizontal, vertikal",
+      "nur UI in der Breite, eine Funktion durch alle Schichten"
+     ],
+     [
+      "Wegwerf, evolutionär",
+      "wird danach verworfen, wird zum Produkt"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Ein Wireframe ist ein grobes Layout aus Kästen, ohne Design. Das nennt man Low Fidelity.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Ein Mockup sieht aus wie das echte Produkt, mit Farben und Schrift, ist aber statisch. Ein Prototyp ist klickbar, damit testest du Abläufe.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Horizontal: eine Schicht in der Breite, meist nur die Oberfläche ohne Logik. Vertikal: eine Funktion durch alle Schichten bis zur Datenbank.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Ein Wegwerfprototyp wird danach verworfen. Ein evolutionärer Prototyp wird Schritt für Schritt zum fertigen Produkt.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Nur die Funktion Login wird komplett gebaut, von der Maske bis zur Datenbank. Welcher Prototyp?",
+    "o": [
+     "horizontal",
+     "vertikal",
+     "Wireframe"
+    ],
+    "a": 1,
+    "e": "Eine Funktion durch alle Schichten ist vertikal."
+   }
+  },
+  {
+   "h": "Eine Maske, die Punkte holt",
+   "v": {
+    "code": "Start | Mandanten | Aufträge  [Suche   ]\nName *       [________________]\nAnrede       (o) Frau ( ) Herr ( ) Divers\nRechtsform   [ GmbH          v]\nLeistungen   [x] Lohn  [ ] Buchhaltung\nSeit         [12.10.2026] Kalender\n! Name fehlt, bitte ausfüllen\n       [Abbrechen]  [Mandant speichern]\n* Pflichtfeld"
+   },
+   "beats": [
+    {
+     "say": "Oben eine klare Navigation und eine Suche. Dann ein Textfeld für freie Eingaben wie den Namen.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Radiobuttons für genau eins aus wenigen, alle Optionen sind sofort sichtbar. Ein Dropdown für eins aus vielen, das spart Platz.",
+     "show": {
+      "lines": [
+       3,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Checkboxen, wenn mehrere gleichzeitig gehen. Für Daten einen Datepicker, dann stimmt das Format.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Fehlermeldung direkt am Feld, Pflichtfelder mit Stern markieren, Buttons klar mit Verb beschriften.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "ISO 9241-110: 7 Prinzipien",
+   "v": {
+    "code": "Aufgabenangemessenheit\n  nur nötige Schritte und Felder\nSelbstbeschreibungsfähigkeit\n  wo bin ich, was kann ich tun?\nErwartungskonformität\n  konsistent, wie gewohnt\nErlernbarkeit: leicht zu lernen\nSteuerbarkeit: abbrechen, rückgängig\nRobustheit gegen Benutzungsfehler\n  Fehler vermeiden, leicht beheben\nBenutzerbindung\n  motivierend, vertrauenswürdig\nAlt 2006: Fehlertoleranz,\n  Individualisierbarkeit, Lernförderlichkeit"
+   },
+   "beats": [
+    {
+     "say": "Die DIN EN ISO 9241-110 von 2020 hat 7 Interaktionsprinzipien. Aufgabenangemessenheit: nur die Schritte und Felder, die die Aufgabe braucht.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Selbstbeschreibungsfähigkeit: Du siehst immer, wo du bist und was geht. Erwartungskonformität: konsistent und wie gewohnt.",
+     "show": {
+      "lines": [
+       3,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Erlernbarkeit: leicht zu lernen. Steuerbarkeit: abbrechen und rückgängig machen. Robustheit: Fehler vermeiden, verständlich melden, leicht beheben.",
+     "show": {
+      "lines": [
+       7,
+       10
+      ]
+     }
+    },
+    {
+     "say": "Neu ist Benutzerbindung: Die Nutzung motiviert und wirkt vertrauenswürdig. Alte Prüfungen nutzen noch die Fassung 2006 mit Fehlertoleranz.",
+     "show": {
+      "lines": [
+       11,
+       14
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Nach einem Tippfehler ist das ganze Formular leer. Welches Prinzip ist verletzt?",
+    "o": [
+     "Robustheit gegen Benutzungsfehler",
+     "Benutzerbindung",
+     "Erlernbarkeit"
+    ],
+    "a": 0,
+    "e": "Eingaben müssen erhalten bleiben und der Fehler leicht behebbar sein."
+   }
+  },
+  {
+   "h": "Usability, UX und Gestalt",
+   "v": {
+    "code": "ISO 9241-11 Usability:\n Effektivität   Ziel erreicht?\n Effizienz      mit wenig Aufwand?\n Zufriedenheit  gern genutzt?\nUX: vor, während und nach der Nutzung\nGestaltgesetze:\n Nähe: Nahes gehört zusammen\n Ähnlichkeit: Gleiches sieht gleich aus\n Geschlossenheit: Rahmen bildet Gruppe\nKonsistenz und Kontrast\nResponsive: passt sich dem Gerät an\nMobile First: erst klein, dann groß"
+   },
+   "beats": [
+    {
+     "say": "Usability nach ISO 9241-11 heißt: Effektivität, also Ziel erreicht. Effizienz, also mit wenig Aufwand. Und Zufriedenheit.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "User Experience ist mehr. Sie umfasst das Erleben vor, während und nach der Nutzung.",
+     "show": {
+      "lines": [
+       5,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Gestaltgesetze: Was nah beieinander steht, gehört zusammen. Was gleich aussieht, hat die gleiche Funktion. Ein Rahmen bildet eine Gruppe.",
+     "show": {
+      "lines": [
+       6,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Dazu Konsistenz und guter Kontrast. Responsive Design passt sich jedem Bildschirm an, Mobile First entwirft zuerst fürs Handy.",
+     "show": {
+      "lines": [
+       10,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Barrierefreiheit",
+   "v": {
+    "code": "WCAG: 4 Prinzipien\n wahrnehmbar   Alt-Texte, Kontrast\n bedienbar     alles per Tastatur\n verständlich  klare Sprache, Hilfen\n robust        Screenreader-tauglich\nKontrast AA: Text 4,5:1, groß 3:1\nFarbe nie einzige Information\nRecht:\n BITV 2.0: öffentliche Stellen\n BFSG seit 28.06.2025: bestimmte\n  Produkte und Dienste, etwa Shops"
+   },
+   "beats": [
+    {
+     "say": "Die WCAG haben 4 Prinzipien. Wahrnehmbar: zum Beispiel Alt-Texte für Bilder. Bedienbar: alles geht auch per Tastatur.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Verständlich: klare Sprache und Hilfen. Robust: funktioniert auch mit Hilfsmitteln wie dem Screenreader.",
+     "show": {
+      "lines": [
+       4,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Kontrast nach Stufe AA: normaler Text mindestens 4,5 zu 1, große Schrift 3 zu 1. Farbe ist nie die einzige Information.",
+     "show": {
+      "lines": [
+       6,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Rechtlich gilt die BITV für öffentliche Stellen. Seit dem 28. Juni 2025 gilt das BFSG für bestimmte Produkte und Dienste, etwa Onlineshops.",
+     "show": {
+      "lines": [
+       8,
+       11
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Usability testen",
+   "v": {
+    "table": [
+     [
+      "Methode",
+      "Wie"
+     ],
+     [
+      "Thinking Aloud",
+      "Nutzer denkt beim Bedienen laut"
+     ],
+     [
+      "A/B-Test",
+      "zwei Varianten, welche wirkt besser?"
+     ],
+     [
+      "Eye-Tracking",
+      "Blickverlauf wird gemessen"
+     ],
+     [
+      "Heuristische Evaluation",
+      "Experten prüfen gegen Regeln"
+     ],
+     [
+      "Fragebogen",
+      "Zufriedenheit standardisiert abfragen"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Thinking Aloud: Testpersonen lösen Aufgaben und sprechen laut aus, was sie denken. So siehst du, wo sie stolpern.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Beim A B Test bekommen Nutzergruppen zwei Varianten, und du misst, welche besser funktioniert. Eye-Tracking misst, wohin die Augen schauen.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Bei der heuristischen Evaluation prüfen Experten die Oberfläche gegen bekannte Regeln. Ein Fragebogen misst die Zufriedenheit.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ]
+  }
+ ],
+ "anforderung": [
+  {
+   "h": "BPMN ist neu",
+   "v": {
+    "stat": "Neu",
+    "sub": "BPMN im Prüfungskatalog 2025"
+   },
+   "beats": [
+    {
+     "say": "BPMN ist neu im Prüfungskatalog 2025. Und Stakeholder, Anforderungen und Risiken gehören zu jeder Projektplanung.",
+     "show": {}
+    },
+    {
+     "say": "Wiederholung: Lastenheft vom Auftraggeber, was. Pflichtenheft vom Auftragnehmer, wie. Funktional heißt was, nicht-funktional wie gut.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Stakeholder-Matrix",
+   "v": {
+    "table": [
+     [
+      "Einfluss, Interesse",
+      "Strategie"
+     ],
+     [
+      "hoch, hoch",
+      "eng einbinden, managen"
+     ],
+     [
+      "hoch, niedrig",
+      "zufriedenstellen"
+     ],
+     [
+      "niedrig, hoch",
+      "informieren"
+     ],
+     [
+      "niedrig, niedrig",
+      "beobachten"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Stakeholder sind vom Projekt betroffen oder beeinflussen es. Intern etwa Mitarbeiter und Geschäftsleitung, extern Mandanten und Dienstleister.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Die Matrix stellt Einfluss gegen Interesse. Viel Einfluss und viel Interesse: eng einbinden. Viel Einfluss, wenig Interesse: zufriedenstellen.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Wenig Einfluss, aber hohes Interesse: informieren. Wenig von beidem: beobachten. Die Umfeldanalyse sammelt vorher alle Stakeholder.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ]
+  },
+  {
+   "h": "Anforderungen erheben",
+   "v": {
+    "table": [
+     [
+      "Technik",
+      "Plus",
+      "Minus"
+     ],
+     [
+      "Interview",
+      "tief, Rückfragen möglich",
+      "zeitaufwendig"
+     ],
+     [
+      "Fragebogen",
+      "viele Personen, auswertbar",
+      "keine Rückfragen"
+     ],
+     [
+      "Workshop",
+      "gemeinsame Lösung",
+      "Wortführer dominieren"
+     ],
+     [
+      "Beobachtung",
+      "echte Abläufe sichtbar",
+      "aufwendig"
+     ],
+     [
+      "Dokumentenanalyse",
+      "objektiv, stört keinen",
+      "oft veraltet"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Erst die Ist-Analyse: Wie läuft es heute? Daraus entsteht das Soll-Konzept. Das Interview geht in die Tiefe, kostet aber viel Zeit.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Ein Fragebogen erreicht viele Personen und ist gut auswertbar, aber ohne Rückfragen. Ein Workshop findet gemeinsame Lösungen.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Beobachtung zeigt die echten Abläufe, auch was Mitarbeiter nicht beschreiben können. Die Dokumentenanalyse wertet vorhandene Unterlagen aus.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "User Story und INVEST",
+   "v": {
+    "code": "Als Mandant möchte ich Belege per\nApp hochladen, damit ich nichts\nmehr in die Kanzlei bringen muss.\nAkzeptanzkriterien:\n PDF und JPG bis 20 MB möglich\n Bestätigung nach dem Upload\nINVEST: Independent, Negotiable,\n Valuable, Estimable, Small, Testable\nUse Case: Akteur, Ablauf, System,\n Haupt- und Alternativszenario\nUser Story: kurz, Nutzersicht, agil"
+   },
+   "beats": [
+    {
+     "say": "Die User Story: Als Rolle möchte ich Ziel, damit Nutzen.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Akzeptanzkriterien legen prüfbar fest, wann die Story erfüllt ist. Ohne sie gibt es in der Prüfung Abzug.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Gute Stories erfüllen INVEST: unabhängig, verhandelbar, wertvoll, schätzbar, klein und testbar. Das T steht für Testable.",
+     "show": {
+      "lines": [
+       7,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Ein Use Case beschreibt den Ablauf zwischen Akteur und System ausführlich. Die User Story ist kurz, aus Nutzersicht und typisch agil.",
+     "show": {
+      "lines": [
+       9,
+       11
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Machbarkeit, SMART, Dreieck",
+   "v": {
+    "code": "Machbarkeit:\n technisch: können wir es bauen?\n wirtschaftlich: lohnt es sich?\n rechtlich: dürfen wir das?\n organisatorisch: passt es zu uns?\n zeitlich: schaffen wir es?\nSMART: spezifisch, messbar,\n attraktiv, realistisch, terminiert\nMagisches Dreieck:\n Zeit, Kosten, Qualität"
+   },
+   "beats": [
+    {
+     "say": "Die Machbarkeitsanalyse prüft fünf Seiten. Technisch, wirtschaftlich und rechtlich, zum Beispiel DSGVO und Berufsrecht.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Dazu organisatorisch, passt es in unsere Abläufe, und zeitlich, schaffen wir es rechtzeitig.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Ziele formulierst du SMART: spezifisch, messbar, attraktiv, realistisch, terminiert. Also mit Zahl und Datum.",
+     "show": {
+      "lines": [
+       7,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Das magische Dreieck: Zeit, Kosten und Qualität hängen zusammen. Änderst du eins, leiden die anderen.",
+     "show": {
+      "lines": [
+       9,
+       10
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Risiken und Protokoll",
+   "v": {
+    "code": "Risiko = Wahrscheinlichkeit x Schaden\n 20 % x 50.000 € = 10.000 €\nMaßnahmen:\n vermeiden: Ursache beseitigen\n vermindern: Backup, Tests, Schulung\n übertragen: Versicherung, Vertrag\n akzeptieren: bewusst tragen\nErgebnisprotokoll: nur Ergebnisse\nVerlaufsprotokoll: auch Diskussion\nPflicht: Datum, Ort, Teilnehmer,\n Tagesordnung, Protokollant,\n Aufgaben: wer, was, bis wann"
+   },
+   "beats": [
+    {
+     "say": "Risiko ist Eintrittswahrscheinlichkeit mal Schadenshöhe. 20 Prozent mal 50000 Euro sind 10000 Euro. Die größten Risiken der Matrix zuerst.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Vier Maßnahmen: vermeiden, vermindern, übertragen, zum Beispiel per Versicherung, oder bewusst akzeptieren.",
+     "show": {
+      "lines": [
+       3,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Das Ergebnisprotokoll enthält nur Beschlüsse und Aufgaben. Das Verlaufsprotokoll zeigt auch den Ablauf der Diskussion.",
+     "show": {
+      "lines": [
+       8,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Pflicht sind Datum, Ort, Teilnehmer, Tagesordnung, Protokollant und Aufgaben mit Verantwortlichem und Termin.",
+     "show": {
+      "lines": [
+       10,
+       12
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Was kommt raus: 10 Prozent Wahrscheinlichkeit mal 30000 Euro Schaden?",
+    "o": [
+     "3000 Euro",
+     "300 Euro",
+     "30000 Euro"
+    ],
+    "a": 0,
+    "e": "0,1 mal 30.000 Euro ergibt 3.000 Euro."
+   }
+  },
+  {
+   "h": "BPMN in 60 Sekunden",
+   "v": {
+    "code": "Pool: Teilnehmer, etwa Kanzlei\n Lane: Rolle darin, etwa Sekretariat\nAufgabe: abgerundetes Rechteck\nEreignis: Kreis\n Start dünn, Zwischen doppelt,\n Ende dick\nGateway: Raute\n X  XOR: genau ein Weg\n +  AND: alle Wege parallel\n O  OR: einer oder mehrere\nSequenzfluss: durchgezogen, im Pool\nNachrichtenfluss: gestrichelt,\n zwischen Pools\nUML-Aktivitätsdiagramm: softwarenah"
+   },
+   "beats": [
+    {
+     "say": "Ein Pool ist ein Teilnehmer, etwa die Kanzlei. Lanes sind Rollen darin. Aufgaben sind abgerundete Rechtecke.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Ereignisse sind Kreise: Start mit dünnem Rand, Zwischenereignis doppelt, Ende dick umrandet.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Gateways sind Rauten. Mit X: genau ein Weg. Mit Plus: alle Wege parallel. Mit O: einer oder mehrere.",
+     "show": {
+      "lines": [
+       7,
+       10
+      ]
+     }
+    },
+    {
+     "say": "Im Pool der Sequenzfluss, durchgezogen. Zwischen Pools der Nachrichtenfluss, gestrichelt. Das UML-Aktivitätsdiagramm ist softwarenäher.",
+     "show": {
+      "lines": [
+       11,
+       14
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Ab 10000 Euro braucht eine Rechnung eine Freigabe, sonst wird sie direkt gebucht. Welches Gateway?",
+    "o": [
+     "XOR",
+     "AND",
+     "OR"
+    ],
+    "a": 0,
+    "e": "Genau einer der beiden Wege wird genommen: exklusives Gateway."
+   }
+  }
+ ],
+ "projekt": [
+  {
+   "h": "Rechenpunkte pur",
+   "v": {
+    "stat": "FAZ bis GP",
+    "sub": "Netzplan: sichere Rechenpunkte"
+   },
+   "beats": [
+    {
+     "say": "Netzplan, Gantt und Projektkosten sind reine Rechen- und Zeichenpunkte. Wer das Schema kann, holt sie sicher.",
+     "show": {}
+    },
+    {
+     "say": "Typischer Fehler: In der Vorwärtsrechnung den kleinsten statt den größten Wert nehmen. Heute nicht.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Projekt zerlegen und darstellen",
+   "v": {
+    "table": [
+     [
+      "Werkzeug",
+      "Wofür"
+     ],
+     [
+      "Projektstrukturplan",
+      "Projekt in Arbeitspakete zerlegen"
+     ],
+     [
+      "Meilenstein",
+      "Prüfpunkt ohne Dauer"
+     ],
+     [
+      "Gantt",
+      "Balken auf Zeitachse, anschaulich"
+     ],
+     [
+      "Netzplan",
+      "Abhängigkeiten, Puffer, kritischer Pfad"
+     ],
+     [
+      "Kanban",
+      "Board, Spalten, WIP-Limit"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Phasen: Initialisierung, Planung, Durchführung, Abschluss. Der Projektstrukturplan zerlegt das Projekt in Arbeitspakete mit Verantwortlichem.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Ein Meilenstein ist ein Prüfpunkt ohne Dauer. Das Gantt-Diagramm zeigt Vorgänge als Balken auf einer Zeitachse, sehr anschaulich.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Der Netzplan zeigt Abhängigkeiten genauer und berechnet Puffer und kritischen Pfad, ist aber weniger anschaulich.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Kanban nutzt ein Board mit Spalten. Das WIP-Limit begrenzt, wie viele Aufgaben gleichzeitig in einer Spalte sein dürfen.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Das Beispiel",
+   "v": {
+    "code": "Vorgang          Dauer  Vorgänger\nA Analyse          3    keiner\nB Implementierung  6    A\nC Mockups          2    A\nD Handbuch         3    C\nE Abnahme          2    B und D\n\nKnoten:  FAZ | Dauer | FEZ\n           Vorgang\n         SAZ |  GP   | SEZ\nFEZ = FAZ + Dauer\nFAZ = größter FEZ der Vorgänger"
+   },
+   "beats": [
+    {
+     "say": "Unser Projekt hat fünf Vorgänge. B und C starten nach A, D nach C, und E braucht B und D als Vorgänger.",
+     "show": {
+      "lines": [
+       1,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Jeder Knoten hat oben die frühesten, unten die spätesten Zeiten. Die Anordnung variiert, halte dich an die Legende in der Aufgabe.",
+     "show": {
+      "lines": [
+       8,
+       10
+      ]
+     }
+    },
+    {
+     "say": "Die Regeln vorwärts: Frühestes Ende ist frühester Anfang plus Dauer. Ein Nachfolger startet beim größten frühesten Ende seiner Vorgänger.",
+     "show": {
+      "lines": [
+       11,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Vorwärtsrechnung",
+   "v": {
+    "table": [
+     [
+      "Vorgang",
+      "Dauer",
+      "FAZ",
+      "FEZ"
+     ],
+     [
+      "A Analyse",
+      "3",
+      "0",
+      "3"
+     ],
+     [
+      "B Implementierung",
+      "6",
+      "3",
+      "9"
+     ],
+     [
+      "C Mockups",
+      "2",
+      "3",
+      "5"
+     ],
+     [
+      "D Handbuch",
+      "3",
+      "5",
+      "8"
+     ],
+     [
+      "E Abnahme",
+      "2",
+      "9",
+      "11"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "A startet bei 0 und endet bei 3. B und C hängen nur an A, sie starten also beide bei 3.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "B endet bei 3 plus 6, also 9. C endet bei 5. D startet nach C bei 5 und endet bei 8.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "E hat zwei Vorgänger: B endet bei 9, D bei 8. Du nimmst den größten Wert, also startet E bei 9.",
+     "show": {
+      "rows": 5,
+      "hl": [
+       5,
+       3
+      ]
+     }
+    },
+    {
+     "say": "E endet bei 11. Das Projekt dauert also 11 Tage.",
+     "show": {
+      "rows": 5,
+      "hl": [
+       5,
+       4
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Ein Vorgang hat die Vorgänger X mit FEZ 7 und Y mit FEZ 12. Wann ist sein FAZ?",
+    "o": [
+     "12",
+     "7",
+     "19"
+    ],
+    "a": 0,
+    "e": "Vorwärts immer den größten FEZ der Vorgänger nehmen."
+   }
+  },
+  {
+   "h": "Rückwärtsrechnung",
+   "v": {
+    "table": [
+     [
+      "Vorgang",
+      "SAZ",
+      "SEZ",
+      "GP"
+     ],
+     [
+      "E",
+      "9",
+      "11",
+      "0"
+     ],
+     [
+      "D",
+      "6",
+      "9",
+      "1"
+     ],
+     [
+      "B",
+      "3",
+      "9",
+      "0"
+     ],
+     [
+      "C",
+      "4",
+      "6",
+      "1"
+     ],
+     [
+      "A",
+      "0",
+      "3",
+      "0"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Jetzt rückwärts vom Ende. E muss spätestens bei 11 enden, also spätestens bei 11 minus 2 gleich 9 anfangen.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "B und D müssen bei 9 fertig sein. D startet spätestens bei 6, B spätestens bei 3.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "C muss vor D fertig sein, also spätestes Ende 6, spätester Anfang 4.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "A hat zwei Nachfolger, B mit 3 und C mit 4. Rückwärts nimmst du den kleinsten Wert, also endet A spätestens bei 3.",
+     "show": {
+      "rows": 5,
+      "hl": [
+       5,
+       3
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Puffer und kritischer Pfad",
+   "v": {
+    "code": "GP = SAZ - FAZ  oder  SEZ - FEZ\nFP = FAZ Nachfolger - eigener FEZ\n     bei mehreren: kleinster FAZ\n\nC: GP = 4 - 3 = 1\n   FP = FAZ D 5 - FEZ C 5 = 0\nD: GP = 6 - 5 = 1\n   FP = FAZ E 9 - FEZ D 8 = 1\n\nKritischer Pfad: alle mit GP 0\nA - B - E: 3 + 6 + 2 = 11 Tage"
+   },
+   "beats": [
+    {
+     "say": "Gesamtpuffer ist spätester Anfang minus frühester Anfang. Freier Puffer ist der früheste Anfang des Nachfolgers minus das eigene früheste Ende.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "C hat einen Gesamtpuffer von 1, aber freien Puffer 0. Verschiebt sich C, rutscht D mit, das Projektende aber nicht.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "D hat Gesamtpuffer 1 und freien Puffer 1. D kann sich einen Tag verschieben, ohne irgendwen zu stören.",
+     "show": {
+      "lines": [
+       7,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Der kritische Pfad besteht aus allen Vorgängen mit Gesamtpuffer 0: A, B, E. Jede Verzögerung dort verschiebt das Projektende.",
+     "show": {
+      "lines": [
+       10,
+       11
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "B liegt auf dem kritischen Pfad und verzögert sich um 2 Tage. Was passiert?",
+    "o": [
+     "Das Projekt endet 2 Tage später",
+     "Nichts, B hat Puffer",
+     "Nur D verschiebt sich"
+    ],
+    "a": 0,
+    "e": "Kritische Vorgänge haben Gesamtpuffer 0."
+   }
+  },
+  {
+   "h": "Kosten und Tabellenkalkulation",
+   "v": {
+    "code": "fix oder variabel\nEinzelkosten oder Gemeinkosten\neinmalig oder laufend\nStunden x Satz + Sachkosten\n 120 h x 75 € = 9.000 €\n + 1.500 € Sachkosten = 10.500 €\n=SUMME(B2:B9)  =MITTELWERT(B2:B9)\n=WENN(B2>1000;\"teuer\";\"ok\")\n=SVERWEIS(4711;A2:C99;3;FALSCH)\n=B2*$E$1  $E$1 bleibt beim Kopieren\nOutsourcing: Know-how, Kosten, Tempo\n Risiko: Abhängigkeit, Datenschutz"
+   },
+   "beats": [
+    {
+     "say": "Fixkosten hängen nicht von der Menge ab, variable schon. Einzelkosten sind dem Projekt direkt zurechenbar, Gemeinkosten wie Miete nicht.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Projektkosten sind Stunden mal Stundensatz plus Sachkosten. 120 Stunden mal 75 Euro sind 9000 Euro, plus 1500 Euro Sachkosten ergibt 10500 Euro.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Excel: SUMME, MITTELWERT, WENN mit Prüfung, Dann, Sonst. SVERWEIS sucht in Spalte eins und liefert Spalte Index, FALSCH heißt exakt.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Mit Dollarzeichen ist ein Bezug absolut und bleibt beim Kopieren fest. Outsourcing bringt Know-how und Tempo, aber Abhängigkeit und Datenschutzfragen.",
+     "show": {
+      "lines": [
+       10,
+       12
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "sec2": [
+  {
+   "h": "Login bis Backup",
+   "v": {
+    "stat": "Wer, was, wohin",
+    "sub": "Anmeldung, Rechte, Zertifikate, Sicherung"
+   },
+   "beats": [
+    {
+     "say": "Login-Konzepte, Zertifikate und Backups tauchen in GA1 und GA2 immer wieder auf, oft als Pseudocode oder Fall.",
+     "show": {}
+    },
+    {
+     "say": "Typischer Fehler: Authentifizierung und Autorisierung verwechseln. Und beim Restore die falschen Sicherungen nennen.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Wer bist du, was darfst du?",
+   "v": {
+    "table": [
+     [
+      "Begriff",
+      "Bedeutung"
+     ],
+     [
+      "Authentifizierung",
+      "Wer bist du? Identität prüfen"
+     ],
+     [
+      "Autorisierung",
+      "Was darfst du? Rechte prüfen"
+     ],
+     [
+      "Faktoren",
+      "Wissen, Besitz, Inhärenz"
+     ],
+     [
+      "MFA",
+      "mindestens 2 verschiedene Faktoren"
+     ],
+     [
+      "Least Privilege",
+      "nur die nötigsten Rechte"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Authentifizierung prüft, wer du bist. Autorisierung prüft danach, was du darfst.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Die drei Faktoren: Wissen wie ein Passwort, Besitz wie ein Handy oder Token, Inhärenz, also Sein, wie der Fingerabdruck.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Multi-Faktor heißt mindestens zwei verschiedene Faktoren. Passwort plus PIN sind zweimal Wissen, also keine echte MFA.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Least Privilege: Jeder bekommt nur die Rechte, die er braucht, geregelt über ein Rollen- und Berechtigungskonzept.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Ist Passwort plus Sicherheitsfrage eine Multi-Faktor-Authentifizierung?",
+    "o": [
+     "Ja",
+     "Nein, beides ist Wissen"
+    ],
+    "a": 1,
+    "e": "MFA braucht verschiedene Faktoren, etwa Wissen plus Besitz."
+   }
+  },
+  {
+   "h": "OAuth 2.0, OIDC und SSO",
+   "v": {
+    "code": "Resource Owner: Nutzer, gibt frei\nClient: App, will Zugriff\nAuthorization Server: Login, Tokens\nResource Server: API mit Daten\n\n1 Client leitet zum Login weiter\n2 Nutzer meldet sich dort an\n3 Client bekommt Access Token\n4 Client ruft API mit Token auf\nClient sieht nie das Passwort\nRefresh Token: neuen Access Token\nOIDC: plus ID-Token, wer ist das?\nSSO: einmal anmelden, überall drin"
+   },
+   "beats": [
+    {
+     "say": "OAuth 2 hat vier Rollen. Resource Owner ist der Nutzer, Client die App. Der Authorization Server stellt Tokens aus, der Resource Server hat Daten.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Der Client schickt dich zum Login, dort meldest du dich an, und der Client bekommt ein Access Token. Dein Passwort sieht er nie.",
+     "show": {
+      "lines": [
+       6,
+       10
+      ]
+     }
+    },
+    {
+     "say": "Läuft das Access Token ab, holt das Refresh Token ein neues. OpenID Connect ergänzt ein ID-Token mit der Identität des Nutzers.",
+     "show": {
+      "lines": [
+       11,
+       12
+      ]
+     }
+    },
+    {
+     "say": "Single Sign-on: einmal anmelden, überall drin. Bequem und zentral verwaltet, aber ein Single Point of Failure.",
+     "show": {
+      "lines": [
+       13,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "PKI und Zertifikate",
+   "v": {
+    "code": "Zertifikat enthält:\n öffentlichen Schlüssel, Inhaber,\n Gültigkeit, Aussteller,\n Signatur der CA\nKette: Root-CA, Zwischen-CA, Server\nRoot-Zertifikate liegen in Browser\n und Betriebssystem\nSperrung: Sperrliste CRL oder OCSP\nTLS grob:\n 1 Client Hello\n 2 Server schickt Zertifikat\n 3 Client prüft Kette und Gültigkeit\n 4 Sitzungsschlüssel aushandeln\n 5 symmetrisch verschlüsselt weiter"
+   },
+   "beats": [
+    {
+     "say": "Ein Zertifikat enthält öffentlichen Schlüssel, Inhaber, Gültigkeit und die Signatur der Zertifizierungsstelle. Den privaten Schlüssel nie.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Vertrauen läuft über eine Kette: Root-CA, Zwischen-CA, Serverzertifikat. Die Root-Zertifikate liegen im Browser und im Betriebssystem.",
+     "show": {
+      "lines": [
+       5,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Gestohlene Zertifikate werden gesperrt, über Sperrlisten oder OCSP.",
+     "show": {
+      "lines": [
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Beim TLS-Handshake schickt der Server sein Zertifikat, der Client prüft es. Dann Sitzungsschlüssel aushandeln und symmetrisch weiter.",
+     "show": {
+      "lines": [
+       9,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Hash, Salt und E-Mail",
+   "v": {
+    "code": "Hash: Einweg, feste Länge,\n kollisionsresistent\nPasswort: Hash aus Passwort und Salt\n Salt: zufällig, pro Nutzer, in DB\n Pepper: geheim, nicht in der DB\n langsam: bcrypt, Argon2, nicht MD5\nIntegrität: Hashwerte vergleichen\nS/MIME: Zertifikate einer CA\nPGP: Web of Trust\nSPF: welche Server dürfen senden\nDKIM: Signatur im Mail-Header\nDMARC: Regel bei Fehlschlag"
+   },
+   "beats": [
+    {
+     "say": "Ein Hash ist eine Einwegfunktion mit fester Länge und kollisionsresistent. Gleicher Hash heißt unverändert, so prüfst du Integrität.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Passwörter hashst du mit Salt, einem Zufallswert pro Nutzer. Gleiche Passwörter ergeben so verschiedene Hashes. Pepper: geheim, nie in der Datenbank.",
+     "show": {
+      "lines": [
+       3,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Nimm absichtlich langsame Verfahren wie bcrypt oder Argon2, nicht MD5. Das bremst Brute Force.",
+     "show": {
+      "lines": [
+       6,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Mail: S MIME nutzt Zertifikate einer CA, PGP das Web of Trust. SPF nennt erlaubte Server, DKIM signiert, DMARC regelt den Fehlschlag.",
+     "show": {
+      "lines": [
+       8,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "OWASP und Schutzbedarf",
+   "v": {
+    "table": [
+     [
+      "Problem",
+      "Gegenmaßnahme"
+     ],
+     [
+      "XSS: fremdes Script läuft",
+      "Ausgaben escapen, CSP"
+     ],
+     [
+      "CSRF: fremde Seite löst Aktion aus",
+      "CSRF-Token, SameSite-Cookie"
+     ],
+     [
+      "Broken Access Control",
+      "Rechte serverseitig prüfen"
+     ],
+     [
+      "Schutzbedarf nach BSI",
+      "normal, hoch, sehr hoch"
+     ],
+     [
+      "Security by Design",
+      "Sicherheit von Anfang an"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "XSS: Fremdes Script läuft in deiner Seite, also Ausgaben escapen. Bei CSRF löst eine fremde Seite eine Aktion aus, dagegen hilft ein CSRF-Token.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Broken Access Control: Ein Nutzer ändert eine ID in der URL und sieht fremde Daten. Rechte immer auf dem Server prüfen.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Das BSI teilt den Schutzbedarf in normal, hoch und sehr hoch ein. Security by Design heißt: Sicherheit von Anfang an mitplanen.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Backup richtig",
+   "v": {
+    "table": [
+     [
+      "Art",
+      "sichert",
+      "Restore braucht"
+     ],
+     [
+      "Voll",
+      "alles",
+      "nur die Vollsicherung"
+     ],
+     [
+      "Inkrementell",
+      "seit letzter Sicherung",
+      "Voll plus alle Inkremente"
+     ],
+     [
+      "Differenziell",
+      "seit letzter Vollsicherung",
+      "Voll plus letzte Differenz"
+     ],
+     [
+      "3-2-1",
+      "3 Kopien, 2 Medien",
+      "1 Kopie extern"
+     ],
+     [
+      "Archiv",
+      "langfristig, unveränderbar",
+      "Aufbewahrungspflichten"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Voll sichert alles. Inkrementell nur, was seit der letzten Sicherung neu ist. Restore: Vollsicherung plus alle Inkremente in Reihenfolge.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Differenziell sichert alles seit der letzten Vollsicherung. Restore: Vollsicherung plus nur die letzte Differenz.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Die Drei zwei eins Regel: 3 Kopien, auf 2 verschiedenen Medien, eine davon außer Haus.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Backup dient der Wiederherstellung nach Verlust. Archivierung bewahrt Daten langfristig und unveränderbar auf, etwa wegen Aufbewahrungspflichten.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Vollsicherung Sonntag, differenziell Montag bis Donnerstag, Crash am Freitag. Was brauchst du?",
+    "o": [
+     "Voll plus Donnerstag",
+     "Voll plus Montag bis Donnerstag",
+     "Nur Donnerstag"
+    ],
+    "a": 0,
+    "e": "Die letzte Differenz enthält alle Änderungen seit der Vollsicherung."
+   }
+  }
+ ],
+ "architektur": [
+  {
+   "h": "Wo gehört der Code hin?",
+   "v": {
+    "code": "Präsentation  GUI, Browser, Eingaben\n     │\nLogik         Regeln: Honorar berechnen,\n     │        Eingaben prüfen\nDaten         Datenbank, Speicherung\n\nClient-Server: Client fragt, Server liefert\nThin Client   nur Anzeige, Logik am Server\nFat Client    viel Logik lokal, auch offline"
+   },
+   "beats": [
+    {
+     "say": "Typischer Prüfungsfehler: Die Honorarprüfung steckt in der Oberfläche. Regeln und Prüfungen gehören in die Logikschicht.",
+     "show": {
+      "lines": [
+       3,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Drei Schichten: Präsentation zeigt an, Logik rechnet und prüft, Daten speichert. So bleibt jede Schicht austauschbar.",
+     "show": {
+      "lines": [
+       1,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Client-Server heißt: Der Client stellt eine Anfrage, der Server liefert die Antwort.",
+     "show": {
+      "lines": [
+       7,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Ein Thin Client zeigt nur an, die Logik läuft auf dem Server. Ein Fat Client hat viel Logik lokal und kann oft offline arbeiten.",
+     "show": {
+      "lines": [
+       8,
+       9
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Monolith, Microservices, API",
+   "v": {
+    "code": "Monolith      alles in einem Programm\n  + einfach zu entwickeln und testen\n  - schwer skalierbar, alles neu deployen\nMicroservices kleine Dienste, eigene DB\n  + einzeln deploy- und skalierbar\n  - Netzwerk, Betrieb, Monitoring komplex\n\nAPI = Vertrag: Endpunkte, Daten, Fehler\nREST  HTTP-Verben, meist JSON, schlank\nSOAP  XML-Nachrichten, WSDL, strenger\n\n[Portal]──○  Lollipop: bietet an\n[App]─────(  Socket: benötigt"
+   },
+   "beats": [
+    {
+     "say": "Ein Monolith ist ein großes Programm. Einfach zu starten, aber du musst für jede Änderung alles neu deployen und kannst schlecht skalieren.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Microservices sind kleine Dienste, einzeln deploybar und skalierbar. Der Preis: mehr Aufwand für Netzwerk, Betrieb und Monitoring.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Eine API ist ein Vertrag. REST nutzt HTTP-Verben und meist JSON, SOAP schickt strengere XML-Nachrichten mit WSDL.",
+     "show": {
+      "lines": [
+       8,
+       10
+      ]
+     }
+    },
+    {
+     "say": "Im UML-Komponentendiagramm heißt der Kreis am Stiel, der Lollipop: bietet Schnittstelle an. Der Halbkreis, der Socket: benötigt sie.",
+     "show": {
+      "lines": [
+       12,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Cloud, Apps, Verteilung",
+   "v": {
+    "code": "IaaS  Infrastruktur: VMs, Netz, Speicher\nPaaS  Plattform: nur eigenen Code deployen\nSaaS  fertige Software, etwa Microsoft 365\nPublic, Private oder Hybrid Cloud\n\nnativ    je Plattform, voller Gerätezugriff\nhybrid   Web-Technik in nativer Hülle\nWeb-App  läuft im Browser\nPWA      Web-App, installierbar, offline\n\nVerteilungsdiagramm:\nKnoten   Server, Gerät, Laufzeitumgebung\nArtefakt Datei darauf, etwa portal.jar"
+   },
+   "beats": [
+    {
+     "say": "IaaS: Du mietest VMs und verwaltest sie selbst. PaaS: Du bringst nur deinen Code. SaaS: Du nutzt fertige Software.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Public Cloud teilen sich viele Kunden. Private Cloud gehört einer Organisation. Hybrid kombiniert beides.",
+     "show": {
+      "lines": [
+       4,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Native Apps baust du je Plattform. Hybride stecken Web-Technik in eine App-Hülle. Eine PWA ist eine Web-App, installierbar und offlinefähig.",
+     "show": {
+      "lines": [
+       6,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Im Verteilungsdiagramm sind Knoten die Hardware oder Laufzeitumgebung. Artefakte sind Dateien, die darauf laufen.",
+     "show": {
+      "lines": [
+       11,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Paradigmen und Übersetzung",
+   "v": {
+    "code": "imperativ   Schritt für Schritt: WIE\nprozedural  imperativ plus Funktionen, C\nOOP         Klassen und Objekte, Java\nfunktional  reine Funktionen, Lambdas\ndeklarativ  nur WAS, nicht wie: SQL\n\nCompiler    vorab ganz in Maschinencode\nInterpreter zur Laufzeit, Zeile für Zeile\nJava        Bytecode, JVM, JIT\n\nstatisch    Typ fest, Fehler beim Übersetzen\ndynamisch   Typ zur Laufzeit, Python, JS"
+   },
+   "beats": [
+    {
+     "say": "Imperativ sagt Schritt für Schritt, wie. Prozedural ergänzt Funktionen. Objektorientiert arbeitet mit Klassen und Objekten.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Funktional setzt auf reine Funktionen ohne Seiteneffekte. Deklarativ sagt nur, was du willst. SQL ist das Paradebeispiel.",
+     "show": {
+      "lines": [
+       4,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Ein Compiler übersetzt vorab alles, ein Interpreter zur Laufzeit. Java erzeugt Bytecode, die JVM führt ihn aus und der JIT übersetzt zur Laufzeit.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Statisch typisiert heißt: Typfehler fallen schon beim Compilieren auf. Dynamisch typisiert prüft erst zur Laufzeit.",
+     "show": {
+      "lines": [
+       11,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Datenstrukturen und Lambdas",
+   "v": {
+    "code": "Array  feste Größe, Zugriff per Index\nListe  wächst, List<Mandant> typsicher\nStack  LIFO: push, pop, etwa Undo\nQueue  FIFO: Warteschlange, Drucker\nMap    Schlüssel zu Wert, MandantNr\nBaum   Hierarchie, Ordner, Suchbaum\n\nz = [1, 2, 3, 4]\nz.filter(x -> x > 2)     ergibt [3, 4]\n .map(x -> x * 10)       ergibt [30, 40]\n .reduce((a, b) -> a+b)  ergibt 70\nz bleibt [1, 2, 3, 4]: immutable"
+   },
+   "beats": [
+    {
+     "say": "Ein Array hat eine feste Größe. Eine Liste wächst. Mit Generics wie List of Mandant passen nur Mandanten rein, das prüft der Compiler.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Stack heißt LIFO, der letzte rein ist der erste raus, wie bei Undo. Queue heißt FIFO, wie eine Druckerwarteschlange.",
+     "show": {
+      "lines": [
+       3,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Eine Map ordnet Schlüssel einem Wert zu. Ein Baum bildet Hierarchien ab, etwa Ordner.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Lambdas: filter behält passende Werte, map wandelt jeden um, reduce fasst zu einem Wert zusammen. Die Originalliste bleibt unverändert.",
+     "show": {
+      "lines": [
+       8,
+       12
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "push 1, push 2, push 3, dann pop. Was kommt heraus?",
+    "o": [
+     "1",
+     "3",
+     "2"
+    ],
+    "a": 1,
+    "e": "Stack ist LIFO: Die 3 kam zuletzt rein und kommt zuerst raus."
+   }
+  },
+  {
+   "h": "XML vertieft",
+   "v": {
+    "code": "<mandant nr=\"4711\">\n  <name>Bäckerei Gies</name>\n  <ort>Fulda</ort>\n</mandant>\n\nwohlgeformt: ein Wurzelelement, Tags\n  korrekt geschlossen und verschachtelt\nvalide: wohlgeformt UND passt zu DTD/XSD\n\nJSON: {\"nr\": 4711, \"name\": \"Bäckerei Gies\",\n       \"ort\": \"Fulda\"}\nTabelle: nr   | name          | ort\n         4711 | Bäckerei Gies | Fulda"
+   },
+   "beats": [
+    {
+     "say": "Hier ist nr ein Attribut im Start-Tag, name und ort sind Elemente. Attribute für Metadaten, Elemente für Inhalte.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Wohlgeformt heißt: Die Syntax stimmt, es gibt ein Wurzelelement und alle Tags sind sauber geschlossen und verschachtelt.",
+     "show": {
+      "lines": [
+       6,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Valide heißt zusätzlich: Das Dokument passt zum Schema, also zur DTD oder XSD. Fehlt ein Pflichtelement, ist es nicht valide.",
+     "show": {
+      "lines": [
+       8,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Dieselben Daten als JSON oder Tabelle: Jedes Element wird zu einem Schlüssel oder einer Spalte.",
+     "show": {
+      "lines": [
+       10,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Die Rechenfalle Bit und Byte",
+   "v": {
+    "code": "1 Byte = 8 Bit  kB = 1000 B  KiB = 1024 B\nBild in Byte = Breite x Höhe x Bit / 8\n\n1000 x 800 = 800.000 Pixel\n800.000 x 24 Bit = 19.200.000 Bit\n19.200.000 / 8 = 2.400.000 Byte = 2,4 MB\n\nDauer = Größe in Bit / Bandbreite in Bit/s\n2 GB = 2.000.000.000 Byte\n     x 8 = 16.000.000.000 Bit\n16.000.000.000 / 100.000.000 = 160 s"
+   },
+   "beats": [
+    {
+     "say": "Ein Byte hat 8 Bit. Ein Kilobyte sind 1000 Byte, ein Kibibyte 1024 Byte. Bildgröße: Breite mal Höhe mal Farbtiefe, geteilt durch 8.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Beispiel: 1000 mal 800 Pixel mal 24 Bit sind 19,2 Millionen Bit. Geteilt durch 8 sind das 2,4 Megabyte.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Die Falle: Leitungen werden in Megabit pro Sekunde angegeben, Dateien in Byte. Also erst die Dateigröße mal 8 nehmen.",
+     "show": {
+      "lines": [
+       8,
+       10
+      ]
+     }
+    },
+    {
+     "say": "2 Gigabyte sind 16 Milliarden Bit. Bei 100 Megabit pro Sekunde dauert das 160 Sekunden.",
+     "show": {
+      "lines": [
+       11,
+       11
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Eine Datei hat 100 MB. Die Leitung schafft 100 Mbit pro Sekunde. Wie lange dauert es?",
+    "o": [
+     "1 Sekunde",
+     "8 Sekunden",
+     "100 Sekunden"
+    ],
+    "a": 1,
+    "e": "100 MB sind 800 Mbit. 800 geteilt durch 100 ergibt 8 Sekunden."
+   }
+  }
+ ],
+ "betrieb": [
+  {
+   "h": "Die Pipeline: vom Push zum Release",
+   "v": {
+    "code": "push ─> Build ─> Test ─> Analyse ─> Deploy\nStufe rot: Pipeline stoppt, kein Deploy\n\nCI   oft mergen, automatisch bauen\n     und testen\nCD   Delivery: immer auslieferbar,\n     Release nach manueller Freigabe\nCD   Deployment: jede grüne Änderung\n     geht automatisch live\nVorteil: Fehler früh, kleine Releases"
+   },
+   "beats": [
+    {
+     "say": "Delivery oder Deployment? Ein Wort Unterschied, und genau das wird gern gefragt. Erst die Pipeline: Build, Test, Analyse, Deploy.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Ist eine Stufe rot, zum Beispiel ein Unit-Test schlägt fehl, stoppt die Pipeline. Dann wird nichts deployt.",
+     "show": {
+      "lines": [
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Continuous Integration: oft mergen, automatisch bauen und testen. Continuous Delivery: immer auslieferbar, aber Release per Freigabe.",
+     "show": {
+      "lines": [
+       4,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Continuous Deployment: Jede grüne Änderung geht automatisch live. Vorteil von allem: Fehler früh finden, kleine Releases, weniger Handarbeit.",
+     "show": {
+      "lines": [
+       8,
+       10
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Container gegen VM",
+   "v": {
+    "table": [
+     [
+      "",
+      "VM",
+      "Container"
+     ],
+     [
+      "Betriebssystem",
+      "eigenes Gast-OS",
+      "teilt Host-Kernel"
+     ],
+     [
+      "Start, Größe",
+      "Minuten, GB",
+      "Sekunden, MB"
+     ],
+     [
+      "Isolation",
+      "stärker",
+      "schwächer"
+     ],
+     [
+      "Vorteil",
+      "beliebiges OS",
+      "überall gleiche Umgebung"
+     ],
+     [
+      "Begriffe",
+      "Hypervisor",
+      "Image: Vorlage, Container: Instanz"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Eine VM bringt ein eigenes Gast-Betriebssystem mit. Ein Container teilt sich den Kernel des Hosts.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Darum sind Container leichtgewichtig: Start in Sekunden, Größe in Megabyte. VMs sind dafür stärker isoliert.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Großer Vorteil von Docker: Die Umgebung ist auf dem Laptop, im Test und in Produktion gleich.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Ein Image ist die schreibgeschützte Vorlage. Ein Container ist eine laufende Instanz davon.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Was teilt sich ein Container mit dem Host?",
+    "o": [
+     "den Kernel",
+     "ein Gast-Betriebssystem",
+     "den Hypervisor"
+    ],
+    "a": 0,
+    "e": "Container teilen den Kernel des Host-Systems, deshalb sind sie so leicht."
+   }
+  },
+  {
+   "h": "Git-Workflow",
+   "v": {
+    "code": "main    ●──●────────●  merge\n            \\      /\nfeature      ●──●──●\ngit switch -c feature  Branch anlegen\ngit add, git commit    lokal sichern\ngit push               hochladen\nPull Request: Review, dann Merge\n<<<<<<< HEAD\nhonorar = 120\n=======\nhonorar = 135\n>>>>>>> feature\nKonflikt: richtig wählen, Marker weg\nrebase: Commits neu auf main setzen"
+   },
+   "beats": [
+    {
+     "say": "Git ist verteilt: Jeder hat das komplette Repository mit Historie lokal. Bei zentralen Systemen liegt alles nur auf dem Server.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Neuer Branch, lokal committen, pushen. Dann ein Pull Request: Ein Kollege macht das Review, erst danach wird gemergt.",
+     "show": {
+      "lines": [
+       4,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Haben beide dieselbe Zeile geändert, gibt es einen Merge-Konflikt. Du wählst den richtigen Stand, löschst die Marker, dann add und commit.",
+     "show": {
+      "lines": [
+       8,
+       13
+      ]
+     }
+    },
+    {
+     "say": "Rebase setzt deine Commits neu auf den aktuellen main. Die Historie wird gerade, ohne Merge-Commit.",
+     "show": {
+      "lines": [
+       14,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Lizenzen",
+   "v": {
+    "table": [
+     [
+      "Lizenz",
+      "Typ",
+      "Folge"
+     ],
+     [
+      "proprietär",
+      "Closed Source",
+      "nur nutzen laut Vertrag"
+     ],
+     [
+      "GPL",
+      "Copyleft",
+      "Weitergabe nur als GPL mit Quellcode"
+     ],
+     [
+      "MIT",
+      "permissiv",
+      "fast alles, Hinweis behalten"
+     ],
+     [
+      "Apache 2.0",
+      "permissiv",
+      "wie MIT, plus Patentklausel"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Proprietäre Software darfst du nur so nutzen, wie der Lizenzvertrag es erlaubt. Den Quellcode bekommst du nicht.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "GPL ist Copyleft. Baust du sie in dein Produkt ein und gibst es weiter, muss es auch unter GPL mit Quellcode stehen.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "MIT und Apache sind permissiv. Kommerziell nutzen ist erlaubt, du musst nur den Lizenzhinweis behalten.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ],
+   "check": {
+    "q": "Du verkaufst ein Programm mit fest eingebauter GPL-Bibliothek. Was musst du beachten?",
+    "o": [
+     "Nichts, Open Source ist frei",
+     "Weitergabe nur unter GPL mit Quellcode",
+     "Nur den Hinweis behalten"
+    ],
+    "a": 1,
+    "e": "Copyleft: Abgeleitete Werke müssen bei Weitergabe ebenfalls unter GPL stehen."
+   }
+  },
+  {
+   "h": "Change, Incident, SLA",
+   "v": {
+    "code": "Change: Antrag, Bewertung, Freigabe,\n        Umsetzung, Dokumentation\nIncident: Störung, Ticket, schnell lösen\nSLA: Vertrag über Leistung, etwa\n     Verfügbarkeit und Reaktionszeit\n\n1st Level  Annahme, Passwort zurücksetzen\n2nd Level  Spezialisten, tiefere Analyse\n3rd Level  Entwickler oder Hersteller"
+   },
+   "beats": [
+    {
+     "say": "Change Management: Antrag, Bewertung, Freigabe, Umsetzung, Dokumentation. Ohne Freigabe wird nichts umgesetzt.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Incident Management: Eine Störung kommt als Ticket rein und soll schnell behoben werden.",
+     "show": {
+      "lines": [
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Ein SLA ist ein Vertrag über die Servicequalität, etwa Verfügbarkeit und Reaktionszeit.",
+     "show": {
+      "lines": [
+       4,
+       5
+      ]
+     }
+    },
+    {
+     "say": "1st Level nimmt an und löst Einfaches wie ein Passwort. 2nd Level sind Spezialisten. 3rd Level sind Entwickler oder Hersteller.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "KI und EU AI Act",
+   "v": {
+    "code": "regelbasiert  Mensch schreibt Regeln\nML            lernt Muster aus Daten\nTrainingsdaten lernen, Testdaten prüfen\nBias: schiefe Daten, unfaire Ergebnisse\nHalluzination: klingt sicher, ist falsch\nDatenschutz: keine Mandantendaten in\n             ungeprüfte KI-Dienste\n\nAI Act, Risikoklassen:\nunannehmbar  verboten, Social Scoring\nhoch         Bewerberauswahl: Pflichten\nbegrenzt     Chatbot: als KI kennzeichnen\nminimal      Spamfilter: keine Pflichten"
+   },
+   "beats": [
+    {
+     "say": "Regelbasiert schreibt ein Mensch die Regeln. Machine Learning lernt Muster aus Trainingsdaten, Testdaten prüfen danach das Ergebnis.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Risiken: Bias durch schiefe Daten, Halluzinationen, die sicher klingen und falsch sind, und Datenschutz bei sensiblen Daten.",
+     "show": {
+      "lines": [
+       4,
+       7
+      ]
+     }
+    },
+    {
+     "say": "Der EU AI Act hat vier Risikoklassen. Unannehmbar ist verboten, etwa Social Scoring. Hochrisiko wie Bewerberauswahl hat strenge Pflichten.",
+     "show": {
+      "lines": [
+       9,
+       11
+      ]
+     }
+    },
+    {
+     "say": "Begrenzt, etwa Chatbot: als KI kennzeichnen. Verbote gelten seit Februar 2025, Hochrisiko-Pflichten nach Verschiebung ab Dezember 2027.",
+     "show": {
+      "lines": [
+       12,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Green IT und IoT",
+   "v": {
+    "code": "Green IT\n- Geräte länger nutzen, reparieren\n- effiziente Hardware, Energie sparen\n- effizienter Code: weniger CPU, Daten\n- Rechenzentrum: Ökostrom, Kühlung,\n  Abwärme nutzen\n\nIoT\nSensor   misst: Temperatur, Bewegung\nAktor    handelt: Ventil, Fenster, Licht\nGateway  sammelt, übersetzt, ins Netz\nRisiko   Standardpasswörter, keine\n         Updates, unverschlüsselt"
+   },
+   "beats": [
+    {
+     "say": "Green IT heißt: Geräte länger nutzen, effiziente Hardware und effizienter Code, der weniger Rechenzeit braucht.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Im Rechenzentrum zählen Ökostrom, effiziente Kühlung und die Nutzung der Abwärme.",
+     "show": {
+      "lines": [
+       5,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Beim Internet der Dinge misst der Sensor, der Aktor handelt, und das Gateway bringt die Daten ins Netz.",
+     "show": {
+      "lines": [
+       8,
+       11
+      ]
+     }
+    },
+    {
+     "say": "IoT-Geräte sind oft unsicher: Standardpasswörter, keine Updates, unverschlüsselte Kommunikation.",
+     "show": {
+      "lines": [
+       12,
+       13
+      ]
+     }
+    }
+   ]
+  }
+ ],
+ "technik": [
+  {
+   "h": "Technik bringt Punkte",
+   "v": {
+    "code": "Mi, 25.11.2026: schriftliche AP2 Teil 2\nGA1   90 Minuten   meist 4 x 25 Punkte\nGA2   90 Minuten   meist 4 x 25 Punkte\nWiSo  60 Minuten\nAbwahl von Aufgaben: üblich keine\n\n90 Minuten / 100 Punkte\n= ca. 0,9 Minuten pro Punkt\n25-Punkte-Aufgabe: ca. 22 Minuten\n\n1. Erst alles überfliegen\n2. Zeit je Aufgabe planen\n3. Nichts leer lassen"
+   },
+   "beats": [
+    {
+     "say": "Viele verlieren Punkte nicht durch Unwissen, sondern durch Technik. Am 25. November 2026 ist die schriftliche Prüfung.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "GA1 und GA2 dauern je 90 Minuten, WiSo 60. Üblich sind 4 Aufgaben mit je 25 Punkten, ohne Abwahl. Garantiert ist das nicht.",
+     "show": {
+      "lines": [
+       2,
+       5
+      ]
+     }
+    },
+    {
+     "say": "90 Minuten für 100 Punkte, das sind rund 0,9 Minuten pro Punkt. Eine 25-Punkte-Aufgabe bekommt also etwa 22 Minuten.",
+     "show": {
+      "lines": [
+       7,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Erst alles überfliegen, Zeit planen, und nichts leer lassen. Stichworte bringen oft noch Teilpunkte.",
+     "show": {
+      "lines": [
+       11,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Operatoren lesen",
+   "v": {
+    "table": [
+     [
+      "Operator",
+      "Was du lieferst"
+     ],
+     [
+      "nennen",
+      "Stichwort, ohne Erklärung"
+     ],
+     [
+      "beschreiben",
+      "Sachverhalt in ganzen Sätzen"
+     ],
+     [
+      "erläutern, erklären",
+      "Aussage plus Begründung oder Beispiel"
+     ],
+     [
+      "begründen, vergleichen",
+      "Warum, Gemeinsamkeiten, Unterschiede"
+     ],
+     [
+      "beurteilen, bewerten",
+      "eigenes Urteil anhand von Kriterien"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Nennen heißt: Stichwort reicht. Keine Romane schreiben, das kostet nur Zeit.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Beschreiben heißt ganze Sätze. Erläutern und erklären heißt: Aussage plus Begründung oder Beispiel.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Begründen fragt nach dem Warum. Vergleichen heißt Gemeinsamkeiten und Unterschiede.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Beurteilen und bewerten: Kriterien nennen, abwägen, und am Ende ein klares eigenes Urteil.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Zwei heißt zwei",
+   "v": {
+    "code": "Nennen Sie zwei Vorteile von SaaS.\n- keine eigene Wartung\n- schnell einsatzbereit\n- dritter Punkt: meist nicht gewertet\n\nErläutern Sie einen Vorteil.\nDie Kanzlei spart Wartung, weil der\nAnbieter Server und Updates übernimmt.\n\nentwerfen, darstellen: Modell, Code\nNotation laut Belegsatz: SQL, UML\nFakten aus dem Szenario übernehmen"
+   },
+   "beats": [
+    {
+     "say": "Nennen Sie zwei heißt zwei. Gewertet werden meist die ersten zwei, ein dritter Punkt rettet keinen falschen.",
+     "show": {
+      "lines": [
+       1,
+       4
+      ]
+     }
+    },
+    {
+     "say": "Situationsbezug: Nicht allgemein antworten, sondern mit den Fakten aus dem Szenario. Hier die Kanzlei.",
+     "show": {
+      "lines": [
+       6,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Entwerfen oder darstellen heißt Modell oder Code liefern. Nutze die Notation aus dem Belegsatz, etwa das SQL-Beiblatt.",
+     "show": {
+      "lines": [
+       10,
+       12
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Nennen Sie drei Ursachen. Du schreibst fünf. Was wird meist gewertet?",
+    "o": [
+     "alle fünf",
+     "die ersten drei",
+     "die besten drei"
+    ],
+    "a": 1,
+    "e": "Gewertet werden meist die ersten genannten, so viele wie verlangt."
+   }
+  },
+  {
+   "h": "Vokabeln: Projekt",
+   "v": {
+    "code": "requirement      Anforderung\nstakeholder      Beteiligter, Interessent\nfeature request  Funktionswunsch\nacceptance criteria  Abnahmekriterien\nuser story       Anforderung aus Nutzersicht\nmilestone        Meilenstein\nscalability      Skalierbarkeit\nmaintainability  Wartbarkeit\ndependency       Abhängigkeit\ndeployment       Bereitstellung\nrelease          veröffentlichte Version\nissue            Problem, Ticket\ntroubleshooting  Fehlersuche"
+   },
+   "beats": [
+    {
+     "say": "Englische Texte kommen in GA1 vor. Projekt-Vokabeln zuerst: requirement ist die Anforderung, stakeholder die Beteiligten.",
+     "show": {
+      "lines": [
+       1,
+       5
+      ]
+     }
+    },
+    {
+     "say": "Scalability heißt Skalierbarkeit, maintainability Wartbarkeit. Dependency ist eine Abhängigkeit.",
+     "show": {
+      "lines": [
+       6,
+       9
+      ]
+     }
+    },
+    {
+     "say": "Deployment ist die Bereitstellung, release die Version. Ein issue ist ein Problem oder Ticket.",
+     "show": {
+      "lines": [
+       10,
+       13
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Vokabeln: Sicherheit, Betrieb",
+   "v": {
+    "code": "vulnerability    Schwachstelle\nencryption       Verschlüsselung\nauthentication   Authentifizierung\nlegacy system    Altsystem\nbackward compatible  abwärtskompatibel\ndeprecated       veraltet, wird entfernt\npatch            Korrektur, Update\nrollback         Zurücksetzen\ndowntime         Ausfallzeit\nworkaround       Notlösung\nlatency          Verzögerung\nthroughput       Durchsatz"
+   },
+   "beats": [
+    {
+     "say": "Vulnerability ist eine Schwachstelle. Encryption die Verschlüsselung, authentication die Anmeldung mit Identitätsprüfung.",
+     "show": {
+      "lines": [
+       1,
+       3
+      ]
+     }
+    },
+    {
+     "say": "Legacy system ist ein Altsystem. Backward compatible heißt abwärtskompatibel. Deprecated heißt veraltet, wird bald entfernt.",
+     "show": {
+      "lines": [
+       4,
+       6
+      ]
+     }
+    },
+    {
+     "say": "Patch ist eine Korrektur, rollback das Zurücksetzen, downtime die Ausfallzeit, latency die Verzögerung.",
+     "show": {
+      "lines": [
+       7,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Englischen Text knacken",
+   "v": {
+    "code": "KanzleiPortal 3.2: Release Notes\nThis release fixes a critical\nvulnerability in the login module.\nAttackers could bypass authentication\nwith a manipulated session token.\nWe strongly recommend installing this\nupdate immediately. All client documents\nare now stored with AES-256 encryption.\nThe endpoint /api/v1/clients is\ndeprecated and will be removed in 4.0.\nVersion 3.2 is backward compatible.\nLegacy systems running Windows Server\n2012 are no longer supported. Please\nreport any issues via the support portal."
+   },
+   "beats": [
+    {
+     "say": "Strategie: Erst die Fragen lesen, dann im Text gezielt nach Schlüsselwörtern suchen. Antworte in der Sprache, die die Aufgabe verlangt.",
+     "show": {
+      "lines": [
+       1,
+       1
+      ]
+     }
+    },
+    {
+     "say": "Hier: Eine kritische Schwachstelle im Login. Angreifer konnten die Authentifizierung umgehen. Also sofort updaten.",
+     "show": {
+      "lines": [
+       2,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Der alte Endpunkt ist veraltet und fliegt mit 4.0 raus. Bestehende Schnittstellen laufen weiter, weil abwärtskompatibel.",
+     "show": {
+      "lines": [
+       9,
+       11
+      ]
+     }
+    },
+    {
+     "say": "Und Altsysteme mit Windows Server 2012 werden nicht mehr unterstützt.",
+     "show": {
+      "lines": [
+       12,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Bestehen und Gewichtung",
+   "v": {
+    "code": "AP1 20, Projekt 50, GA1 10,\nGA2 10, WiSo 10 Prozent\n\nBestanden, wenn\n1. Gesamt mind. 50 Punkte\n2. Teil 2 mind. 50 Punkte\n3. 3 von 4 Bereichen Teil 2 mind. 50\n4. kein Bereich in Teil 2 unter 30\n\nMündliche Ergänzung: auf Antrag,\nin GA1, GA2 oder WiSo, ca. 15 Minuten,\nnur wenn sie über Bestehen entscheidet\nneu = (alt x 2 + mündlich) / 3"
+   },
+   "beats": [
+    {
+     "say": "Gewichtung: AP1 20 Prozent, Projekt 50, GA1, GA2 und WiSo je 10 Prozent.",
+     "show": {
+      "lines": [
+       1,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Bestanden bei mindestens 50 Punkten gesamt und in Teil 2, mindestens 50 in drei von vier Bereichen und keinem Bereich unter 30.",
+     "show": {
+      "lines": [
+       4,
+       8
+      ]
+     }
+    },
+    {
+     "say": "Mündliche Ergänzungsprüfung auf Antrag in GA1, GA2 oder WiSo, etwa 15 Minuten, wenn sie über das Bestehen entscheiden kann.",
+     "show": {
+      "lines": [
+       10,
+       12
+      ]
+     }
+    },
+    {
+     "say": "Gewichtung 2 zu 1: alte Punkte doppelt plus mündliche, geteilt durch 3.",
+     "show": {
+      "lines": [
+       13,
+       13
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Schriftlich 40, mündlich 70. Neues Ergebnis?",
+    "o": [
+     "50",
+     "55",
+     "60"
+    ],
+    "a": 0,
+    "e": "40 mal 2 plus 70 ergibt 150, geteilt durch 3 sind 50."
+   }
+  }
+ ],
+ "betrieb_org": [
+  {
+   "h": "Blau und rund: Verbot?",
+   "v": {
+    "stat": "Blau + rund",
+    "sub": "Verbot oder Gebot? Klassiker in der WiSo-Prüfung"
+   },
+   "beats": [
+    {
+     "say": "Ein blaues rundes Schild. Verbot oder Gebot? Genau hier verlieren viele Prüflinge leichte Punkte.",
+     "show": {}
+    },
+    {
+     "say": "Blau und rund heißt Gebot, also eine Pflicht. Heute geht es um Organisation, Arbeitsschutz und Umwelt im Betrieb.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Aufbau und Ablauf",
+   "v": {
+    "list": [
+     "Stelle: kleinste organisatorische Einheit",
+     "Abteilung: mehrere Stellen unter einer Leitung",
+     "Organigramm: zeigt die Aufbauorganisation als Grafik",
+     "Ablauforganisation: wer macht was, wann, in welcher Folge"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Die kleinste Einheit im Betrieb ist die Stelle. Das ist der Aufgabenbereich einer Person, zum Beispiel Lohnbuchhaltung.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Mehrere Stellen unter einer gemeinsamen Leitung bilden eine Abteilung.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Das Organigramm zeigt diese Aufbauorganisation als Grafik. Wer ist wem unterstellt?",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Die Ablauforganisation regelt dagegen die Prozesse. Wer macht was, wann und in welcher Reihenfolge.",
+     "show": {
+      "item": 4
+     }
+    }
+   ]
+  },
+  {
+   "h": "Organisationsformen",
+   "v": {
+    "table": [
+     [
+      "Form",
+      "Prinzip",
+      "Plus",
+      "Minus"
+     ],
+     [
+      "Einlinie",
+      "ein Chef, Dienstweg",
+      "klare Zuständigkeit",
+      "lange Wege"
+     ],
+     [
+      "Mehrlinie",
+      "mehrere Fachchefs",
+      "kurze Wege",
+      "Kompetenzkonflikte"
+     ],
+     [
+      "Stablinie",
+      "Linie plus Stäbe",
+      "Leitung entlastet",
+      "Stab ohne Weisungsrecht"
+     ],
+     [
+      "Matrix",
+      "Abteilung kreuzt Projekt",
+      "flexibel",
+      "zwei Chefs, Konflikte"
+     ],
+     [
+      "Sparte",
+      "nach Produkt, Region, Kunde",
+      "marktnah",
+      "teuer, doppelte Stellen"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Einliniensystem: Jeder hat genau einen Vorgesetzten, alles läuft über den Dienstweg. Klare Zuständigkeit, aber lange Wege.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Mehrlinie: mehrere Fachvorgesetzte, kurze Wege, aber Kompetenzkonflikte. Stablinie: Stäbe beraten die Leitung, haben aber kein Weisungsrecht.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Matrix: Abteilung und Projekt kreuzen sich, du hast zwei Chefs. Flexibel, aber Konflikte und viel Abstimmung.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Sparten bilden Bereiche nach Produkt, Region oder Kunde, etwa Steuerberatung und Wirtschaftsprüfung mit eigener Ergebnisverantwortung.",
+     "show": {
+      "rows": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Der Datenschutzbeauftragte berät die Kanzleileitung, darf aber niemandem Anweisungen geben. Was ist er?",
+    "o": [
+     "Eine Stabsstelle",
+     "Eine Sparte",
+     "Ein zweiter Linienvorgesetzter"
+    ],
+    "a": 0,
+    "e": "Stabsstellen beraten und bereiten Entscheidungen vor, ohne Weisungsrecht."
+   }
+  },
+  {
+   "h": "Führen und Zusammenarbeiten",
+   "v": {
+    "list": [
+     "Autoritär: Chef entscheidet allein, schnell",
+     "Kooperativ: Team wird beteiligt, motiviert",
+     "Laissez-faire: kaum Führung, Team regelt selbst",
+     "Delegation: Aufgabe, Befugnis, Verantwortung abgeben",
+     "Digital: Netiquette, Homeoffice-Regeln"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Autoritär heißt: Der Chef entscheidet allein. Das geht schnell, motiviert aber kaum.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Kooperativ: Das Team wird beteiligt und entscheidet mit. Laissez-faire: kaum Führung, das Team regelt vieles selbst.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Delegation heißt, eine Aufgabe mit Befugnis und Verantwortung abzugeben. Die Führungsverantwortung bleibt beim Chef.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Im Chat gilt Netiquette. Und im Homeoffice gelten Datenschutz, Arbeitszeitgesetz und Arbeitsschutz genauso wie im Büro.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Wer sorgt für Sicherheit?",
+   "v": {
+    "list": [
+     "Arbeitgeber: Gefährdungsbeurteilung nach ArbSchG",
+     "Bildschirm: Pausen, Ergonomie, Augen-Vorsorge anbieten",
+     "Fachkraft für Arbeitssicherheit, Betriebsarzt: beraten",
+     "Sicherheitsbeauftragte: seit Mai 2026 generell ab 50",
+     "Mehr als 3 Tage arbeitsunfähig: Unfallanzeige an BG"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Verantwortlich ist der Arbeitgeber. Er muss nach dem Arbeitsschutzgesetz eine Gefährdungsbeurteilung machen.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Bildschirmarbeit wird regelmäßig durch Pausen oder andere Aufgaben unterbrochen. Augenvorsorge muss angeboten werden, mitmachen ist freiwillig.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Fachkraft für Arbeitssicherheit und Betriebsarzt beraten. Sicherheitsbeauftragte sind seit Mai 2026 generell erst ab 50 Beschäftigten Pflicht.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Ist jemand nach einem Arbeitsunfall mehr als 3 Tage arbeitsunfähig, geht binnen 3 Tagen eine Unfallanzeige an die Berufsgenossenschaft.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Sicherheitszeichen",
+   "v": {
+    "table": [
+     [
+      "Zeichen",
+      "Farbe",
+      "Form"
+     ],
+     [
+      "Verbot",
+      "rot",
+      "rund"
+     ],
+     [
+      "Gebot",
+      "blau",
+      "rund"
+     ],
+     [
+      "Warnung",
+      "gelb",
+      "Dreieck"
+     ],
+     [
+      "Rettung, Erste Hilfe",
+      "grün",
+      "Rechteck"
+     ],
+     [
+      "Brandschutz",
+      "rot",
+      "Rechteck"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Verbot ist rot und rund, zum Beispiel Rauchen verboten. Gebot ist blau und rund, zum Beispiel Gehörschutz tragen.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Warnung ist gelb und dreieckig, etwa Warnung vor elektrischer Spannung.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Rettungszeichen sind grün und eckig, wie Notausgang oder Erste Hilfe. Brandschutz ist rot und eckig, etwa der Feuerlöscher.",
+     "show": {
+      "rows": 5
+     }
+    },
+    {
+     "say": "Ab 2 anwesenden Beschäftigten braucht der Betrieb mindestens einen Ersthelfer. Die Ausbildung wird alle 2 Jahre aufgefrischt.",
+     "show": {
+      "rows": 4,
+      "hl": [
+       4,
+       1
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Ein Schild ist gelb und dreieckig. Was zeigt es an?",
+    "o": [
+     "Ein Gebot",
+     "Eine Warnung",
+     "Einen Rettungsweg"
+    ],
+    "a": 1,
+    "e": "Gelb und dreieckig ist immer ein Warnzeichen."
+   }
+  },
+  {
+   "h": "Umwelt und Green IT",
+   "v": {
+    "list": [
+     "Vermeiden, Wiederverwenden, Recyceln, Verwerten, Beseitigen",
+     "Durchgestrichene Tonne: zurückgeben, Daten vernichten",
+     "Blauer Engel, EU Ecolabel: umweltfreundliche Produkte",
+     "TCO Certified, Energy Star, EU-Energielabel"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Die Abfallhierarchie hat 5 Stufen. Ganz oben steht vermeiden, dann zur Wiederverwendung vorbereiten, dann recyceln.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Danach kommt sonstige Verwertung, zum Beispiel Verbrennen zur Energiegewinnung. Ganz unten steht beseitigen.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Durchgestrichene Mülltonne heißt: nicht in den Hausmüll, sondern zurückgeben. Datenträger vorher datenschutzgerecht löschen oder vernichten.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Beim Kauf auf Umweltzeichen achten: Blauer Engel, EU Ecolabel, TCO Certified für nachhaltige IT, Energy Star und Energielabel.",
+     "show": {
+      "item": 4
+     }
+    }
+   ]
+  }
+ ],
+ "wirtschaft": [
+  {
+   "h": "Nach 8 Monaten kaputt",
+   "v": {
+    "stat": "1 Jahr",
+    "sub": "Beweislastumkehr beim Verbrauchsgüterkauf"
+   },
+   "beats": [
+    {
+     "say": "Dein Notebook vom Händler geht nach 8 Monaten kaputt. Musst du beweisen, dass der Fehler schon beim Kauf da war?",
+     "show": {}
+    },
+    {
+     "say": "Nein. Im ersten Jahr muss der Händler das Gegenteil beweisen. Solche Fälle und die Wirtschaftsordnung kommen in WiSo sicher dran.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Wirtschaftsordnungen",
+   "v": {
+    "table": [
+     [
+      "Ordnung",
+      "Wer steuert?",
+      "Eigentum"
+     ],
+     [
+      "Freie Marktwirtschaft",
+      "nur der Markt",
+      "privat"
+     ],
+     [
+      "Zentralverwaltungswirtschaft",
+      "staatlicher Plan",
+      "Staat, Kollektiv"
+     ],
+     [
+      "Soziale Marktwirtschaft",
+      "Markt plus sozialer Ausgleich",
+      "privat"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "In der freien Marktwirtschaft steuert nur der Markt, der Staat hält sich raus. Problem: keine soziale Absicherung, Monopole drohen.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "In der Zentralverwaltungswirtschaft plant der Staat Produktion und Preise. Die Produktionsmittel gehören dem Staat.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Deutschland hat die soziale Marktwirtschaft: freier Markt, aber der Staat sichert Wettbewerb und sozialen Ausgleich.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Kreislauf: Haushalte geben Arbeit gegen Einkommen, Unternehmen Güter gegen Konsumausgaben. Erweitert kommen Staat, Banken und Ausland dazu.",
+     "show": {
+      "rows": 3
+     }
+    }
+   ]
+  },
+  {
+   "h": "Preis und Wettbewerb",
+   "v": {
+    "list": [
+     "Gleichgewichtspreis: Angebot gleich Nachfrage",
+     "Nachfrage steigt, Angebot gleich: Preis steigt",
+     "Angebot steigt, Nachfrage gleich: Preis sinkt",
+     "Kartellverbot: Preisabsprachen, Bundeskartellamt",
+     "Globalisierung: große Märkte, aber Abhängigkeit"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Am Gleichgewichtspreis ist die angebotene Menge gleich der nachgefragten. Der Markt wird geräumt.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Steigt die Nachfrage bei gleichem Angebot, steigt der Preis. Steigt das Angebot bei gleicher Nachfrage, sinkt der Preis.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Dafür braucht es Wettbewerb. Preisabsprachen zwischen Konkurrenten sind als Kartell verboten, dagegen geht das Bundeskartellamt vor.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Globalisierung heißt weltweite Verflechtung. Vorteil: größere Märkte, günstige Waren. Nachteil: Abhängigkeit, Lohndruck, mehr Transporte.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Magisches Viereck",
+   "v": {
+    "table": [
+     [
+      "Ziel",
+      "Messgröße"
+     ],
+     [
+      "Preisniveaustabilität",
+      "Inflationsrate"
+     ],
+     [
+      "Hoher Beschäftigungsstand",
+      "Arbeitslosenquote"
+     ],
+     [
+      "Außenwirtschaftl. Gleichgewicht",
+      "Exporte und Importe"
+     ],
+     [
+      "Stetiges Wachstum",
+      "reales BIP"
+     ],
+     [
+      "Sechseck zusätzlich",
+      "Verteilung, Umweltschutz"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Das Stabilitätsgesetz nennt 4 Ziele. Preisniveaustabilität, also wenig Inflation, und ein hoher Beschäftigungsstand.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Dazu außenwirtschaftliches Gleichgewicht und stetiges, angemessenes Wachstum. Magisch, weil man nie alle gleichzeitig erreicht.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Das Sechseck ergänzt gerechte Einkommensverteilung und Umweltschutz.",
+     "show": {
+      "rows": 5
+     }
+    },
+    {
+     "say": "Wachstum misst das BIP. Real heißt: Preissteigerung rausgerechnet. 5 Prozent nominal bei 3 Prozent Inflation sind rund 2 Prozent real.",
+     "show": {
+      "rows": 4,
+      "hl": [
+       4,
+       2
+      ]
+     }
+    }
+   ],
+   "check": {
+    "q": "Welches Ziel gehört nicht zum Viereck, sondern erst zum Sechseck?",
+    "o": [
+     "Hoher Beschäftigungsstand",
+     "Umweltschutz",
+     "Preisniveaustabilität"
+    ],
+    "a": 1,
+    "e": "Umweltschutz und gerechte Einkommensverteilung ergänzen das Viereck zum Sechseck."
+   }
+  },
+  {
+   "h": "Konjunktur und Geld",
+   "v": {
+    "list": [
+     "Aufschwung: Nachfrage und Produktion steigen",
+     "Boom: volle Auslastung, Preise steigen",
+     "Abschwung oder Rezession, Tiefstand Depression",
+     "Inflation: Preise steigen, Kaufkraft sinkt",
+     "EZB: Ziel 2 Prozent mittelfristig, Leitzins"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Die Konjunktur läuft in Wellen. Im Aufschwung steigen Nachfrage und Produktion, im Boom sind Betriebe voll ausgelastet, Preise steigen.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Dann folgt der Abschwung, auch Rezession genannt, bis zum Tiefstand, der Depression. Dort sind Arbeitslosigkeit hoch und Nachfrage schwach.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Inflation heißt: Das Preisniveau steigt, die Kaufkraft deines Geldes sinkt. Bei Deflation fallen die Preise dauerhaft.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Die EZB strebt mittelfristig 2 Prozent Inflation an. Ist sie zu hoch, erhöht sie den Leitzins. Kredite werden teurer, Nachfrage sinkt.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Kaufvertragsstörungen",
+   "v": {
+    "table": [
+     [
+      "Störung",
+      "Wann?",
+      "Folge"
+     ],
+     [
+      "Mangelhafte Lieferung",
+      "kaputt, falsch, zu wenig",
+      "erst Nacherfüllung"
+     ],
+     [
+      "Lieferungsverzug",
+      "fällig, Mahnung, Verschulden",
+      "Nachfrist, dann Rücktritt"
+     ],
+     [
+      "Annahmeverzug",
+      "Käufer nimmt nicht an",
+      "Einlagern, Selbsthilfeverkauf"
+     ],
+     [
+      "Zahlungsverzug",
+      "fällig, Mahnung oder 30 Tage",
+      "Verzugszinsen"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Mangelhafte Lieferung: kaputt, falsch oder zu wenig. Erst Nacherfüllung, danach Rücktritt, Minderung oder Schadensersatz.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Lieferungsverzug: Der Verkäufer liefert trotz Fälligkeit und Mahnung schuldhaft nicht. Nach einer angemessenen Nachfrist darfst du zurücktreten.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "Annahmeverzug: Der Käufer nimmt ordentlich gelieferte Ware nicht an. Der Verkäufer lagert auf dessen Kosten ein oder macht einen Selbsthilfeverkauf.",
+     "show": {
+      "rows": 3
+     }
+    },
+    {
+     "say": "Zahlungsverzug: Zinsen 5 Prozentpunkte über dem Basiszinssatz bei Verbrauchern, 9 Prozentpunkte, wenn kein Verbraucher beteiligt ist.",
+     "show": {
+      "rows": 4
+     }
+    }
+   ],
+   "check": {
+    "q": "Der Kunde verweigert grundlos die Annahme pünktlich gelieferter Ware. Welche Störung?",
+    "o": [
+     "Lieferungsverzug",
+     "Annahmeverzug",
+     "Mangelhafte Lieferung"
+    ],
+    "a": 1,
+    "e": "Annahmeverzug: Der Käufer nimmt ordnungsgemäß angebotene Ware nicht an."
+   }
+  },
+  {
+   "h": "Verbraucherschutz",
+   "v": {
+    "list": [
+     "Gewährleistung 2 Jahre, Beweislastumkehr im 1. Jahr",
+     "Verjährung regelmäßig 3 Jahre, Garantie freiwillig",
+     "Online beim Händler: 14 Tage Widerruf, AGB prüfen",
+     "Kredit: effektiven Jahreszins vergleichen, Schufa",
+     "Überschuldet: Haushaltsplan, Schuldnerberatung"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Gewährleistung: 2 Jahre. Seit 2022 vermutet das Gesetz beim Verbrauchsgüterkauf im ersten Jahr, dass der Mangel schon da war.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Regelmäßige Verjährung: 3 Jahre. Online beim Händler hast du 14 Tage Widerruf. AGB dürfen dich nicht unangemessen benachteiligen.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Bei Krediten zählt der effektive Jahreszins, er enthält auch Gebühren. Die Schufa speichert, ob du Kredite pünktlich zahlst.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Ein Haushaltsplan hilft vorzubeugen. Bei Überschuldung erst Schuldnerberatung und Einigung, dann Verbraucherinsolvenz, meist 3 Jahre.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  }
+ ],
+ "beruf_recht": [
+  {
+   "h": "Tratsch über Mandanten",
+   "v": {
+    "stat": "§ 203 StGB",
+    "sub": "Die Schweigepflicht gilt auch für dich als IT-Azubi"
+   },
+   "beats": [
+    {
+     "say": "Du erzählst beim Sport, welcher bekannte Unternehmer Mandant deiner Kanzlei ist. Harmloser Tratsch? Nein, das kann strafbar sein.",
+     "show": {}
+    },
+    {
+     "say": "Die Schweigepflicht der Steuerberater und Prüfer gilt auch für ihre Mitarbeitenden, also auch für dich. Recht im Beruf bringt sichere Punkte.",
+     "show": {}
+    }
+   ]
+  },
+  {
+   "h": "Der Arbeitsvertrag",
+   "v": {
+    "list": [
+     "Nachweisgesetz: wesentliche Bedingungen festhalten",
+     "Befristung: schriftlich, sonst unbefristet",
+     "Ohne Sachgrund: max. 2 Jahre, max. 3 Verlängerungen",
+     "Teilzeit: Anspruch nach 6 Monaten, mehr als 15 AN",
+     "Zeugnis: einfach oder qualifiziert, wohlwollend"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Das Nachweisgesetz verpflichtet den Arbeitgeber, die wesentlichen Bedingungen festzuhalten. Seit 2022 erweitert, seit 2025 oft auch in Textform.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Eine Befristung muss schriftlich vereinbart sein, sonst ist der Vertrag unbefristet. Ohne Sachgrund höchstens 2 Jahre und maximal 3 Verlängerungen.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Teilzeit kannst du verlangen, wenn du länger als 6 Monate da bist und der Betrieb mehr als 15 Arbeitnehmer hat.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Zum Schluss gibt es ein Zeugnis. Einfach mit Art und Dauer, qualifiziert auch mit Leistung und Verhalten. Wahr und wohlwollend.",
+     "show": {
+      "item": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "6 Monate befristet, dann dreimal je 6 Monate verlängert. Geht noch eine sachgrundlose Verlängerung?",
+    "o": [
+     "Ja",
+     "Nein"
+    ],
+    "a": 1,
+    "e": "24 Monate und 3 Verlängerungen sind ausgeschöpft."
+   }
+  },
+  {
+   "h": "Der Weg durch die Gerichte",
+   "v": {
+    "table": [
+     [
+      "Stufe",
+      "Arbeitsrecht",
+      "Sozialrecht"
+     ],
+     [
+      "Start",
+      "Klage, erst Güteverhandlung",
+      "erst Widerspruch"
+     ],
+     [
+      "1. Instanz",
+      "Arbeitsgericht",
+      "Sozialgericht"
+     ],
+     [
+      "2. Instanz",
+      "Landesarbeitsgericht",
+      "Landessozialgericht"
+     ],
+     [
+      "3. Instanz",
+      "Bundesarbeitsgericht, Erfurt",
+      "Bundessozialgericht, Kassel"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Streit mit dem Arbeitgeber geht vor das Arbeitsgericht. Zuerst kommt die Güteverhandlung, dort soll man sich einigen, oft per Vergleich.",
+     "show": {
+      "rows": 2
+     }
+    },
+    {
+     "say": "In der ersten Instanz gibt es keinen Anwaltszwang, und jede Seite zahlt ihren Anwalt selbst. Kündigungsschutzklage: innerhalb von 3 Wochen.",
+     "show": {
+      "rows": 2,
+      "hl": [
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "say": "Danach geht es zum Landesarbeitsgericht und zuletzt zum Bundesarbeitsgericht in Erfurt.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Bei Rente, Krankenkasse oder Arbeitsagentur legst du erst Widerspruch bei der Behörde ein. Danach klagst du beim Sozialgericht.",
+     "show": {
+      "rows": 4,
+      "hl": [
+       1,
+       3
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "AGG und Vielfalt",
+   "v": {
+    "list": [
+     "Rasse oder ethnische Herkunft, Geschlecht, Religion",
+     "Behinderung, Alter, sexuelle Identität",
+     "Beschwerderecht bei der zuständigen Stelle",
+     "Ansprüche binnen 2 Monaten schriftlich",
+     "Diversity: Vielfalt im Team aktiv fördern"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Das AGG schützt vor Benachteiligung wegen 6 Merkmalen. Rasse oder ethnische Herkunft, Geschlecht sowie Religion oder Weltanschauung.",
+     "show": {
+      "item": 1
+     }
+    },
+    {
+     "say": "Dazu Behinderung, Alter und sexuelle Identität. Raucher oder Nichtraucher gehört zum Beispiel nicht dazu.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Wer benachteiligt wird, kann sich im Betrieb beschweren. Ansprüche musst du innerhalb von 2 Monaten schriftlich geltend machen.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Eine Reform mit 4 Monaten Frist wird beraten, ist aber noch nicht beschlossen. Diversity heißt: Vielfalt im Team aktiv fördern.",
+     "show": {
+      "item": 5
+     }
+    }
+   ],
+   "check": {
+    "q": "Ein Bewerber wird abgelehnt, weil er 58 ist. Welches AGG-Merkmal ist betroffen?",
+    "o": [
+     "Alter",
+     "Weltanschauung",
+     "Keins, Alter ist nicht geschützt"
+    ],
+    "a": 0,
+    "e": "Alter ist eines der 6 Merkmale des AGG."
+   }
+  },
+  {
+   "h": "Compliance und Schweigepflicht",
+   "v": {
+    "list": [
+     "Compliance: Gesetze und interne Regeln einhalten",
+     "Verhaltenskodex: Geschenke, Interessenkonflikte",
+     "Korruption: Bestechung, Bestechlichkeit strafbar",
+     "Hinweisgeberschutz: interne Meldestelle ab 50",
+     "Kanzlei: Schweigepflicht nach § 203 StGB"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Compliance heißt: Gesetze und interne Regeln einhalten. Ein Verhaltenskodex regelt etwa, welche Geschenke du annehmen darfst.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Korruption, also Bestechung und Bestechlichkeit, ist strafbar, auch im Geschäftsverkehr zwischen Firmen.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Wer Verstöße meldet, ist durch das Hinweisgeberschutzgesetz geschützt. Ab 50 Beschäftigten braucht es eine interne Meldestelle.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "In der Kanzlei gilt die Schweigepflicht aus Paragraf 203 Strafgesetzbuch. Sie gilt auch für Azubis und IT, die an Mandantendaten mitwirken.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  },
+  {
+   "h": "Weiterbildung",
+   "v": {
+    "table": [
+     [
+      "Stufe",
+      "Was",
+      "DQR"
+     ],
+     [
+      "Ausbildung FIAE",
+      "dein Abschluss",
+      "4"
+     ],
+     [
+      "Geprüfter Berufsspezialist",
+      "1. Fortbildungsstufe",
+      "5"
+     ],
+     [
+      "Bachelor Professional",
+      "2. Stufe, wie Bachelor",
+      "6"
+     ],
+     [
+      "Master Professional",
+      "3. Stufe, wie Master",
+      "7"
+     ]
+    ]
+   },
+   "beats": [
+    {
+     "say": "Deine Ausbildung liegt im Deutschen Qualifikationsrahmen auf Niveau 4. Wer sein Wissen nur aktuell hält, macht eine Anpassungsfortbildung.",
+     "show": {
+      "rows": 1
+     }
+    },
+    {
+     "say": "Aufstiegsfortbildung: Berufsspezialist auf Niveau 5, Bachelor Professional auf 6, Master Professional auf 7. Umschulung heißt neuer Beruf.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "Aufstiegs-BAföG: Lehrgangskosten zur Hälfte als Zuschuss. Bei bestandener Prüfung wird die Hälfte des Restdarlehens erlassen.",
+     "show": {
+      "rows": 4
+     }
+    },
+    {
+     "say": "In Hessen gibt es 5 Arbeitstage Bildungsurlaub pro Jahr, erstmals nach 6 Monaten. Azubis nur für politische Bildung oder Ehrenamt.",
+     "show": {
+      "rows": 1,
+      "hl": [
+       1,
+       1
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "h": "Arbeiten in Europa",
+   "v": {
+    "list": [
+     "Freizügigkeit: EU-weit ohne Arbeitserlaubnis",
+     "Erasmus+: Auslandsaufenthalte, auch in der Ausbildung",
+     "Europass: Lebenslauf, Europass Mobilität",
+     "Zeugniserläuterung, Diploma Supplement",
+     "EQR: europäischer Rahmen, DQR deutsche Version"
+    ]
+   },
+   "beats": [
+    {
+     "say": "Als EU-Bürger darfst du in jedem EU-Land ohne Arbeitserlaubnis arbeiten. Erasmus plus fördert Auslandsaufenthalte, auch in der Ausbildung.",
+     "show": {
+      "item": 2
+     }
+    },
+    {
+     "say": "Der Europass hilft beim Bewerben: Lebenslauf und Europass Mobilität, der deine Auslandsaufenthalte bescheinigt.",
+     "show": {
+      "item": 3
+     }
+    },
+    {
+     "say": "Zeugniserläuterungen erklären Berufsabschlüsse, das Diploma Supplement Hochschulabschlüsse. Der frühere Sprachenpass steckt heute im Europass-Profil.",
+     "show": {
+      "item": 4
+     }
+    },
+    {
+     "say": "Der Europäische Qualifikationsrahmen EQR macht Abschlüsse vergleichbar. Der DQR ist die deutsche Umsetzung mit 8 Niveaus.",
+     "show": {
+      "item": 5
+     }
+    }
+   ]
+  }
  ]
 }
