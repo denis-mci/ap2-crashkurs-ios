@@ -92,7 +92,7 @@ struct ClipStep: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
 
-            if let scenes = Clips.all[lesson.id], !scenes.isEmpty {
+            if let scenes = Clips.all[lesson.id], scenes.contains(where: { !$0.beats.isEmpty }) {
                 ClipPlayerView(scenes: scenes) {
                     withAnimation { finished = true }
                     if !store.progress(lesson.id).clip {
@@ -172,9 +172,13 @@ struct ClipPlayerView: View {
     @State private var haptic = 0
 
     private var flat: [FlatBeat] {
-        scenes.enumerated().flatMap { si, s in
-            s.beats.indices.map { FlatBeat(scene: si, beat: $0, last: $0 == s.beats.count - 1) }
+        var out: [FlatBeat] = []
+        for (si, s) in scenes.enumerated() {
+            for b in s.beats.indices {
+                out.append(FlatBeat(scene: si, beat: b, last: b == s.beats.count - 1))
+            }
         }
+        return out
     }
     private var cur: FlatBeat { flat[min(pos, flat.count - 1)] }
     private var scene: Scene2 { scenes[cur.scene] }
@@ -196,20 +200,7 @@ struct ClipPlayerView: View {
     // Bühne
     private var stage: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 4) {
-                ForEach(scenes.indices, id: \.self) { i in
-                    GeometryReader { g in
-                        ZStack(alignment: .leading) {
-                            Capsule().fill(.white.opacity(0.18))
-                            Capsule().fill(mk).frame(width: g.size.width * segValue(i))
-                        }
-                    }
-                    .frame(height: 4)
-                }
-            }
-            .padding([.horizontal, .top], 12)
-            .animation(.easeOut(duration: 0.4), value: pos)
-            .accessibilityHidden(true)
+            progressBar
 
             HStack(alignment: .firstTextBaseline) {
                 Text(scene.h).font(.headline.weight(.heavy))
@@ -220,7 +211,7 @@ struct ClipPlayerView: View {
 
             StageVisual(v: scene.v, show: beat.show ?? Show())
                 .id(cur.scene)
-                .transition(reduceMotion ? .opacity : .asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
+                .transition(sceneTransition)
                 .padding(.horizontal, 14).padding(.vertical, 12)
                 .frame(maxWidth: .infinity, minHeight: 250, alignment: .center)
                 .contentShape(Rectangle())
@@ -262,6 +253,41 @@ struct ClipPlayerView: View {
         .accessibilityAdjustableAction { d in if d == .increment { jumpBeat(1) } else { jumpBeat(-1) } }
     }
 
+    private var sceneTransition: AnyTransition {
+        if reduceMotion { return AnyTransition.opacity }
+        let insertion = AnyTransition.move(edge: .trailing).combined(with: AnyTransition.opacity)
+        return AnyTransition.asymmetric(insertion: insertion, removal: AnyTransition.opacity)
+    }
+
+    private func feedbackText(_ p: Int, _ ch: Check) -> Text {
+        let ok = p == ch.a
+        let head: String = ok ? "Genau. " : "Nicht ganz. "
+        let color: Color = ok ? okGreen : swapRed
+        return Text(head).bold().foregroundColor(color) + Text(ch.e)
+    }
+
+    private var rateLabel: String {
+        if store.state.rate == 1 { return "1×" }
+        return store.state.rate == 1.25 ? "1,25×" : "1,5×"
+    }
+
+    private var progressBar: some View {
+        HStack(spacing: 4) {
+            ForEach(scenes.indices, id: \.self) { i in
+                GeometryReader { g in
+                    ZStack(alignment: .leading) {
+                        Capsule().fill(Color.white.opacity(0.18))
+                        Capsule().fill(mk).frame(width: g.size.width * CGFloat(segValue(i)))
+                    }
+                }
+                .frame(height: 4)
+            }
+        }
+        .padding([.horizontal, .top], 12)
+        .animation(.easeOut(duration: 0.4), value: pos)
+        .accessibilityHidden(true)
+    }
+
     private func checkOverlay(_ ch: Check) -> some View {
         ZStack {
             stageBG.opacity(0.96)
@@ -290,7 +316,7 @@ struct ClipPlayerView: View {
                     .disabled(picked != nil)
                 }
                 if let p = picked {
-                    (Text(p == ch.a ? "Genau. " : "Nicht ganz. ").bold().foregroundColor(p == ch.a ? okGreen : swapRed) + Text(ch.e))
+                    feedbackText(p, ch)
                         .font(.subheadline)
                     Button {
                         answered.insert(cur.scene); picked = nil; checkOpen = false
@@ -350,7 +376,7 @@ struct ClipPlayerView: View {
                 store.state.rate = rates[(i + 1) % rates.count]; store.save()
                 if playing { playBeat() }
             } label: {
-                Text(store.state.rate == 1 ? "1×" : (store.state.rate == 1.25 ? "1,25×" : "1,5×"))
+                Text(rateLabel)
                     .font(.subheadline.weight(.bold)).monospacedDigit().frame(width: 52, height: 44)
             }
             .accessibilityLabel("Tempo ändern")
@@ -361,7 +387,7 @@ struct ClipPlayerView: View {
     private func segValue(_ i: Int) -> Double {
         if i < cur.scene { return 1 }
         if i > cur.scene { return 0 }
-        let n = Double(scenes[i].beats.count)
+        let n = Double(max(1, scenes[i].beats.count))
         return min(1, (Double(cur.beat) + (ended ? 1 : 0)) / n)
     }
 
@@ -453,20 +479,32 @@ struct StageVisual: View {
     let v: Visual2
     let show: Show
 
+    private var step: Step { show.step ?? Step.n(0) }
+    private var isStatic: Bool {
+        (v.code != nil && v.anim == nil) || v.list != nil || v.table != nil || v.stat != nil
+    }
+
     var body: some View {
         Group {
-            if let code = v.code, v.anim == nil { CodeBlock(code: code, range: show.lines) }
-            else if let list = v.list { ListBlock(items: list, upTo: show.item) }
-            else if let t = v.table { StageTable(rows: t, upTo: show.rows, hl: show.hl) }
-            else if let s = v.stat { StatBlock(stat: s, sub: v.sub) }
-            else if v.anim == "bubble", let arr = v.arr { BubbleAnim(arr: arr, step: show.step ?? .n(0)) }
-            else if v.anim == "binsearch", let arr = v.arr, let t = v.target { BinAnim(arr: arr, target: t, step: show.step ?? .n(0)) }
-            else if v.anim == "join", let l = v.left, let r = v.right, let on = v.on { JoinAnim(left: l, right: r, on: on, isLeft: v.type == "left", step: (show.step ?? .n(0)).index(3)) }
-            else if v.anim == "trace", let code = v.code, let vars = v.vars, let rows = v.rows { TraceAnim(code: code, vars: vars, rows: rows, upTo: show.rows ?? 0) }
-            else if v.anim == "stack", let calls = v.calls, let rets = v.returns { StackAnim(calls: calls, returns: rets, step: show.step ?? .n(0)) }
-            else if v.anim == "group", let cols = v.cols, let rows = v.rows, let fn = v.fn { GroupAnim(cols: cols, rows: rows, fn: fn, step: (show.step ?? .n(0)).index(3)) }
+            if isStatic { staticVisual } else { animVisual }
         }
         .animation(.easeOut(duration: 0.35), value: show)
+    }
+
+    @ViewBuilder private var staticVisual: some View {
+        if let code = v.code, v.anim == nil { CodeBlock(code: code, range: show.lines) }
+        else if let list = v.list { ListBlock(items: list, upTo: show.item) }
+        else if let t = v.table { StageTable(rows: t, upTo: show.rows, hl: show.hl) }
+        else if let s = v.stat { StatBlock(stat: s, sub: v.sub) }
+    }
+
+    @ViewBuilder private var animVisual: some View {
+        if v.anim == "bubble", let arr = v.arr { BubbleAnim(arr: arr, step: step) }
+        else if v.anim == "binsearch", let arr = v.arr, let t = v.target { BinAnim(arr: arr, target: t, step: step) }
+        else if v.anim == "join", let l = v.left, let r = v.right, let on = v.on, on.count >= 2 { JoinAnim(left: l, right: r, on: on, isLeft: v.type == "left", step: step.index(3)) }
+        else if v.anim == "trace", let code = v.code, let vars = v.vars, let rows = v.rows { TraceAnim(code: code, vars: vars, rows: rows, upTo: show.rows ?? 0) }
+        else if v.anim == "stack", let calls = v.calls, let rets = v.returns { StackAnim(calls: calls, returns: rets, step: step) }
+        else if v.anim == "group", let cols = v.cols, let rows = v.rows, let fn = v.fn, cols.count >= 2 { GroupAnim(cols: cols, rows: rows, fn: fn, step: step.index(3)) }
     }
 }
 
@@ -490,7 +528,7 @@ struct CodeBlock: View {
                     .font(.system(.caption, design: .monospaced))
                     .padding(.vertical, 1).padding(.horizontal, 10)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(hl ? mk.opacity(0.16) : .clear)
+                    .background(hl ? mk.opacity(0.16) : Color.clear)
                     .overlay(alignment: .leading) { if hl { Rectangle().fill(mk).frame(width: 3) } }
                     .opacity(!visible ? 0 : (hl || full ? 1 : 0.55))
                     .offset(x: visible ? 0 : -8)
@@ -515,13 +553,13 @@ struct ListBlock: View {
                 HStack(alignment: .top, spacing: 12) {
                     Text("\(k)").font(.caption.weight(.heavy))
                         .frame(width: 24, height: 24)
-                        .background(Circle().fill(hl ? mk : .white.opacity(0.12)))
+                        .background(Circle().fill(hl ? mk : Color.white.opacity(0.12)))
                         .foregroundStyle(hl ? Color.black : stageFG)
                     Text(items[i]).font(.subheadline.weight(.semibold))
                     Spacer(minLength: 0)
                 }
                 .padding(10)
-                .background(hl ? mk.opacity(0.16) : .white.opacity(0.06), in: RoundedRectangle(cornerRadius: 12))
+                .background(hl ? mk.opacity(0.16) : Color.white.opacity(0.06), in: RoundedRectangle(cornerRadius: 12))
                 .opacity(k > n ? 0 : (hl || upTo == nil ? 1 : 0.6))
                 .offset(y: k > n ? 8 : 0)
             }
@@ -551,23 +589,36 @@ struct StageTable: View {
                     let k = ri + 1
                     GridRow {
                         ForEach(r.indices, id: \.self) { c in
-                            let cell = hl != nil && hl![0] == k && hl![1] == c + 1
+                            let cell = isHL(row: k, col: c + 1)
                             Text(r[c]).font(small ? .caption2 : .caption)
                                 .padding(.horizontal, cell ? 4 : 0)
-                                .background(cell ? mk : .clear, in: RoundedRectangle(cornerRadius: 4))
+                                .background(cell ? mk : Color.clear, in: RoundedRectangle(cornerRadius: 4))
                                 .foregroundStyle(cell ? Color.black : stageFG)
                                 .frame(minWidth: 30, maxWidth: 170, alignment: .leading)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                     .padding(.vertical, 2)
-                    .background((rowTint?(ri)) ?? ((upTo != nil && k == n) ? mk.opacity(0.16) : .clear))
-                    .opacity(k > n ? 0 : ((upTo != nil && k != n) ? 0.6 : 1))
+                    .background(rowBG(ri: ri, k: k, n: n))
+                    .opacity(rowOpacity(k: k, n: n))
                 }
             }
             .padding(10)
         }
         .background(.white.opacity(0.05), in: RoundedRectangle(cornerRadius: 10))
+    }
+
+    private func isHL(row: Int, col: Int) -> Bool {
+        guard let hl, hl.count >= 2 else { return false }
+        return hl[0] == row && hl[1] == col
+    }
+    private func rowBG(ri: Int, k: Int, n: Int) -> Color {
+        if let t = rowTint?(ri) { return t }
+        return (upTo != nil && k == n) ? mk.opacity(0.16) : Color.clear
+    }
+    private func rowOpacity(k: Int, n: Int) -> Double {
+        if k > n { return 0 }
+        return (upTo != nil && k != n) ? 0.6 : 1
     }
 }
 
@@ -605,7 +656,7 @@ struct BubbleAnim: View {
                         let color: Color = s.sorted.contains(id) ? okGreen : (isCmp ? (s.swapped ? swapRed : mk) : barBlue)
                         VStack {
                             Text("\(arr[id])").font(.title3.weight(.heavy))
-                                .foregroundStyle(color == barBlue ? stageFG : .black)
+                                .foregroundStyle(color == barBlue ? stageFG : Color.black)
                                 .padding(.top, 6)
                             Spacer(minLength: 0)
                         }
@@ -618,9 +669,15 @@ struct BubbleAnim: View {
                 .frame(width: g.size.width, height: g.size.height, alignment: .bottomLeading)
             }
             .frame(height: 190)
-            Text(s.end ? "Fertig sortiert" : (s.cmp == nil ? "Ausgangslage" : (s.swapped ? "Links größer: tauschen" : "Reihenfolge passt: nicht tauschen")))
+            Text(caption(s))
                 .font(.subheadline.weight(.bold)).opacity(0.85)
         }
+    }
+
+    private func caption(_ s: BubbleState) -> String {
+        if s.end { return "Fertig sortiert" }
+        if s.cmp == nil { return "Ausgangslage" }
+        return s.swapped ? "Links größer: tauschen" : "Reihenfolge passt: nicht tauschen"
     }
 }
 
@@ -642,7 +699,7 @@ struct BinAnim: View {
                         Text("\(i)").font(.caption2).opacity(0.6)
                     }
                     .frame(maxWidth: .infinity).padding(.vertical, 8)
-                    .background(mid ? (s.found ? okGreen : mk) : .white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+                    .background(mid ? (s.found ? okGreen : mk) : Color.white.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
                     .foregroundStyle(mid ? Color.black : stageFG)
                     .opacity(out ? 0.18 : 1)
                     .scaleEffect(out ? 0.92 : (mid && s.found ? 1.08 : 1))
@@ -650,12 +707,17 @@ struct BinAnim: View {
             }
             Group {
                 if s.found, let m = s.mid { Text("Gefunden an Index \(m)") }
-                else if let m = s.mid { Text("Mitte: \(arr[m]), gesucht ist \(arr[m] < target ? "größer, rechts weiter" : "kleiner, links weiter")") }
+                else if let m = s.mid { Text(midText(m)) }
                 else { Text("Ganze Liste, sortiert") }
             }
             .font(.subheadline.weight(.bold)).opacity(0.85)
             .frame(maxWidth: .infinity)
         }
+    }
+
+    private func midText(_ m: Int) -> String {
+        let dir = arr[m] < target ? "größer, rechts weiter" : "kleiner, links weiter"
+        return "Mitte: \(arr[m]), gesucht ist \(dir)"
     }
 }
 
@@ -666,35 +728,75 @@ struct JoinAnim: View {
     let isLeft: Bool
     let step: Int
 
+    private var li: Int { on.first ?? 0 }
+    private var ri: Int { on.count > 1 ? on[1] : 0 }
+
+    /// Zellwert oder "" falls die Zeile zu kurz ist
+    private func cell(_ row: [Flex], _ i: Int) -> String { row.indices.contains(i) ? row[i].s : "" }
+
+    private var keys: [String] { uniqueOrdered(left.rows.map { cell($0, li) }) }
+    private func tint(_ key: String) -> Color? { keys.firstIndex(of: key).map { groupColors[$0 % 4] } }
+
+    private var leftRows: [[String]] { [left.cols] + left.rows.map { $0.map(\.s) } }
+    private var rightRows: [[String]] { [right.cols] + right.rows.map { $0.map(\.s) } }
+
+    private func leftTint(_ i: Int) -> Color? {
+        guard step >= 1 else { return nil }
+        let k = cell(left.rows[i], li)
+        let hasMatch = right.rows.contains { cell($0, ri) == k }
+        return hasMatch ? tint(k) : Optional(Color.clear)
+    }
+    private func rightTint(_ i: Int) -> Color? {
+        guard step >= 1 else { return nil }
+        return tint(cell(right.rows[i], ri))
+    }
+
+    private var resultCols: [String] {
+        var c = left.cols
+        for (o, e) in right.cols.enumerated() where o != ri { c.append(e) }
+        return c
+    }
+    private var result: [(String, [String])] {
+        var out: [(String, [String])] = []
+        for lr in left.rows {
+            let key = cell(lr, li)
+            let base = lr.map(\.s)
+            let ms = right.rows.filter { cell($0, ri) == key }
+            if ms.isEmpty {
+                if isLeft { out.append((key, base + Array(repeating: "NULL", count: max(0, right.cols.count - 1)))) }
+                continue
+            }
+            for m in ms {
+                var row = base
+                for (o, e) in m.enumerated() where o != ri { row.append(e.s) }
+                out.append((key, row))
+            }
+        }
+        return out
+    }
+
     var body: some View {
-        let li = on[0], ri = on[1]
-        let keys = Array(NSOrderedSet(array: left.rows.map { $0[li].s })) as? [String] ?? []
-        let tint: (String) -> Color? = { key in keys.firstIndex(of: key).map { groupColors[$0 % 4] } }
-        let leftRows = [left.cols] + left.rows.map { $0.map(\.s) }
-        let rightRows = [right.cols] + right.rows.map { $0.map(\.s) }
         VStack(alignment: .leading, spacing: 8) {
             label(left.name)
-            StageTable(rows: leftRows, rowTint: { i in
-                guard step >= 1 else { return nil }
-                let k = left.rows[i][li].s
-                return right.rows.contains { $0[ri].s == k } ? tint(k) : Optional(Color.clear)
-            }, small: true)
-            .opacity(1)
+            StageTable(rows: leftRows, rowTint: { i in leftTint(i) }, small: true)
+                .opacity(1)
             label(right.name)
-            StageTable(rows: rightRows, rowTint: { i in step >= 1 ? tint(right.rows[i][ri].s) : nil }, small: true)
+            StageTable(rows: rightRows, rowTint: { i in rightTint(i) }, small: true)
             if step >= 2 {
                 label(isLeft ? "Ergebnis LEFT JOIN" : "Ergebnis INNER JOIN")
-                let cols = left.cols + right.cols.enumerated().filter { $0.offset != ri }.map(\.element)
-                let res: [(String, [String])] = left.rows.flatMap { lr -> [(String, [String])] in
-                    let key = lr[li].s
-                    let ms = right.rows.filter { $0[ri].s == key }
-                    if ms.isEmpty { return isLeft ? [(key, lr.map(\.s) + Array(repeating: "NULL", count: right.cols.count - 1))] : [] }
-                    return ms.map { (key, lr.map(\.s) + $0.enumerated().filter { $0.offset != ri }.map(\.element.s)) }
-                }
-                StageTable(rows: [cols] + res.map(\.1), rowTint: { i in tint(res[i].0).map { res[i].1.contains("NULL") ? Color.white.opacity(0.04) : $0 } }, small: true)
+                resultTable(result)
                     .transition(.move(edge: .bottom).combined(with: .opacity))
             }
         }
+    }
+
+    private func resultTable(_ res: [(String, [String])]) -> StageTable {
+        let rows: [[String]] = [resultCols] + res.map { $0.1 }
+        let tintFor: (Int) -> Color? = { i in
+            guard let t = tint(res[i].0) else { return nil }
+            return res[i].1.contains("NULL") ? Color.white.opacity(0.04) : t
+        }
+        return StageTable(rows: rows, rowTint: tintFor, small: true)
     }
     private func label(_ s: String) -> some View {
         Text(s.uppercased()).font(.caption2.weight(.heavy)).tracking(1).opacity(0.6)
@@ -709,8 +811,16 @@ struct TraceAnim: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             CodeBlock(code: code, range: nil)
-            StageTable(rows: [["#"] + vars] + rows.enumerated().map { [String($0.offset)] + $0.element.map(\.s) }, upTo: max(upTo, 0) == 0 ? 0 : upTo)
+            StageTable(rows: tableRows, upTo: max(upTo, 0))
         }
+    }
+
+    private var tableRows: [[String]] {
+        var out: [[String]] = [["#"] + vars]
+        for (i, r) in rows.enumerated() {
+            out.append([String(i)] + r.map(\.s))
+        }
+        return out
     }
 }
 
@@ -720,7 +830,7 @@ struct StackAnim: View {
     let step: Step
     var body: some View {
         let n = calls.count
-        let k: Int = { if case .n(let i) = step { return i } else { return 2 * n } }()
+        let k = stepCount(n)
         let pushed = min(k, n)
         let resolved = max(0, k - n)
         VStack(alignment: .leading, spacing: 6) {
@@ -731,17 +841,32 @@ struct StackAnim: View {
                 HStack {
                     Text(calls[i])
                     Spacer()
-                    if isRes { Text("= \(returns[i])").fontWeight(.heavy).foregroundStyle(okGreen) }
+                    if isRes { Text("= \(ret(i))").fontWeight(.heavy).foregroundStyle(okGreen) }
                 }
                 .font(.system(.subheadline, design: .monospaced))
                 .padding(10)
-                .background(isRes ? okGreen.opacity(0.2) : (top ? mk.opacity(0.16) : Color(red: 0.49, green: 0.58, blue: 1).opacity(0.18)), in: RoundedRectangle(cornerRadius: 10))
+                .background(frameBG(isRes: isRes, top: top), in: RoundedRectangle(cornerRadius: 10))
                 .overlay(alignment: .leading) { if top { Rectangle().fill(mk).frame(width: 3) } }
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
-            Text(k == 0 ? "" : (k <= n ? "Aufruf \(pushed): Problem wird kleiner" : (resolved < n ? "Rückgabe wandert nach unten" : "Ergebnis: \(returns[0])")))
+            Text(caption(k: k, n: n, pushed: pushed, resolved: resolved))
                 .font(.subheadline.weight(.bold)).opacity(0.85).frame(maxWidth: .infinity)
         }
+    }
+
+    private func stepCount(_ n: Int) -> Int {
+        if case .n(let i) = step { return max(0, i) }
+        return 2 * n
+    }
+    private func ret(_ i: Int) -> String { returns.indices.contains(i) ? returns[i] : "" }
+    private func frameBG(isRes: Bool, top: Bool) -> Color {
+        if isRes { return okGreen.opacity(0.2) }
+        return top ? mk.opacity(0.16) : Color(red: 0.49, green: 0.58, blue: 1).opacity(0.18)
+    }
+    private func caption(k: Int, n: Int, pushed: Int, resolved: Int) -> String {
+        if k == 0 { return "" }
+        if k <= n { return "Aufruf \(pushed): Problem wird kleiner" }
+        return resolved < n ? "Rückgabe wandert nach unten" : "Ergebnis: \(ret(0))"
     }
 }
 
@@ -751,7 +876,7 @@ struct GroupAnim: View {
     let fn: String
     let step: Int
     var body: some View {
-        let keys = Array(NSOrderedSet(array: rows.map { $0[0].s })) as? [String] ?? []
+        let keys = uniqueOrdered(rows.map { key($0) })
         Group {
             if step == 0 {
                 StageTable(rows: [cols] + rows.map { $0.map(\.s) })
@@ -760,8 +885,8 @@ struct GroupAnim: View {
                     ForEach(keys.indices, id: \.self) { gi in
                         HStack(spacing: 8) {
                             Text(keys[gi]).font(.subheadline.weight(.heavy)).frame(minWidth: 70, alignment: .leading)
-                            ForEach(Array(rows.filter { $0[0].s == keys[gi] }.enumerated()), id: \.offset) { _, r in
-                                Text(r[1].s).font(.system(.caption, design: .monospaced))
+                            ForEach(Array(members(keys[gi]).enumerated()), id: \.offset) { _, r in
+                                Text(value(r)).font(.system(.caption, design: .monospaced))
                                     .padding(.horizontal, 8).padding(.vertical, 3)
                                     .background(.white.opacity(0.12), in: RoundedRectangle(cornerRadius: 6))
                             }
@@ -772,20 +897,36 @@ struct GroupAnim: View {
                     }
                 }
             } else {
-                let res = keys.map { k -> [String] in
-                    let vals = rows.filter { $0[0].s == k }.map { $0[1].number }
-                    let v: Double
-                    switch fn {
-                    case "COUNT": v = Double(vals.count)
-                    case "AVG": v = vals.reduce(0, +) / Double(max(1, vals.count))
-                    case "MAX": v = vals.max() ?? 0
-                    case "MIN": v = vals.min() ?? 0
-                    default: v = vals.reduce(0, +)
-                    }
-                    return [k, v == v.rounded() ? String(Int(v)) : String(format: "%.2f", v)]
-                }
-                StageTable(rows: [[cols[0], "\(fn)(\(cols[1]))"]] + res, rowTint: { groupColors[$0 % 4] })
+                StageTable(rows: resultRows(keys), rowTint: { groupColors[$0 % 4] })
             }
         }
     }
+
+    private func key(_ r: [Flex]) -> String { r.first?.s ?? "" }
+    private func value(_ r: [Flex]) -> String { r.count > 1 ? r[1].s : "" }
+    private func members(_ k: String) -> [[Flex]] { rows.filter { key($0) == k } }
+
+    private func aggregate(_ k: String) -> String {
+        let vals: [Double] = members(k).map { $0.count > 1 ? $0[1].number : 0 }
+        let v: Double
+        switch fn {
+        case "COUNT": v = Double(vals.count)
+        case "AVG": v = vals.reduce(0, +) / Double(max(1, vals.count))
+        case "MAX": v = vals.max() ?? 0
+        case "MIN": v = vals.min() ?? 0
+        default: v = vals.reduce(0, +)
+        }
+        return v == v.rounded() ? String(Int(v)) : String(format: "%.2f", v)
+    }
+
+    private func resultRows(_ keys: [String]) -> [[String]] {
+        let head: [String] = [cols[0], "\(fn)(\(cols[1]))"]
+        return [head] + keys.map { [$0, aggregate($0)] }
+    }
+}
+
+/// Eindeutige Werte in Reihenfolge des ersten Auftretens
+func uniqueOrdered(_ xs: [String]) -> [String] {
+    var seen = Set<String>()
+    return xs.filter { seen.insert($0).inserted }
 }
