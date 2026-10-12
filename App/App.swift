@@ -67,7 +67,7 @@ struct Pips: View {
 struct RootView: View {
     @Environment(AppStore.self) private var store
     @Environment(\.scenePhase) private var phase
-    @State private var tab = 0
+    @State private var tab = UserDefaults.standard.integer(forKey: "shotTab")
 
     var body: some View {
         TabView(selection: $tab) {

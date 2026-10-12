@@ -3,10 +3,16 @@ import SwiftUI
 struct HomeView: View {
     @Environment(AppStore.self) private var store
     @Binding var tab: Int
+    @State private var path: [LessonRoute] = {
+        if let id = UserDefaults.standard.string(forKey: "shotLesson") {
+            return [LessonRoute(id: id, step: UserDefaults.standard.integer(forKey: "shotStep"))]
+        }
+        return []
+    }()
     private let goal = 120
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 Section {
                     CountdownHero()

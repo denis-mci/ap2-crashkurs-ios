@@ -57,6 +57,7 @@ final class AppStore {
         } else {
             state = AppState()
         }
+        if UserDefaults.standard.bool(forKey: "demo") { state = AppStore.demoState() }
         if state.planStart == nil { state.planStart = Dates.key(); save() }
     }
 
@@ -69,6 +70,19 @@ final class AppStore {
         }
         saveWork = work
         DispatchQueue.global(qos: .utility).asyncAfter(deadline: .now() + 0.4, execute: work)
+    }
+
+    /// Beispiel-Fortschritt, nur für automatische Screenshots (Startargument -demo YES)
+    static func demoState() -> AppState {
+        var s = AppState()
+        s.planStart = Dates.key(Date().addingTimeInterval(-4 * 86400))
+        s.xp = 340
+        for d in 0..<3 { s.days[Dates.key(Date().addingTimeInterval(Double(-d) * 86400))] = d == 0 ? 85 : 120 }
+        s.lessons["pseudo1"] = LessonProgress(clip: true, quizBest: 88, write: ["0": 86, "1": 100])
+        s.lessons["sql1"] = LessonProgress(clip: true, quizBest: 75, write: [:])
+        s.lessons["ausbildung"] = LessonProgress(clip: true, quizBest: 40, write: [:])
+        for k in ["sql1:3", "sql1:4", "ausbildung:1", "ausbildung:4"] { s.review[k] = ReviewItem(box: 1, due: Date().addingTimeInterval(-60)) }
+        return s
     }
 
     func flush() {

@@ -58,11 +58,60 @@ jobs:
           name: AP2Crashkurs-ipa
           path: AP2Crashkurs.ipa
 
+      - name: Simulator-Build
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project AP2Crashkurs.xcodeproj \
+            -scheme AP2Crashkurs \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath build-sim \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tail -5
+
+      - name: Screenshots
+        run: |
+          set -e
+          UDID=$(xcrun simctl list devices available | grep -E "iPhone 16 Pro \(" | head -1 | grep -oE "[0-9A-F-]{36}")
+          if [ -z "$UDID" ]; then UDID=$(xcrun simctl list devices available | grep -E "iPhone" | head -1 | grep -oE "[0-9A-F-]{36}"); fi
+          echo "Simulator: $UDID"
+          xcrun simctl boot "$UDID"
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time 9:41 --batteryState charged --batteryLevel 100 --cellularBars 4 --wifiBars 3
+          xcrun simctl install "$UDID" build-sim/Build/Products/Debug-iphonesimulator/AP2Crashkurs.app
+          BID=de.heydenis.ap2crashkurs
+          mkdir -p shots
+          shot () {
+            name=$1; shift
+            xcrun simctl terminate "$UDID" $BID 2>/dev/null || true
+            xcrun simctl launch "$UDID" $BID -demo YES "$@"
+            sleep 5
+            xcrun simctl io "$UDID" screenshot "shots/$name.png"
+          }
+          for mode in light dark; do
+            xcrun simctl ui "$UDID" appearance $mode
+            shot "$mode-1-heute"        -shotTab 0
+            shot "$mode-2-themen"       -shotTab 1
+            shot "$mode-3-wiederholen"  -shotTab 2
+            shot "$mode-4-pruefung"     -shotTab 3
+            shot "$mode-5-clip"         -shotTab 0 -shotLesson pseudo1 -shotStep 0
+            shot "$mode-6-quiz"         -shotTab 0 -shotLesson sql1 -shotStep 1
+            shot "$mode-7-schreiben"    -shotTab 0 -shotLesson pseudo1 -shotStep 2
+          done
+          cd shots && zip -q ../screenshots.zip *.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/*.png
+
       - name: Release "latest" aktualisieren
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete latest --yes --cleanup-tag || true
-          gh release create latest AP2Crashkurs.ipa \
+          gh release create latest AP2Crashkurs.ipa screenshots.zip \
             --title "AP2 Crashkurs, Build ${{ github.run_number }}" \
             --notes "Unsignierte IPA. Auf dem iPhone herunterladen und mit SideStore installieren."
