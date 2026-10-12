@@ -1,0 +1,4968 @@
+{
+ "order": [
+  "pseudo1",
+  "sql1",
+  "sql2",
+  "test",
+  "klasse",
+  "erm",
+  "ausbildung",
+  "arbeitsrecht",
+  "sozial",
+  "pseudo2",
+  "umlv",
+  "vorgehen",
+  "security",
+  "sql3",
+  "unternehmen",
+  "patterns",
+  "rest",
+  "quali"
+ ],
+ "lessons": [
+  {
+   "id": "pseudo1",
+   "area": "GA2",
+   "prio": 1,
+   "title": "Pseudocode: die 4 Grundmuster",
+   "mins": 25,
+   "why": "War in jeder AP2 seit 2021 dran und bringt die meisten Punkte überhaupt.",
+   "clip": [
+    {
+     "h": "Warum das hier zuerst?",
+     "say": "Pseudocode kam in jeder einzelnen AP2 seit 2021 dran. Kein Thema bringt mehr Punkte. Wenn du nur eine Sache lernst, dann diese.",
+     "v": {
+      "stat": "9 von 9",
+      "sub": "Prüfungen seit 2021 hatten Pseudocode. Kein anderes Thema bringt mehr Punkte."
+     }
+    },
+    {
+     "h": "Die Bausteine",
+     "say": "Du brauchst nur fünf Bausteine. Zuweisung, falls sonst, die Für-Schleife zum Zählen, die Solange-Schleife wenn du nicht weißt wie oft, und eine Funktion mit Rückgabe. Die Syntax ist frei. Keine Programmiersprache ist vorgeschrieben. Es zählt die Logik.",
+     "v": {
+      "code": "x = 5                     // Zuweisung\nfalls x > 3 dann          // Verzweigung\n  ausgabe(\"groß\")\nsonst\n  ausgabe(\"klein\")\nende falls\n\nfür i = 0 bis 9           // Zählschleife\n  ...\nende für\n\nsolange x > 0             // Bedingungsschleife\n  x = x - 1\nende solange"
+     }
+    },
+    {
+     "h": "Arrays: Index startet bei 0",
+     "say": "Arrays fangen bei Index null an. Ein Array mit vier Elementen hat die Indizes null bis drei. Der letzte Index ist also immer Länge minus eins. Das ist der häufigste Fehler in der Prüfung.",
+     "v": {
+      "code": "zahlen = [7, 3, 9, 4]\nzahlen[0]        → 7\nzahlen[3]        → 4\nlaenge(zahlen)   → 4\nletzter Index    → laenge(zahlen) - 1 = 3"
+     }
+    },
+    {
+     "h": "Muster 1: Summe und Durchschnitt",
+     "say": "Muster eins: Summe. Du setzt eine Variable auf null, gehst mit der Schleife durch alle Elemente und addierst. Für den Durchschnitt teilst du am Ende durch die Anzahl. Und ganz wichtig: Prüfe vorher, ob das Array leer ist. Sonst teilst du durch null. Dafür gibt es Punkte.",
+     "v": {
+      "code": "funktion durchschnitt(werte)\n  falls laenge(werte) == 0 dann\n    rückgabe 0\n  ende falls\n  summe = 0\n  für i = 0 bis laenge(werte) - 1\n    summe = summe + werte[i]\n  ende für\n  rückgabe summe / laenge(werte)\nende funktion"
+     }
+    },
+    {
+     "h": "Muster 2: Maximum finden",
+     "say": "Muster zwei: Maximum. Starte mit dem ersten Element, nicht mit null. Wenn alle Werte negativ sind, wäre null sonst falsch. Dann vergleichst du jedes weitere Element und merkst dir das größere. Minimum geht genauso, nur mit kleiner als.",
+     "v": {
+      "code": "funktion maximum(werte)\n  max = werte[0]          // NICHT 0!\n  für i = 1 bis laenge(werte) - 1\n    falls werte[i] > max dann\n      max = werte[i]\n    ende falls\n  ende für\n  rückgabe max\nende funktion"
+     }
+    },
+    {
+     "h": "Muster 3: Zählen und Filtern",
+     "say": "Muster drei: Filtern. Du legst eine leere Liste an, gehst alle Elemente durch, und wenn die Bedingung passt, fügst du das Element hinzu. Zählen ist das Gleiche, nur dass du statt hinzufügen einen Zähler plus eins rechnest.",
+     "v": {
+      "code": "funktion teureAuftraege(auftraege)\n  ergebnis = neue Liste\n  für jeden a in auftraege\n    falls a.honorar > 1000 dann\n      ergebnis.hinzufuegen(a)\n    ende falls\n  ende für\n  rückgabe ergebnis\nende funktion"
+     }
+    },
+    {
+     "h": "Muster 4: Suchen mit Abbruch",
+     "say": "Muster vier: Suchen. Mit einer Solange-Schleife läufst du durch, bis du das Element findest. Dann gibst du sofort den Index zurück. Findest du nichts, gibst du minus eins zurück. Vergiss nicht, i zu erhöhen, sonst hast du eine Endlosschleife.",
+     "v": {
+      "code": "funktion finde(liste, gesucht)\n  i = 0\n  solange i < laenge(liste)\n    falls liste[i] == gesucht dann\n      rückgabe i          // gefunden\n    ende falls\n    i = i + 1\n  ende solange\n  rückgabe -1             // nicht gefunden\nende funktion"
+     }
+    },
+    {
+     "h": "So holst du die Punkte",
+     "say": "So holst du die Punkte. Initialisiere deine Variablen. Achte auf die Grenzen der Schleife. Denk an Sonderfälle wie die leere Liste. Rücke sauber ein und vergiss die Rückgabe nicht. Und das Wichtigste: Lass nie etwas leer. Auch eine halbe Lösung bringt Teilpunkte.",
+     "v": {
+      "list": [
+       "Erst in eigenen Worten hinschreiben, was passieren soll",
+       "Variablen am Anfang initialisieren (summe = 0, max = erstes Element)",
+       "Grenzen prüfen: 0 bis laenge - 1",
+       "Sonderfälle: leere Liste, nichts gefunden",
+       "Sauber einrücken, Rückgabe nicht vergessen",
+       "Auch halbe Lösungen bringen Teilpunkte. Nie leer lassen!"
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "t30J-xu0XzE",
+     "t": "Der Pseudocode, Teil 1: Einführung",
+     "c": "Dozenten aus Leidenschaft"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "pseudo1:0",
+     "q": "Ein Array hat 5 Elemente. Welchen Index hat das letzte Element?",
+     "accept": [
+      "4"
+     ],
+     "e": "Index startet bei 0, also 0 bis 4. Letzter Index = laenge - 1."
+    },
+    {
+     "key": "pseudo1:1",
+     "q": "Welche Schleife nimmst du, wenn du vorher NICHT weißt, wie oft sie laufen muss?",
+     "o": [
+      "für-Schleife",
+      "solange-Schleife",
+      "falls-sonst",
+      "gar keine"
+     ],
+     "correct": 1,
+     "e": "Die solange-Schleife läuft, bis eine Bedingung nicht mehr stimmt. Die für-Schleife nimmst du, wenn die Anzahl feststeht."
+    },
+    {
+     "key": "pseudo1:2",
+     "q": "Womit initialisierst du max beim Suchen des Maximums am besten?",
+     "o": [
+      "mit 0",
+      "mit -1",
+      "mit dem ersten Element des Arrays",
+      "mit der Länge des Arrays"
+     ],
+     "correct": 2,
+     "e": "Mit 0 wäre das Ergebnis falsch, wenn alle Werte negativ sind. Das erste Element ist immer ein gültiger Startwert."
+    },
+    {
+     "key": "pseudo1:3",
+     "q": "summe = 0\nfür i = 1 bis 4\n  summe = summe + i\nende für\nausgabe(summe)\n\nWas wird ausgegeben?",
+     "accept": [
+      "10"
+     ],
+     "e": "1 + 2 + 3 + 4 = 10."
+    },
+    {
+     "key": "pseudo1:4",
+     "q": "Ist in der Prüfung eine bestimmte Programmiersprache oder Pseudocode-Syntax vorgeschrieben?",
+     "o": [
+      "Ja, Java",
+      "Ja, Python",
+      "Nein, die Logik zählt",
+      "Ja, Struktogramm"
+     ],
+     "correct": 2,
+     "e": "Keine Sprache ist vorgeschrieben. Lesbar und logisch richtig reicht. Struktogramme sind seit 2025 sogar raus."
+    },
+    {
+     "key": "pseudo1:5",
+     "q": "Was solltest du bei einer Durchschnittsberechnung vorher prüfen?",
+     "o": [
+      "Ob das Array sortiert ist",
+      "Ob das Array leer ist (Division durch 0)",
+      "Ob die Werte Strings sind",
+      "Nichts"
+     ],
+     "correct": 1,
+     "e": "Bei einer leeren Liste wäre die Anzahl 0 und du würdest durch 0 teilen."
+    },
+    {
+     "key": "pseudo1:6",
+     "q": "Bei der linearen Suche wird nichts gefunden. Was gibt die Funktion im Clip zurück?",
+     "accept": [
+      "-1"
+     ],
+     "e": "-1 ist der übliche Wert für \"nicht gefunden\", weil es keinen Index -1 gibt."
+    },
+    {
+     "key": "pseudo1:7",
+     "q": "Was passiert, wenn du in einer solange-Schleife vergisst, i zu erhöhen?",
+     "o": [
+      "Nichts",
+      "Endlosschleife",
+      "Fehler beim Kompilieren",
+      "Die Schleife läuft genau einmal"
+     ],
+     "correct": 1,
+     "e": "Die Bedingung bleibt immer wahr, die Schleife hört nie auf."
+    }
+   ],
+   "write": [
+    {
+     "task": "Schreibe in Pseudocode eine Funktion durchschnittPositiv(werte), die den Durchschnitt aller Werte größer 0 zurückgibt. Gibt es keine positiven Werte, soll 0 zurückgegeben werden.",
+     "model": "funktion durchschnittPositiv(werte)\n  summe = 0\n  anzahl = 0\n  für i = 0 bis laenge(werte) - 1\n    falls werte[i] > 0 dann\n      summe = summe + werte[i]\n      anzahl = anzahl + 1\n    ende falls\n  ende für\n  falls anzahl == 0 dann\n    rückgabe 0\n  ende falls\n  rückgabe summe / anzahl\nende funktion",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Schleife über alle Werte",
+       "pattern": "(f(ü|ue)r|solange|for|while|each|jede)",
+       "flags": "i"
+      },
+      {
+       "label": "Bedingung größer 0",
+       "pattern": "(>\\s*0|gr(ö|oe)(ß|ss)er\\s*(als\\s*)?(0|null))",
+       "flags": "i"
+      },
+      {
+       "label": "Summe aufaddieren",
+       "pattern": "summe|sum",
+       "flags": "i"
+      },
+      {
+       "label": "Anzahl zählen",
+       "pattern": "anzahl|z(ä|ae)hler|count|anz",
+       "flags": "i"
+      },
+      {
+       "label": "Sonderfall keine Werte",
+       "pattern": "(anzahl|z(ä|ae)hler|count|anz)\\s*(==|=|ist|is)\\s*(0|null)|keine",
+       "flags": "i"
+      },
+      {
+       "label": "Division",
+       "pattern": "\\/|geteilt|div",
+       "flags": "i"
+      },
+      {
+       "label": "Rückgabe",
+       "pattern": "r(ü|ue)ckgabe|return",
+       "flags": "i"
+      }
+     ]
+    },
+    {
+     "task": "Schreibe eine Funktion zaehleUeber(liste, grenze), die zurückgibt, wie viele Elemente größer als grenze sind.",
+     "model": "funktion zaehleUeber(liste, grenze)\n  zaehler = 0\n  für jedes element in liste\n    falls element > grenze dann\n      zaehler = zaehler + 1\n    ende falls\n  ende für\n  rückgabe zaehler\nende funktion",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Zähler auf 0 setzen",
+       "pattern": "=\\s*0",
+       "flags": ""
+      },
+      {
+       "label": "Schleife",
+       "pattern": "(f(ü|ue)r|solange|for|while|each|jede)",
+       "flags": "i"
+      },
+      {
+       "label": "Vergleich mit grenze",
+       "pattern": ">\\s*grenze",
+       "flags": "i"
+      },
+      {
+       "label": "Zähler erhöhen",
+       "pattern": "\\+\\s*1|\\+\\+|\\+=\\s*1",
+       "flags": ""
+      },
+      {
+       "label": "Rückgabe",
+       "pattern": "r(ü|ue)ckgabe|return",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "pseudo2",
+   "area": "GA2",
+   "prio": 2,
+   "title": "Sortieren, Suchen, Rekursion",
+   "mins": 25,
+   "why": "Bubble, Selection und Insertion Sort stehen seit 2025 ausdrücklich im Katalog.",
+   "clip": [
+    {
+     "h": "Neu im Katalog",
+     "say": "Seit dem neuen Prüfungskatalog stehen drei Sortierverfahren ausdrücklich drin: Bubble Sort, Selection Sort und Insertion Sort. Dazu kommen binäre Suche und Rekursion.",
+     "v": {
+      "list": [
+       "Bubble Sort",
+       "Selection Sort",
+       "Insertion Sort",
+       "Binäre Suche",
+       "Rekursion"
+      ]
+     }
+    },
+    {
+     "h": "Bubble Sort",
+     "say": "Bubble Sort vergleicht immer zwei Nachbarn. Ist der linke größer, werden sie getauscht. Nach dem ersten Durchlauf ist die größte Zahl ganz hinten. Wie eine Blase, die nach oben steigt. Das wiederholst du, bis nichts mehr getauscht wird.",
+     "v": {
+      "code": "[5, 1, 4, 2]\n 5>1 tauschen → [1, 5, 4, 2]\n 5>4 tauschen → [1, 4, 5, 2]\n 5>2 tauschen → [1, 4, 2, 5]   ← nach Durchlauf 1\n                                  größte Zahl ist hinten"
+     }
+    },
+    {
+     "h": "Bubble Sort in Pseudocode",
+     "say": "Im Code sind das zwei verschachtelte Schleifen. Die innere vergleicht Nachbarn. Zum Tauschen brauchst du eine Hilfsvariable temp. Das nennt man Dreieckstausch. Ohne temp überschreibst du einen Wert. Das kommt gerne als Fehlersuche dran.",
+     "v": {
+      "code": "für i = 0 bis n - 2\n  für j = 0 bis n - 2 - i\n    falls a[j] > a[j+1] dann\n      temp = a[j]          // Dreieckstausch\n      a[j] = a[j+1]\n      a[j+1] = temp\n    ende falls\n  ende für\nende für"
+     }
+    },
+    {
+     "h": "Selection und Insertion Sort",
+     "say": "Selection Sort sucht immer das kleinste Element im unsortierten Teil und tauscht es nach vorne. Insertion Sort funktioniert wie Spielkarten auf der Hand: Du nimmst die nächste Karte und steckst sie links an die richtige Stelle. Alle drei haben im schlechtesten Fall quadratische Laufzeit, O von n Quadrat.",
+     "v": {
+      "table": [
+       [
+        "Verfahren",
+        "Idee"
+       ],
+       [
+        "Selection Sort",
+        "Suche das Minimum im unsortierten Rest, tausche es nach vorne"
+       ],
+       [
+        "Insertion Sort",
+        "Nimm das nächste Element und füge es links an der richtigen Stelle ein, wie Spielkarten sortieren"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Binäre Suche",
+     "say": "Die binäre Suche funktioniert nur bei sortierten Listen. Du schaust in die Mitte. Ist der gesuchte Wert größer, suchst du rechts weiter, sonst links. Jedes Mal halbierst du die Liste. Deshalb ist sie sehr schnell, O von log n. Die lineare Suche dagegen ist O von n.",
+     "v": {
+      "code": "Sortiert: [2, 5, 8, 12, 16, 23, 38]\ngesucht 23\nMitte = 12 → 23 ist größer → rechte Hälfte\n[16, 23, 38]  Mitte = 23 → gefunden\n\nVoraussetzung: Liste ist SORTIERT\nLaufzeit: O(log n)"
+     }
+    },
+    {
+     "h": "Rekursion",
+     "say": "Rekursion heißt: Eine Funktion ruft sich selbst auf. Du brauchst immer zwei Dinge. Eine Abbruchbedingung, sonst läuft sie unendlich und es gibt einen Stack Overflow. Und einen Selbstaufruf, der das Problem kleiner macht. Fakultät von vier ist vier mal drei mal zwei mal eins, also vierundzwanzig.",
+     "v": {
+      "code": "funktion fakultaet(n)\n  falls n <= 1 dann\n    rückgabe 1            // Abbruchbedingung\n  ende falls\n  rückgabe n * fakultaet(n - 1)   // Selbstaufruf\nende funktion\n\nfakultaet(4) = 4 * 3 * 2 * 1 = 24"
+     }
+    },
+    {
+     "h": "Laufzeiten merken",
+     "say": "Die Laufzeiten kurz: O von eins ist ein direkter Zugriff. O von log n ist binäre Suche. O von n ist eine einfache Schleife. O von n Quadrat sind zwei verschachtelte Schleifen, also die einfachen Sortierverfahren.",
+     "v": {
+      "table": [
+       [
+        "O-Notation",
+        "Beispiel"
+       ],
+       [
+        "O(1)",
+        "Zugriff auf a[3]"
+       ],
+       [
+        "O(log n)",
+        "Binäre Suche"
+       ],
+       [
+        "O(n)",
+        "Lineare Suche, eine Schleife"
+       ],
+       [
+        "O(n²)",
+        "Bubble/Selection/Insertion, zwei verschachtelte Schleifen"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "Mj-payJDsdw",
+     "t": "Bubble Sort Algorithmus mit Animation",
+     "c": "HappyCoders"
+    },
+    {
+     "id": "jfH_h660gas",
+     "t": "Binäre Suche anschaulich erklärt",
+     "c": "informatikZentrale"
+    },
+    {
+     "id": "x7dEhDBPwX4",
+     "t": "Rekursion ganz einfach erklärt",
+     "c": "Kevin Chromik"
+    },
+    {
+     "id": "x9NhQUxyCpY",
+     "t": "Big O Notation in 6 Minuten",
+     "c": "Turing Informatik"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "pseudo2:0",
+     "q": "Wie sieht [5, 1, 4, 2] nach dem ERSTEN Durchlauf Bubble Sort aus? (Zahlen mit Komma)",
+     "accept": [
+      "1,4,2,5"
+     ],
+     "e": "5 wandert Schritt für Schritt nach hinten: [1,4,2,5]."
+    },
+    {
+     "key": "pseudo2:1",
+     "q": "Wofür brauchst du beim Tauschen die Variable temp?",
+     "o": [
+      "Für die Laufzeit",
+      "Damit ein Wert nicht überschrieben wird",
+      "Für die Rekursion",
+      "Gar nicht"
+     ],
+     "correct": 1,
+     "e": "Ohne Zwischenspeicher wäre a[j] nach a[j] = a[j+1] verloren."
+    },
+    {
+     "key": "pseudo2:2",
+     "q": "Welche Voraussetzung hat die binäre Suche?",
+     "o": [
+      "Liste muss sortiert sein",
+      "Liste muss Zahlen enthalten",
+      "Liste muss gerade Länge haben",
+      "Keine"
+     ],
+     "correct": 0,
+     "e": "Nur bei sortierten Daten kann man entscheiden, ob links oder rechts weitergesucht wird."
+    },
+    {
+     "key": "pseudo2:3",
+     "q": "Was berechnet fakultaet(4)?",
+     "accept": [
+      "24"
+     ],
+     "e": "4 * 3 * 2 * 1 = 24."
+    },
+    {
+     "key": "pseudo2:4",
+     "q": "Was passiert bei einer Rekursion ohne Abbruchbedingung?",
+     "o": [
+      "Sie liefert 0",
+      "Stack Overflow",
+      "Sie läuft genau einmal",
+      "Sie wird automatisch iterativ"
+     ],
+     "correct": 1,
+     "e": "Jeder Aufruf belegt Speicher auf dem Stack, bis er voll ist."
+    },
+    {
+     "key": "pseudo2:5",
+     "q": "Welches Verfahren sucht im unsortierten Rest das Minimum und tauscht es nach vorne?",
+     "o": [
+      "Bubble Sort",
+      "Insertion Sort",
+      "Selection Sort",
+      "Binäre Suche"
+     ],
+     "correct": 2,
+     "e": "Selection = auswählen: das kleinste Element wird ausgewählt."
+    },
+    {
+     "key": "pseudo2:6",
+     "q": "Welches Verfahren funktioniert wie Spielkarten auf der Hand einsortieren?",
+     "o": [
+      "Bubble Sort",
+      "Insertion Sort",
+      "Selection Sort",
+      "Quick Sort"
+     ],
+     "correct": 1,
+     "e": "Insertion = einfügen."
+    },
+    {
+     "key": "pseudo2:7",
+     "q": "Welche Laufzeit haben zwei verschachtelte Schleifen über n Elemente?",
+     "o": [
+      "O(1)",
+      "O(log n)",
+      "O(n)",
+      "O(n²)"
+     ],
+     "correct": 3,
+     "e": "n mal n Durchläufe."
+    }
+   ],
+   "write": [
+    {
+     "task": "Erkläre in 2 bis 3 Sätzen, wie Bubble Sort funktioniert und welche Laufzeit er hat.",
+     "model": "Bubble Sort vergleicht immer zwei benachbarte Elemente und tauscht sie, wenn das linke größer ist. Nach jedem Durchlauf steht das größte unsortierte Element am Ende. Das wird wiederholt, bis in einem Durchlauf nicht mehr getauscht wird. Die Laufzeit ist im schlechtesten Fall O(n²).",
+     "alt": null,
+     "keys": [
+      {
+       "label": "benachbarte Elemente vergleichen",
+       "pattern": "nachbar|benachbart|nebeneinander|j\\s*\\+\\s*1",
+       "flags": "i"
+      },
+      {
+       "label": "tauschen",
+       "pattern": "tausch",
+       "flags": "i"
+      },
+      {
+       "label": "wiederholen bis sortiert",
+       "pattern": "wiederhol|durchl(ä|ae)uf|bis.*sortiert|kein.*tausch",
+       "flags": "i"
+      },
+      {
+       "label": "Laufzeit O(n²)",
+       "pattern": "n\\s*(²|\\^?\\s*2|quadrat)",
+       "flags": "i"
+      }
+     ]
+    },
+    {
+     "task": "Schreibe eine rekursive Funktion summeBis(n), die 1 + 2 + ... + n berechnet.",
+     "model": "funktion summeBis(n)\n  falls n <= 0 dann\n    rückgabe 0\n  ende falls\n  rückgabe n + summeBis(n - 1)\nende funktion",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Abbruchbedingung",
+       "pattern": "falls|if|wenn",
+       "flags": "i"
+      },
+      {
+       "label": "Basisfall 0 oder 1",
+       "pattern": "(<=|==|=|<)\\s*(0|1)",
+       "flags": ""
+      },
+      {
+       "label": "Selbstaufruf mit n - 1",
+       "pattern": "summeBis\\s*\\(\\s*n\\s*-\\s*1\\s*\\)",
+       "flags": "i"
+      },
+      {
+       "label": "Rückgabe",
+       "pattern": "r(ü|ue)ckgabe|return",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sql1",
+   "area": "GA2",
+   "prio": 1,
+   "title": "SQL: SELECT und JOIN",
+   "mins": 25,
+   "why": "SQL SELECT kam in allen 9 Prüfungen dran. Die Syntax steht im Belegsatz.",
+   "clip": [
+    {
+     "h": "Unsere Beispiel-Tabellen",
+     "say": "Wir nehmen zwei Tabellen aus einer Kanzlei. Mandant mit ID, Name und Ort. Und Auftrag mit Art und Honorar. Die Spalte MandantID in Auftrag ist der Fremdschlüssel. Sie zeigt, zu welchem Mandanten der Auftrag gehört.",
+     "v": {
+      "table": [
+       [
+        "Mandant",
+        "",
+        ""
+       ],
+       [
+        "MandantID",
+        "Name",
+        "Ort"
+       ],
+       [
+        "1",
+        "Bäckerei Gies",
+        "Fulda"
+       ],
+       [
+        "2",
+        "Autohaus Ruf",
+        "Erfurt"
+       ],
+       [
+        "3",
+        "Praxis Lenz",
+        "Fulda"
+       ]
+      ],
+      "table2": [
+       [
+        "Auftrag",
+        "",
+        "",
+        ""
+       ],
+       [
+        "AuftragID",
+        "MandantID",
+        "Art",
+        "Honorar"
+       ],
+       [
+        "10",
+        "1",
+        "Steuer",
+        "1200"
+       ],
+       [
+        "11",
+        "1",
+        "Lohn",
+        "400"
+       ],
+       [
+        "12",
+        "2",
+        "Prüfung",
+        "5000"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Grundgerüst SELECT",
+     "say": "Jede Abfrage hat das gleiche Grundgerüst. SELECT sagt, welche Spalten. FROM sagt, welche Tabelle. WHERE filtert die Zeilen. ORDER BY sortiert, aufsteigend mit ASC oder absteigend mit DESC. Merksatz für die Reihenfolge: Select From Where Group Having Order.",
+     "v": {
+      "code": "SELECT Name, Ort          -- welche Spalten\nFROM Mandant              -- aus welcher Tabelle\nWHERE Ort = 'Fulda'       -- welche Zeilen\nORDER BY Name ASC;        -- sortiert"
+     }
+    },
+    {
+     "h": "WHERE-Werkzeuge",
+     "say": "Im WHERE hast du ein paar Werkzeuge. Vergleich mit größer oder gleich. Mehrere Bedingungen mit AND und OR. IN für eine Liste. BETWEEN für einen Bereich. LIKE mit Prozentzeichen als Platzhalter. Und leere Werte prüfst du immer mit IS NULL, niemals mit gleich NULL.",
+     "v": {
+      "code": "WHERE Honorar > 1000\nWHERE Ort = 'Fulda' AND Honorar < 500\nWHERE Ort IN ('Fulda', 'Erfurt')\nWHERE Honorar BETWEEN 100 AND 1000\nWHERE Name LIKE 'B%'        -- beginnt mit B\nWHERE Ort IS NULL           -- nie \"= NULL\"!"
+     }
+    },
+    {
+     "h": "INNER JOIN",
+     "say": "Mit JOIN verbindest du Tabellen. Hinter ON steht die Verbindung: Primärschlüssel gleich Fremdschlüssel. Der INNER JOIN liefert nur Zeilen, die in beiden Tabellen einen Partner haben. Praxis Lenz hat keinen Auftrag und fehlt deshalb. Die Buchstaben m und a sind Aliase, damit du weniger schreiben musst.",
+     "v": {
+      "code": "SELECT m.Name, a.Art, a.Honorar\nFROM Mandant m\nINNER JOIN Auftrag a\n  ON m.MandantID = a.MandantID;\n\n→ Bäckerei Gies | Steuer  | 1200\n→ Bäckerei Gies | Lohn    |  400\n→ Autohaus Ruf  | Prüfung | 5000"
+     }
+    },
+    {
+     "h": "LEFT JOIN: auch ohne Partner",
+     "say": "Der LEFT JOIN nimmt alle Zeilen der linken Tabelle, auch wenn es rechts keinen Partner gibt. Dann steht dort NULL. Klassische Prüfungsfrage: Finde alle Mandanten ohne Auftrag. Lösung: LEFT JOIN und dann WHERE AuftragID IS NULL.",
+     "v": {
+      "code": "SELECT m.Name, a.Art\nFROM Mandant m\nLEFT JOIN Auftrag a\n  ON m.MandantID = a.MandantID;\n\n→ ...\n→ Praxis Lenz   | NULL\n\n-- Mandanten OHNE Auftrag:\n... WHERE a.AuftragID IS NULL;"
+     }
+    },
+    {
+     "h": "Prüfungstricks",
+     "say": "Ein paar Tricks. Die SQL-Syntax steht im Belegsatz, du darfst nachschauen. Texte kommen in einfache Anführungszeichen. Bei JOIN immer die ON Bedingung mit Primärschlüssel gleich Fremdschlüssel. Und DISTINCT entfernt doppelte Zeilen.",
+     "v": {
+      "list": [
+       "Belegsatz liegt bei: SQL-Syntax nachschlagen ist erlaubt",
+       "Texte in einfache Anführungszeichen: 'Fulda'",
+       "Bei JOIN immer ON mit PK = FK",
+       "Bei mehreren Tabellen Spalten mit Alias eindeutig machen: m.Name",
+       "DISTINCT entfernt doppelte Zeilen",
+       "Semikolon am Ende"
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "CaWOzl0Y_vE",
+     "t": "INNER, LEFT, RIGHT JOIN in 5 Minuten",
+     "c": "biservices"
+    },
+    {
+     "id": "SBiuRA1RVnw",
+     "t": "Joins in SQL einfach erklärt",
+     "c": "Patrick Boekhoven"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "sql1:0",
+     "q": "In welcher Reihenfolge stehen die Klauseln?",
+     "o": [
+      "SELECT, WHERE, FROM, ORDER BY",
+      "SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY",
+      "FROM, SELECT, HAVING, WHERE",
+      "SELECT, FROM, ORDER BY, WHERE"
+     ],
+     "correct": 1,
+     "e": "Merksatz: Select From Where Group Having Order."
+    },
+    {
+     "key": "sql1:1",
+     "q": "Wie prüfst du, ob die Spalte Ort leer ist?",
+     "o": [
+      "WHERE Ort = NULL",
+      "WHERE Ort IS NULL",
+      "WHERE Ort == ''",
+      "WHERE NULL(Ort)"
+     ],
+     "correct": 1,
+     "e": "NULL vergleicht man nur mit IS NULL bzw. IS NOT NULL."
+    },
+    {
+     "key": "sql1:2",
+     "q": "Welche Mandanten liefert ein INNER JOIN Mandant mit Auftrag aus dem Clip?",
+     "o": [
+      "Alle drei",
+      "Nur Bäckerei Gies und Autohaus Ruf",
+      "Nur Praxis Lenz",
+      "Keinen"
+     ],
+     "correct": 1,
+     "e": "Praxis Lenz hat keinen Auftrag und fällt beim INNER JOIN raus."
+    },
+    {
+     "key": "sql1:3",
+     "q": "Wie viele Zeilen liefert der INNER JOIN aus dem Clip?",
+     "accept": [
+      "3"
+     ],
+     "e": "Gies Steuer, Gies Lohn, Ruf Prüfung."
+    },
+    {
+     "key": "sql1:4",
+     "q": "Wie findest du Mandanten OHNE Auftrag?",
+     "o": [
+      "INNER JOIN + WHERE AuftragID IS NULL",
+      "LEFT JOIN + WHERE a.AuftragID IS NULL",
+      "RIGHT JOIN ohne WHERE",
+      "DISTINCT"
+     ],
+     "correct": 1,
+     "e": "LEFT JOIN behält alle Mandanten, die ohne Partner haben NULL in den Auftragsspalten."
+    },
+    {
+     "key": "sql1:5",
+     "q": "Was findet WHERE Name LIKE 'B%'?",
+     "o": [
+      "Namen, die mit B enden",
+      "Namen, die mit B beginnen",
+      "Namen mit genau 2 Zeichen",
+      "Nur den Namen \"B%\""
+     ],
+     "correct": 1,
+     "e": "% steht für beliebig viele Zeichen."
+    },
+    {
+     "key": "sql1:6",
+     "q": "Was steht hinter ON beim JOIN?",
+     "o": [
+      "Die Sortierung",
+      "Primärschlüssel = Fremdschlüssel",
+      "Die Spaltenauswahl",
+      "Die Gruppierung"
+     ],
+     "correct": 1,
+     "e": "Damit werden die passenden Zeilen verknüpft."
+    },
+    {
+     "key": "sql1:7",
+     "q": "Darfst du in der Prüfung SQL-Syntax nachschlagen?",
+     "o": [
+      "Nein",
+      "Ja, im Belegsatz",
+      "Nur mit Handy",
+      "Nur in GA1"
+     ],
+     "correct": 1,
+     "e": "Der bundeseinheitliche Belegsatz hat ein SQL-Beiblatt."
+    }
+   ],
+   "write": [
+    {
+     "task": "Schreibe eine SQL-Abfrage: Gib Name des Mandanten, Art und Honorar aller Aufträge mit einem Honorar über 1000 aus, sortiert nach Honorar absteigend. Tabellen: Mandant(MandantID, Name, Ort), Auftrag(AuftragID, MandantID, Art, Honorar).",
+     "model": "SELECT m.Name, a.Art, a.Honorar\nFROM Mandant m\nINNER JOIN Auftrag a ON m.MandantID = a.MandantID\nWHERE a.Honorar > 1000\nORDER BY a.Honorar DESC;",
+     "alt": null,
+     "keys": [
+      {
+       "label": "SELECT mit Spalten",
+       "pattern": "select\\s+.*name.*honorar|select\\s+.*honorar.*name",
+       "flags": "is"
+      },
+      {
+       "label": "FROM Mandant / Auftrag",
+       "pattern": "from\\s+(mandant|auftrag)",
+       "flags": "i"
+      },
+      {
+       "label": "JOIN",
+       "pattern": "join",
+       "flags": "i"
+      },
+      {
+       "label": "ON MandantID = MandantID",
+       "pattern": "on\\s+\\w*\\.?mandantid\\s*=\\s*\\w*\\.?mandantid",
+       "flags": "i"
+      },
+      {
+       "label": "WHERE Honorar > 1000",
+       "pattern": "where\\s+.*honorar\\s*>\\s*1000",
+       "flags": "is"
+      },
+      {
+       "label": "ORDER BY Honorar DESC",
+       "pattern": "order\\s+by\\s+\\w*\\.?honorar\\s+desc",
+       "flags": "i"
+      }
+     ]
+    },
+    {
+     "task": "Schreibe eine Abfrage, die die Namen aller Mandanten ausgibt, die KEINEN Auftrag haben.",
+     "model": "SELECT m.Name\nFROM Mandant m\nLEFT JOIN Auftrag a ON m.MandantID = a.MandantID\nWHERE a.AuftragID IS NULL;",
+     "alt": "Alternativ geht auch: WHERE MandantID NOT IN (SELECT MandantID FROM Auftrag)",
+     "keys": [
+      {
+       "label": "LEFT JOIN",
+       "pattern": "left\\s+(outer\\s+)?join",
+       "flags": "i"
+      },
+      {
+       "label": "ON-Bedingung",
+       "pattern": "on\\s+\\w*\\.?mandantid\\s*=\\s*\\w*\\.?mandantid",
+       "flags": "i"
+      },
+      {
+       "label": "IS NULL",
+       "pattern": "is\\s+null",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sql2",
+   "area": "GA2",
+   "prio": 1,
+   "title": "SQL: GROUP BY, HAVING, Subselect",
+   "mins": 25,
+   "why": "Gruppieren und Aggregieren ist die typische schwerere SQL-Teilaufgabe.",
+   "clip": [
+    {
+     "h": "Aggregatfunktionen",
+     "say": "Aggregatfunktionen fassen viele Zeilen zu einem Wert zusammen. COUNT zählt, SUM summiert, AVG bildet den Durchschnitt, MIN und MAX finden den kleinsten und größten Wert.",
+     "v": {
+      "table": [
+       [
+        "Funktion",
+        "liefert"
+       ],
+       [
+        "COUNT(*)",
+        "Anzahl Zeilen"
+       ],
+       [
+        "SUM(Honorar)",
+        "Summe"
+       ],
+       [
+        "AVG(Honorar)",
+        "Durchschnitt"
+       ],
+       [
+        "MIN / MAX",
+        "kleinster / größter Wert"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "GROUP BY: pro Gruppe rechnen",
+     "say": "Mit GROUP BY rechnest du pro Gruppe. Hier pro Mandant: Anzahl der Aufträge und Summe der Honorare. Die goldene Regel: Jede Spalte im SELECT, die nicht in einer Aggregatfunktion steckt, muss auch im GROUP BY stehen. AS gibt der Spalte einen Namen.",
+     "v": {
+      "code": "SELECT m.Name, COUNT(*) AS Anzahl,\n       SUM(a.Honorar) AS Gesamt\nFROM Mandant m\nJOIN Auftrag a ON m.MandantID = a.MandantID\nGROUP BY m.Name;\n\n→ Bäckerei Gies | 2 | 1600\n→ Autohaus Ruf  | 1 | 5000"
+     }
+    },
+    {
+     "h": "WHERE oder HAVING?",
+     "say": "Der wichtigste Unterschied: WHERE filtert einzelne Zeilen vor dem Gruppieren. HAVING filtert ganze Gruppen nach dem Gruppieren. Sobald in der Bedingung eine Aggregatfunktion wie SUM oder COUNT steckt, brauchst du HAVING.",
+     "v": {
+      "code": "WHERE   filtert ZEILEN   vor dem Gruppieren\nHAVING  filtert GRUPPEN  nach dem Gruppieren\n\nSELECT m.Name, SUM(a.Honorar) AS Gesamt\nFROM Mandant m\nJOIN Auftrag a ON m.MandantID = a.MandantID\nWHERE a.Art <> 'Lohn'\nGROUP BY m.Name\nHAVING SUM(a.Honorar) > 2000;"
+     }
+    },
+    {
+     "h": "Subselect",
+     "say": "Ein Subselect ist eine Abfrage in der Abfrage. Typisch: Alle Aufträge, deren Honorar über dem Durchschnitt liegt. Der Durchschnitt kommt aus der inneren Abfrage. Oder mit IN: alle Mandanten, deren ID in der Liste der Prüfungsaufträge vorkommt.",
+     "v": {
+      "code": "-- Aufträge über dem Durchschnitt\nSELECT AuftragID, Honorar\nFROM Auftrag\nWHERE Honorar > (SELECT AVG(Honorar)\n                 FROM Auftrag);\n\n-- Mandanten mit Prüfungsauftrag\nSELECT Name FROM Mandant\nWHERE MandantID IN (SELECT MandantID\n                    FROM Auftrag\n                    WHERE Art = 'Prüfung');"
+     }
+    },
+    {
+     "h": "Rechenbeispiel",
+     "say": "Kurz rechnen mit unseren Daten. Drei Aufträge mit 1200, 400 und 5000. Count ist drei. Summe ist sechstausendsechshundert. Durchschnitt ist zweitausendzweihundert. Das Maximum ist fünftausend.",
+     "v": {
+      "code": "Honorare: 1200, 400, 5000\nCOUNT(*)      = 3\nSUM(Honorar)  = 6600\nAVG(Honorar)  = 2200\nMAX(Honorar)  = 5000"
+     }
+    },
+    {
+     "h": "Checkliste",
+     "say": "Deine Checkliste. Lies, was pro irgendwas berechnet werden soll, das kommt ins GROUP BY. Bedingung mit Aggregat, dann HAVING. Bedingung auf eine normale Spalte, dann WHERE. Und achte auf mehr als gegen mindestens. Das ist größer gegen größer gleich.",
+     "v": {
+      "list": [
+       "Was soll pro ... berechnet werden? → das kommt ins GROUP BY",
+       "Bedingung mit SUM/COUNT/AVG → HAVING",
+       "Bedingung auf normale Spalte → WHERE",
+       "Vergleich mit einem berechneten Wert → Subselect",
+       "\"Mehr als / mindestens\" lesen und richtig in > oder >= übersetzen"
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "fN8OlBsvT8I",
+     "t": "GROUP BY und HAVING schnell erklärt",
+     "c": "Patrick Boekhoven"
+    },
+    {
+     "id": "4sP03pekdys",
+     "t": "SQL GROUP BY in 12 Minuten",
+     "c": "biservices"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "sql2:0",
+     "q": "Du willst nur Mandanten, deren Honorarsumme über 2000 liegt. Was nimmst du?",
+     "o": [
+      "WHERE SUM(Honorar) > 2000",
+      "HAVING SUM(Honorar) > 2000",
+      "ORDER BY SUM(Honorar)",
+      "DISTINCT"
+     ],
+     "correct": 1,
+     "e": "Aggregat in der Bedingung → HAVING."
+    },
+    {
+     "key": "sql2:1",
+     "q": "Was ist der AVG der Honorare 1200, 400 und 5000?",
+     "accept": [
+      "2200"
+     ],
+     "e": "6600 / 3 = 2200."
+    },
+    {
+     "key": "sql2:2",
+     "q": "Welche Regel gilt für Spalten im SELECT bei GROUP BY?",
+     "o": [
+      "Keine",
+      "Alle Nicht-Aggregat-Spalten müssen ins GROUP BY",
+      "Nur Zahlen dürfen rein",
+      "Nur eine Spalte erlaubt"
+     ],
+     "correct": 1,
+     "e": "Sonst weiß die Datenbank nicht, welchen Wert sie pro Gruppe anzeigen soll."
+    },
+    {
+     "key": "sql2:3",
+     "q": "Wann filtert WHERE?",
+     "o": [
+      "Nach dem Gruppieren",
+      "Vor dem Gruppieren",
+      "Nach ORDER BY",
+      "Gar nicht bei GROUP BY"
+     ],
+     "correct": 1,
+     "e": "WHERE wirkt auf einzelne Zeilen, bevor gruppiert wird."
+    },
+    {
+     "key": "sql2:4",
+     "q": "Was liefert COUNT(*) bei den 3 Aufträgen?",
+     "accept": [
+      "3"
+     ],
+     "e": "COUNT(*) zählt alle Zeilen."
+    },
+    {
+     "key": "sql2:5",
+     "q": "Wie heißt eine Abfrage innerhalb einer Abfrage?",
+     "o": [
+      "Join",
+      "Subselect / Unterabfrage",
+      "View",
+      "Trigger"
+     ],
+     "correct": 1,
+     "e": "Subselects stehen z. B. im WHERE in Klammern."
+    },
+    {
+     "key": "sql2:6",
+     "q": "\"Mindestens 3 Aufträge\" heißt in SQL:",
+     "o": [
+      "COUNT(*) > 3",
+      "COUNT(*) >= 3",
+      "COUNT(*) = 3",
+      "COUNT(*) < 3"
+     ],
+     "correct": 1,
+     "e": "Mindestens = größer oder gleich."
+    }
+   ],
+   "write": [
+    {
+     "task": "Gib pro Ort die Anzahl der Mandanten aus, aber nur Orte mit mindestens 2 Mandanten. Tabelle: Mandant(MandantID, Name, Ort).",
+     "model": "SELECT Ort, COUNT(*) AS Anzahl\nFROM Mandant\nGROUP BY Ort\nHAVING COUNT(*) >= 2;",
+     "alt": null,
+     "keys": [
+      {
+       "label": "SELECT Ort, COUNT",
+       "pattern": "select\\s+.*ort.*count",
+       "flags": "is"
+      },
+      {
+       "label": "FROM Mandant",
+       "pattern": "from\\s+mandant",
+       "flags": "i"
+      },
+      {
+       "label": "GROUP BY Ort",
+       "pattern": "group\\s+by\\s+\\w*\\.?ort",
+       "flags": "i"
+      },
+      {
+       "label": "HAVING COUNT >= 2",
+       "pattern": "having\\s+count\\s*\\(.*\\)\\s*(>=\\s*2|>\\s*1)",
+       "flags": "i"
+      }
+     ]
+    },
+    {
+     "task": "Gib alle Aufträge (AuftragID, Honorar) aus, deren Honorar über dem Durchschnitt aller Honorare liegt.",
+     "model": "SELECT AuftragID, Honorar\nFROM Auftrag\nWHERE Honorar > (SELECT AVG(Honorar) FROM Auftrag);",
+     "alt": null,
+     "keys": [
+      {
+       "label": "SELECT AuftragID, Honorar",
+       "pattern": "select\\s+.*auftragid.*honorar",
+       "flags": "is"
+      },
+      {
+       "label": "WHERE Honorar >",
+       "pattern": "where\\s+honorar\\s*>",
+       "flags": "i"
+      },
+      {
+       "label": "Subselect mit AVG",
+       "pattern": "\\(\\s*select\\s+avg\\s*\\(\\s*honorar\\s*\\)",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sql3",
+   "area": "GA2",
+   "prio": 2,
+   "title": "SQL: Ändern, Anlegen, Rechte",
+   "mins": 20,
+   "why": "INSERT, UPDATE, DELETE kommen fast immer als kleine Teilaufgabe.",
+   "clip": [
+    {
+     "h": "Daten ändern: DML",
+     "say": "Drei Befehle zum Ändern von Daten. INSERT INTO fügt eine Zeile ein, mit VALUES für die Werte. UPDATE ändert Werte mit SET. DELETE FROM löscht Zeilen. Ganz wichtig: Bei UPDATE und DELETE immer ein WHERE. Ohne WHERE änderst oder löschst du die ganze Tabelle.",
+     "v": {
+      "code": "INSERT INTO Mandant (MandantID, Name, Ort)\nVALUES (4, 'Café Rhön', 'Fulda');\n\nUPDATE Auftrag\nSET Honorar = Honorar * 1.05\nWHERE Art = 'Lohn';\n\nDELETE FROM Auftrag\nWHERE AuftragID = 11;"
+     }
+    },
+    {
+     "h": "Tabellen anlegen: DDL",
+     "say": "Mit CREATE TABLE legst du eine Tabelle an. Jede Spalte bekommt einen Datentyp. INT für ganze Zahlen, VARCHAR für Text, DECIMAL für Geldbeträge, DATE für Datum. PRIMARY KEY macht die Zeile eindeutig. FOREIGN KEY mit REFERENCES verweist auf die andere Tabelle. ALTER TABLE ändert eine Tabelle, und ein INDEX beschleunigt die Suche.",
+     "v": {
+      "code": "CREATE TABLE Auftrag (\n  AuftragID  INT PRIMARY KEY,\n  MandantID  INT NOT NULL,\n  Art        VARCHAR(30),\n  Honorar    DECIMAL(10,2),\n  Datum      DATE,\n  FOREIGN KEY (MandantID)\n    REFERENCES Mandant(MandantID)\n);\nALTER TABLE Auftrag ADD Status VARCHAR(20);\nCREATE INDEX idx_art ON Auftrag(Art);"
+     }
+    },
+    {
+     "h": "Rechte: DCL",
+     "say": "Rechte vergibst du mit GRANT und entziehst sie mit REVOKE. So bekommt ein Benutzer nur die Rechte, die er wirklich braucht. Das nennt man das Prinzip der minimalen Rechte.",
+     "v": {
+      "code": "GRANT SELECT, INSERT ON Auftrag TO azubi;\nREVOKE INSERT ON Auftrag FROM azubi;"
+     }
+    },
+    {
+     "h": "Die drei Sprachteile",
+     "say": "Die drei Sprachteile von SQL. DDL definiert Strukturen: CREATE, ALTER, DROP. DML bearbeitet Daten: SELECT, INSERT, UPDATE, DELETE. DCL regelt Rechte: GRANT und REVOKE.",
+     "v": {
+      "table": [
+       [
+        "Teil",
+        "Befehle"
+       ],
+       [
+        "DDL Definition",
+        "CREATE, ALTER, DROP"
+       ],
+       [
+        "DML Manipulation",
+        "SELECT, INSERT, UPDATE, DELETE"
+       ],
+       [
+        "DCL Control",
+        "GRANT, REVOKE"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "SQL-Injection",
+     "say": "SQL-Injection ist ein Klassiker. Wenn Benutzereingaben direkt in den SQL-String geklebt werden, kann ein Angreifer eigenen SQL-Code einschleusen. Der Schutz: Prepared Statements mit Platzhaltern. Dazu Eingaben prüfen und minimale Rechte für den Datenbankbenutzer.",
+     "v": {
+      "code": "Eingabe: ' OR '1'='1\n\"SELECT * FROM User WHERE name = '\" + eingabe + \"'\"\n→ WHERE name = '' OR '1'='1'   → ALLE Zeilen!\n\nSchutz: Prepared Statements\nSELECT * FROM User WHERE name = ?"
+     }
+    }
+   ],
+   "videos": [],
+   "quiz": [
+    {
+     "key": "sql3:0",
+     "q": "Was passiert bei DELETE FROM Auftrag; ohne WHERE?",
+     "o": [
+      "Fehler",
+      "Nichts",
+      "Alle Zeilen werden gelöscht",
+      "Nur die erste Zeile"
+     ],
+     "correct": 2,
+     "e": "Ohne WHERE betrifft der Befehl die ganze Tabelle."
+    },
+    {
+     "key": "sql3:1",
+     "q": "Zu welchem Sprachteil gehört GRANT?",
+     "o": [
+      "DDL",
+      "DML",
+      "DCL",
+      "TCL"
+     ],
+     "correct": 2,
+     "e": "Data Control Language regelt Rechte."
+    },
+    {
+     "key": "sql3:2",
+     "q": "Welcher Datentyp passt für Geldbeträge?",
+     "o": [
+      "INT",
+      "VARCHAR",
+      "DECIMAL(10,2)",
+      "BOOLEAN"
+     ],
+     "correct": 2,
+     "e": "DECIMAL speichert Nachkommastellen exakt."
+    },
+    {
+     "key": "sql3:3",
+     "q": "Was schützt am besten gegen SQL-Injection?",
+     "o": [
+      "Prepared Statements",
+      "Längere Passwörter",
+      "Index anlegen",
+      "DISTINCT"
+     ],
+     "correct": 0,
+     "e": "Platzhalter trennen Code und Daten."
+    },
+    {
+     "key": "sql3:4",
+     "q": "Mit welchem Befehl änderst du bestehende Werte?",
+     "o": [
+      "INSERT",
+      "UPDATE",
+      "ALTER",
+      "CHANGE"
+     ],
+     "correct": 1,
+     "e": "UPDATE ... SET ... WHERE ..."
+    },
+    {
+     "key": "sql3:5",
+     "q": "Womit fügst du einer bestehenden Tabelle eine Spalte hinzu?",
+     "o": [
+      "UPDATE TABLE",
+      "ALTER TABLE ... ADD",
+      "INSERT COLUMN",
+      "CREATE COLUMN"
+     ],
+     "correct": 1,
+     "e": "ALTER gehört zur DDL."
+    }
+   ],
+   "write": [
+    {
+     "task": "Erhöhe alle Honorare der Art 'Steuer' um 10 Prozent.",
+     "model": "UPDATE Auftrag\nSET Honorar = Honorar * 1.1\nWHERE Art = 'Steuer';",
+     "alt": null,
+     "keys": [
+      {
+       "label": "UPDATE Auftrag",
+       "pattern": "update\\s+auftrag",
+       "flags": "i"
+      },
+      {
+       "label": "SET Honorar = Honorar * 1.1",
+       "pattern": "set\\s+honorar\\s*=\\s*honorar\\s*\\*\\s*1[.,]1",
+       "flags": "i"
+      },
+      {
+       "label": "WHERE Art = 'Steuer'",
+       "pattern": "where\\s+art\\s*=\\s*'steuer'",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "test",
+   "area": "GA2",
+   "prio": 1,
+   "title": "Testen und Schreibtischtest",
+   "mins": 25,
+   "why": "Testen kam in der Hälfte aller Prüfungen. Schreibtischtests sind leicht verdiente Punkte.",
+   "clip": [
+    {
+     "h": "Black-Box vs. White-Box",
+     "say": "Es gibt zwei Sichten. Beim Black-Box-Test kennst du den Code nicht. Du testest nur gegen die Anforderungen: Eingabe rein, Ausgabe prüfen. Beim White-Box-Test kennst du den Code und testest gezielt alle Anweisungen und Zweige.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Black-Box",
+        "White-Box"
+       ],
+       [
+        "Kennt Code?",
+        "Nein",
+        "Ja"
+       ],
+       [
+        "Basis",
+        "Anforderungen",
+        "Quellcode"
+       ],
+       [
+        "Methoden",
+        "Äquivalenzklassen, Grenzwerte",
+        "Anweisungs-, Zweigüberdeckung"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Äquivalenzklassen",
+     "say": "Äquivalenzklassen teilen alle Eingaben in Gruppen, die sich gleich verhalten. Aus jeder Klasse reicht ein Testwert. Vergiss die ungültigen Klassen nicht, zum Beispiel negative Zahlen. Die geben in der Prüfung oft die Extrapunkte.",
+     "v": {
+      "code": "Rabatt ab Bestellwert 100 €, max. 10.000 €\n\nungültig   |   gültig: kein Rabatt | gültig: Rabatt | ungültig\n   < 0     |      0 bis 99,99      | 100 bis 10.000 |  > 10.000\n\nTestwerte: -5   |   50   |   500   |   20.000"
+     }
+    },
+    {
+     "h": "Grenzwertanalyse",
+     "say": "Die Grenzwertanalyse testet genau an den Rändern der Klassen. Also direkt unter, auf und über der Grenze. Denn die meisten Fehler sind ein größer statt größer gleich.",
+     "v": {
+      "code": "Grenze bei 100:\n  99,99  → kein Rabatt\n 100,00  → Rabatt\n 100,01  → Rabatt\nFehler passieren an den Rändern: > statt >="
+     }
+    },
+    {
+     "h": "Überdeckung",
+     "say": "Bei White-Box gibt es Überdeckungsgrade. Anweisungsüberdeckung heißt, jede Anweisung wird mindestens einmal ausgeführt. Zweigüberdeckung heißt, jeder Zweig wird durchlaufen, also bei jedem falls einmal ja und einmal nein. Zweigüberdeckung ist stärker.",
+     "v": {
+      "code": "falls x > 0 dann\n  y = 1\nende falls\nausgabe(y)\n\nAnweisungsüberdeckung (C0): x = 5 reicht\n  → jede Anweisung einmal ausgeführt\nZweigüberdeckung (C1): x = 5 UND x = -1\n  → jeder Zweig (ja UND nein) einmal"
+     }
+    },
+    {
+     "h": "Schreibtischtest",
+     "say": "Der Schreibtischtest, auch Tracetabelle. Du spielst den Code von Hand durch und schreibst nach jedem Schritt alle Variablen in eine Tabelle. Hier: a ist drei, b null. Dann b drei, a zwei. Dann b fünf, a eins. Dann b sechs, a null, Schleife endet. Ergebnis sechs.",
+     "v": {
+      "code": "a = 3, b = 0\nsolange a > 0\n  b = b + a\n  a = a - 1\nende solange\n\n a | b\n 3 | 0\n 2 | 3\n 1 | 5\n 0 | 6   → Ergebnis b = 6"
+     }
+    },
+    {
+     "h": "Teststufen und Testarten",
+     "say": "Die Teststufen von klein nach groß: Unit-Test für einzelne Funktionen. Integrationstest für das Zusammenspiel. Systemtest für das ganze System. Abnahmetest durch den Kunden. Dazu: Regressionstest, ob nach einer Änderung Altes kaputt ist. Lasttest bei vielen Nutzern. Und testgetriebene Entwicklung: erst den Test, dann den Code.",
+     "v": {
+      "table": [
+       [
+        "Stufe / Art",
+        "Was"
+       ],
+       [
+        "Unit-Test",
+        "einzelne Funktion/Klasse, automatisiert"
+       ],
+       [
+        "Integrationstest",
+        "Zusammenspiel von Modulen"
+       ],
+       [
+        "Systemtest",
+        "ganzes System gegen Anforderungen"
+       ],
+       [
+        "Abnahmetest",
+        "Kunde prüft, ob es passt"
+       ],
+       [
+        "Regressionstest",
+        "Altes kaputt nach Änderung?"
+       ],
+       [
+        "Last-/Performancetest",
+        "Verhalten bei vielen Nutzern"
+       ],
+       [
+        "TDD",
+        "erst Test schreiben, dann Code"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "GshMbff3mzw",
+     "t": "Testfälle mit Äquivalenzklassen und Grenzwertanalyse",
+     "c": "Thomas Grosser"
+    },
+    {
+     "id": "00PO7GFsSzs",
+     "t": "Blackbox- und Whitebox-Test",
+     "c": "NUCIDA Group"
+    },
+    {
+     "id": "EcrTSZZraZI",
+     "t": "Die vier Teststufen (V-Modell)",
+     "c": "ModelMyMind"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "test:0",
+     "q": "Beim Black-Box-Test ...",
+     "o": [
+      "kennt der Tester den Code",
+      "kennt der Tester den Code nicht",
+      "wird nur die Datenbank getestet",
+      "testet der Kunde"
+     ],
+     "correct": 1,
+     "e": "Black-Box: nur Ein- und Ausgaben gegen die Anforderungen."
+    },
+    {
+     "key": "test:1",
+     "q": "a = 3, b = 0\nsolange a > 0: b = b + a; a = a - 1\nWelchen Wert hat b am Ende?",
+     "accept": [
+      "6"
+     ],
+     "e": "3 + 2 + 1 = 6."
+    },
+    {
+     "key": "test:2",
+     "q": "Welche Überdeckung verlangt, dass jede Bedingung einmal wahr UND einmal falsch ist?",
+     "o": [
+      "Anweisungsüberdeckung",
+      "Zweigüberdeckung",
+      "Black-Box",
+      "Lasttest"
+     ],
+     "correct": 1,
+     "e": "Zweigüberdeckung (C1) durchläuft jeden Zweig."
+    },
+    {
+     "key": "test:3",
+     "q": "Rabatt ab 100 €. Welche Werte testet die Grenzwertanalyse?",
+     "o": [
+      "0 und 1000",
+      "99,99 / 100 / 100,01",
+      "nur 100",
+      "50 und 500"
+     ],
+     "correct": 1,
+     "e": "Unter, auf und über der Grenze."
+    },
+    {
+     "key": "test:4",
+     "q": "Wie heißt der Test, ob nach einer Änderung alte Funktionen noch gehen?",
+     "o": [
+      "Abnahmetest",
+      "Regressionstest",
+      "Unit-Test",
+      "Lasttest"
+     ],
+     "correct": 1,
+     "e": "Regression = Rückschritt."
+    },
+    {
+     "key": "test:5",
+     "q": "Was ist TDD?",
+     "o": [
+      "Erst Code, dann Test",
+      "Erst Test, dann Code",
+      "Testen durch den Kunden",
+      "Test ohne Code"
+     ],
+     "correct": 1,
+     "e": "Test Driven Development: Red, Green, Refactor."
+    },
+    {
+     "key": "test:6",
+     "q": "Welche Teststufe führt der Kunde durch?",
+     "o": [
+      "Unit-Test",
+      "Integrationstest",
+      "Abnahmetest",
+      "Regressionstest"
+     ],
+     "correct": 2,
+     "e": "Bei der Abnahme bestätigt der Kunde, dass es seine Anforderungen erfüllt."
+    },
+    {
+     "key": "test:7",
+     "q": "x = 1\nfür i = 1 bis 3\n  x = x * 2\nende für\nWert von x?",
+     "accept": [
+      "8"
+     ],
+     "e": "1 → 2 → 4 → 8."
+    }
+   ],
+   "write": [
+    {
+     "task": "Eine Funktion prüft ein Alter: unter 0 ungültig, 0 bis 17 minderjährig, 18 bis 120 volljährig, über 120 ungültig. Nenne die Äquivalenzklassen und je einen Testwert, plus die Grenzwerte.",
+     "model": "Klassen: ungültig < 0 (Testwert -5), minderjährig 0 bis 17 (Testwert 10), volljährig 18 bis 120 (Testwert 40), ungültig > 120 (Testwert 150). Grenzwerte: -1, 0, 17, 18, 120, 121.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "ungültig negativ",
+       "pattern": "(<\\s*0|negativ|-\\d)",
+       "flags": "i"
+      },
+      {
+       "label": "minderjährig 0 bis 17",
+       "pattern": "(0\\s*(bis|-)\\s*17|minderj)",
+       "flags": "i"
+      },
+      {
+       "label": "volljährig 18 bis 120",
+       "pattern": "(18\\s*(bis|-)\\s*120|vollj)",
+       "flags": "i"
+      },
+      {
+       "label": "ungültig über 120",
+       "pattern": "(>\\s*120|(ü|ue)ber\\s*120|121|\\b1[3-9]\\d\\b)",
+       "flags": "i"
+      },
+      {
+       "label": "Grenzwerte 17/18",
+       "pattern": "17.*18|18.*17",
+       "flags": "s"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "umlv",
+   "area": "GA2",
+   "prio": 2,
+   "title": "Aktivitäts-, Sequenz-, Zustandsdiagramm",
+   "mins": 25,
+   "why": "Das Aktivitätsdiagramm ersetzt seit 2025 Struktogramm und PAP.",
+   "clip": [
+    {
+     "h": "Aktivitätsdiagramm: Elemente",
+     "say": "Das Aktivitätsdiagramm ersetzt jetzt Struktogramm und Programmablaufplan. Es beginnt mit einem schwarzen Punkt und endet mit einem Punkt im Ring. Aktionen sind abgerundete Rechtecke. Eine Raute ist eine Verzweigung, und an die Pfeile schreibst du die Bedingungen in eckigen Klammern. Ein dicker Balken bedeutet parallele Abläufe. Swimlanes trennen, wer was macht.",
+     "v": {
+      "table": [
+       [
+        "Symbol",
+        "Bedeutung"
+       ],
+       [
+        "● schwarzer Punkt",
+        "Start"
+       ],
+       [
+        "◉ Punkt mit Ring",
+        "Ende"
+       ],
+       [
+        "▢ abgerundetes Rechteck",
+        "Aktion"
+       ],
+       [
+        "◇ Raute",
+        "Verzweigung / Zusammenführung"
+       ],
+       [
+        "[Bedingung]",
+        "Wächter an den Pfeilen"
+       ],
+       [
+        "▬ dicker Balken",
+        "Parallelität: Gabelung / Vereinigung"
+       ],
+       [
+        "Swimlanes",
+        "Spalten pro Akteur"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Beispiel: Login",
+     "say": "Ein Beispiel. Start, Zugangsdaten eingeben, dann eine Raute. Wenn falsch, Fehlermeldung und zurück zur Eingabe. Das ist eine Schleife. Wenn richtig, Dashboard anzeigen und Ende. Achte darauf, dass jeder Pfeil aus einer Raute eine Bedingung hat.",
+     "v": {
+      "code": "●\n↓\n( Zugangsdaten eingeben )\n↓\n◇ ── [falsch] ──→ ( Fehlermeldung ) ─┐\n│ [richtig]                         │\n↓                                   │\n( Dashboard anzeigen )    ←── zurück zur Eingabe\n↓\n◉"
+     }
+    },
+    {
+     "h": "Sequenzdiagramm",
+     "say": "Das Sequenzdiagramm zeigt, wer wem in welcher Reihenfolge Nachrichten schickt. Oben stehen die Objekte, darunter gestrichelte Lebenslinien. Die Zeit läuft nach unten. Ein Pfeil mit voller Spitze ist ein synchroner Aufruf, die Antwort ist gestrichelt. Mit Kästen namens alt, loop und opt zeigst du Verzweigungen, Schleifen und optionale Teile.",
+     "v": {
+      "code": ":Client      :Server       :Datenbank\n   |  login()  →  |                |\n   |              | prüfe() →      |\n   |              |  ← ok          |\n   |  ← Token     |                |\n   |              |                |\n Lebenslinien senkrecht, Zeit läuft nach unten\n → synchron (volle Spitze)   ⇢ Antwort (gestrichelt)\n alt / loop / opt = kombinierte Fragmente"
+     }
+    },
+    {
+     "h": "Zustandsdiagramm",
+     "say": "Das Zustandsdiagramm zeigt, welche Zustände ein Objekt haben kann und welche Ereignisse es wechseln lassen. Zum Beispiel ein Dokument: Entwurf, einreichen, In Prüfung, dann freigeben oder ablehnen. An den Pfeil schreibst du das Ereignis, optional eine Bedingung in eckigen Klammern und eine Aktion nach dem Schrägstrich.",
+     "v": {
+      "code": "●→ [Entwurf] ──einreichen──→ [In Prüfung]\n                               │      │\n                   ablehnen ←──┘      └──freigeben──→ [Freigegeben] →◉\n\nZustand = abgerundetes Rechteck\nÜbergang = Pfeil mit Ereignis [Bedingung] / Aktion"
+     }
+    },
+    {
+     "h": "Welches Diagramm wann?",
+     "say": "Welches Diagramm wann? Ablauf oder Algorithmus: Aktivitätsdiagramm. Wer ruft wen in welcher Reihenfolge: Sequenzdiagramm. Welche Zustände hat ein Objekt: Zustandsdiagramm. Klassen und Beziehungen: Klassendiagramm. Was kann der Nutzer tun: Anwendungsfalldiagramm.",
+     "v": {
+      "table": [
+       [
+        "Frage",
+        "Diagramm"
+       ],
+       [
+        "Ablauf, Schritte, Algorithmus",
+        "Aktivitätsdiagramm"
+       ],
+       [
+        "Wer ruft wen in welcher Reihenfolge?",
+        "Sequenzdiagramm"
+       ],
+       [
+        "Welche Zustände hat ein Objekt?",
+        "Zustandsdiagramm"
+       ],
+       [
+        "Welche Klassen und Beziehungen?",
+        "Klassendiagramm"
+       ],
+       [
+        "Was kann der Nutzer mit dem System tun?",
+        "Anwendungsfalldiagramm"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "IKq-wBDfU7s",
+     "t": "UML Teil 3: Das Aktivitätsdiagramm",
+     "c": "Patrick Boekhoven"
+    },
+    {
+     "id": "CHkVwoxxg58",
+     "t": "UML-Sequenzdiagramm für AP2 FIAE",
+     "c": "Stefan Macke"
+    },
+    {
+     "id": "5qp0WkU_T-M",
+     "t": "UML-Zustandsdiagramm für FIAE",
+     "c": "Stefan Macke"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "umlv:0",
+     "q": "Was ersetzt seit dem Katalog 2025 Struktogramm und PAP?",
+     "o": [
+      "Klassendiagramm",
+      "Aktivitätsdiagramm oder Pseudocode",
+      "ER-Diagramm",
+      "Gantt-Diagramm"
+     ],
+     "correct": 1,
+     "e": "Struktogramm und PAP sind gestrichen."
+    },
+    {
+     "key": "umlv:1",
+     "q": "Welches Symbol steht im Aktivitätsdiagramm für eine Verzweigung?",
+     "o": [
+      "Kreis",
+      "Raute",
+      "dicker Balken",
+      "Rechteck mit Ecken"
+     ],
+     "correct": 1,
+     "e": "Raute = Entscheidung oder Zusammenführung."
+    },
+    {
+     "key": "umlv:2",
+     "q": "Was zeigt ein dicker schwarzer Balken im Aktivitätsdiagramm?",
+     "o": [
+      "Ende",
+      "Parallele Abläufe",
+      "Fehler",
+      "Datenbank"
+     ],
+     "correct": 1,
+     "e": "Gabelung (Fork) und Vereinigung (Join)."
+    },
+    {
+     "key": "umlv:3",
+     "q": "In welche Richtung läuft die Zeit im Sequenzdiagramm?",
+     "o": [
+      "Von links nach rechts",
+      "Von oben nach unten",
+      "Von unten nach oben",
+      "Gar nicht"
+     ],
+     "correct": 1,
+     "e": "Die Lebenslinien gehen nach unten."
+    },
+    {
+     "key": "umlv:4",
+     "q": "Welches Fragment zeigt im Sequenzdiagramm eine Schleife?",
+     "o": [
+      "alt",
+      "opt",
+      "loop",
+      "par"
+     ],
+     "correct": 2,
+     "e": "alt = Verzweigung, opt = optional, loop = Schleife."
+    },
+    {
+     "key": "umlv:5",
+     "q": "\"Welche Zustände durchläuft ein Antrag?\" Welches Diagramm?",
+     "o": [
+      "Sequenzdiagramm",
+      "Zustandsdiagramm",
+      "Klassendiagramm",
+      "Use-Case"
+     ],
+     "correct": 1,
+     "e": "Zustände und Übergänge."
+    },
+    {
+     "key": "umlv:6",
+     "q": "Wie wird eine Bedingung an einen Pfeil geschrieben?",
+     "o": [
+      "In runden Klammern",
+      "In eckigen Klammern [ ]",
+      "Fett",
+      "Gar nicht"
+     ],
+     "correct": 1,
+     "e": "Wächterbedingung, englisch Guard."
+    }
+   ],
+   "write": [
+    {
+     "task": "Beschreibe in Textform ein Aktivitätsdiagramm für: Kunde gibt Bestellmenge ein. Ist die Menge größer als der Lagerbestand, wird ein Hinweis angezeigt und erneut eingegeben. Sonst wird die Bestellung gespeichert. Nenne Start, Aktionen, Verzweigung mit Bedingungen und Ende.",
+     "model": "Startknoten → Aktion \"Bestellmenge eingeben\" → Raute. Pfeil [Menge > Lagerbestand] → Aktion \"Hinweis anzeigen\" → zurück zu \"Bestellmenge eingeben\". Pfeil [Menge <= Lagerbestand] → Aktion \"Bestellung speichern\" → Endknoten.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Startknoten",
+       "pattern": "start",
+       "flags": "i"
+      },
+      {
+       "label": "Aktion Menge eingeben",
+       "pattern": "eingeb|eingab",
+       "flags": "i"
+      },
+      {
+       "label": "Verzweigung / Raute",
+       "pattern": "raute|verzweig|entscheid",
+       "flags": "i"
+      },
+      {
+       "label": "Bedingungen in eckigen Klammern",
+       "pattern": "\\[.*\\]",
+       "flags": ""
+      },
+      {
+       "label": "Rücksprung / Schleife",
+       "pattern": "zur(ü|ue)ck|erneut|schleife",
+       "flags": "i"
+      },
+      {
+       "label": "speichern",
+       "pattern": "speicher",
+       "flags": "i"
+      },
+      {
+       "label": "Endknoten",
+       "pattern": "end(e|knoten|punkt)",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "klasse",
+   "area": "GA1",
+   "prio": 1,
+   "title": "Klassendiagramm und OOP",
+   "mins": 25,
+   "why": "Das Klassendiagramm ist das wichtigste Thema in GA1.",
+   "clip": [
+    {
+     "h": "Aufbau einer Klasse",
+     "say": "Eine Klasse ist ein Kasten mit drei Teilen. Oben der Name. In der Mitte die Attribute, unten die Methoden. Schreibweise: Name, Doppelpunkt, Datentyp. Bei Methoden stehen die Parameter in Klammern und der Rückgabetyp hinter dem Doppelpunkt.",
+     "v": {
+      "code": "┌──────────────────────────┐\n│        Mandant           │  ← Name\n├──────────────────────────┤\n│ - id: int                │  ← Attribute\n│ - name: String           │\n│ # ort: String            │\n├──────────────────────────┤\n│ + getName(): String      │  ← Methoden\n│ + addAuftrag(a: Auftrag) │\n└──────────────────────────┘"
+     }
+    },
+    {
+     "h": "Sichtbarkeiten",
+     "say": "Die Sichtbarkeiten. Plus heißt public, alle dürfen zugreifen. Minus heißt private, nur die Klasse selbst. Raute heißt protected, die Klasse und ihre Unterklassen. Attribute sind normalerweise private, und der Zugriff läuft über öffentliche Getter und Setter. Das ist Kapselung.",
+     "v": {
+      "table": [
+       [
+        "Zeichen",
+        "Bedeutung",
+        "Wer darf zugreifen"
+       ],
+       [
+        "+",
+        "public",
+        "alle"
+       ],
+       [
+        "-",
+        "private",
+        "nur die Klasse selbst"
+       ],
+       [
+        "#",
+        "protected",
+        "Klasse und Unterklassen"
+       ],
+       [
+        "~",
+        "package",
+        "gleiches Paket"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Beziehungen",
+     "say": "Die Beziehungen. Eine einfache Linie ist eine Assoziation, die Klassen kennen sich. Eine leere Raute ist eine Aggregation: Das Teil kann alleine existieren, wie ein Spieler in einer Mannschaft. Eine gefüllte Raute ist eine Komposition: Das Teil stirbt mit dem Ganzen, wie ein Raum mit dem Gebäude. Ein leeres Dreieck ist Vererbung, also ist ein. Gestrichelt mit Dreieck heißt: implementiert ein Interface. Die Raute sitzt immer beim Ganzen.",
+     "v": {
+      "table": [
+       [
+        "Linie",
+        "Name",
+        "Bedeutung"
+       ],
+       [
+        "——",
+        "Assoziation",
+        "kennt / benutzt"
+       ],
+       [
+        "——◇",
+        "Aggregation",
+        "hat, Teil kann alleine existieren"
+       ],
+       [
+        "——◆",
+        "Komposition",
+        "besteht aus, Teil stirbt mit dem Ganzen"
+       ],
+       [
+        "——▷",
+        "Vererbung",
+        "ist ein"
+       ],
+       [
+        "- - -▷",
+        "Realisierung",
+        "implementiert Interface"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Multiplizitäten",
+     "say": "An die Linien kommen Multiplizitäten. Eins heißt genau einer. Null Punkt Punkt eins heißt keiner oder einer. Stern heißt beliebig viele. Eins Punkt Punkt Stern heißt mindestens einer. Lesen: Ein Mandant hat null bis viele Aufträge. Ein Auftrag gehört zu genau einem Mandanten. Die Zahl steht immer auf der gegenüberliegenden Seite.",
+     "v": {
+      "code": "Mandant 1 ──────── 0..* Auftrag\n\n1      genau einer\n0..1   keiner oder einer\n*      beliebig viele (0..*)\n1..*   mindestens einer\n\nLies: Ein Mandant hat 0 bis viele Aufträge.\n      Ein Auftrag gehört zu genau 1 Mandant."
+     }
+    },
+    {
+     "h": "Die 4 Säulen der OOP",
+     "say": "Die vier Säulen der Objektorientierung. Kapselung: Daten sind privat, Zugriff nur über Methoden. Vererbung: Eine Unterklasse übernimmt alles von der Oberklasse. Polymorphie: Die gleiche Methode verhält sich je nach Objekt anders, weil die Unterklasse sie überschreibt. Abstraktion: Nur das Wichtige modellieren.",
+     "v": {
+      "table": [
+       [
+        "Prinzip",
+        "In einem Satz"
+       ],
+       [
+        "Kapselung",
+        "Daten private, Zugriff nur über Methoden"
+       ],
+       [
+        "Vererbung",
+        "Unterklasse übernimmt Attribute und Methoden der Oberklasse"
+       ],
+       [
+        "Polymorphie",
+        "Gleicher Methodenaufruf, unterschiedliches Verhalten je nach Objekt (Überschreiben)"
+       ],
+       [
+        "Abstraktion",
+        "Nur das Wichtige modellieren, abstrakte Klassen und Interfaces"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Abstrakte Klasse vs. Interface",
+     "say": "Abstrakte Klasse gegen Interface. Von beiden kannst du keine Objekte erzeugen. Eine abstrakte Klasse kann Attribute und fertige Methoden haben, aber du kannst nur von einer erben. Ein Interface gibt nur Methodensignaturen vor, dafür kann eine Klasse mehrere implementieren. In UML ist die abstrakte Klasse kursiv, das Interface hat den Stereotyp interface in spitzen Klammern.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Abstrakte Klasse",
+        "Interface"
+       ],
+       [
+        "Objekte erzeugen?",
+        "nein",
+        "nein"
+       ],
+       [
+        "Attribute",
+        "ja",
+        "nein (nur Konstanten)"
+       ],
+       [
+        "Implementierte Methoden",
+        "ja, gemischt",
+        "nur Signaturen"
+       ],
+       [
+        "Mehrfach?",
+        "nur eine erben",
+        "mehrere implementieren"
+       ],
+       [
+        "UML",
+        "Name kursiv / {abstract}",
+        "«interface»"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Statisch und Konstruktor",
+     "say": "Noch zwei Details. Statische Attribute und Methoden werden unterstrichen. Sie gehören zur Klasse, nicht zu einem einzelnen Objekt. Der Konstruktor heißt wie die Klasse und erzeugt das Objekt.",
+     "v": {
+      "code": "- anzahl: int        (unterstrichen = static)\n+ Mandant(name: String)   ← Konstruktor, heißt wie die Klasse\n\nstatic = gehört zur Klasse, nicht zum Objekt"
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "VsCYGYtZT0I",
+     "t": "UML-Klassendiagramme kurz erklärt",
+     "c": "informatikZentrale"
+    },
+    {
+     "id": "2hZmqX60tLg",
+     "t": "UML Teil 1: Das Klassendiagramm",
+     "c": "Patrick Boekhoven"
+    },
+    {
+     "id": "WhXyB0_0sTU",
+     "t": "Vererbung, Polymorphismus und Interfaces",
+     "c": "42 Entwickler"
+    },
+    {
+     "id": "KbkSpsF0vzE",
+     "t": "Abstrakte Klasse vs. Interface",
+     "c": "nerdwest"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "klasse:0",
+     "q": "Was bedeutet das Zeichen # vor einem Attribut?",
+     "o": [
+      "public",
+      "private",
+      "protected",
+      "static"
+     ],
+     "correct": 2,
+     "e": "# = protected: Klasse und Unterklassen."
+    },
+    {
+     "key": "klasse:1",
+     "q": "Gebäude und Raum: Der Raum existiert nicht ohne das Gebäude. Welche Beziehung?",
+     "o": [
+      "Assoziation",
+      "Aggregation",
+      "Komposition",
+      "Vererbung"
+     ],
+     "correct": 2,
+     "e": "Komposition, gefüllte Raute beim Gebäude."
+    },
+    {
+     "key": "klasse:2",
+     "q": "Mannschaft und Spieler: Der Spieler kann auch ohne die Mannschaft existieren.",
+     "o": [
+      "Komposition",
+      "Aggregation",
+      "Vererbung",
+      "Realisierung"
+     ],
+     "correct": 1,
+     "e": "Aggregation, leere Raute."
+    },
+    {
+     "key": "klasse:3",
+     "q": "Was bedeutet die Multiplizität 1..*?",
+     "o": [
+      "genau einer",
+      "keiner oder einer",
+      "mindestens einer",
+      "beliebig viele, auch keiner"
+     ],
+     "correct": 2,
+     "e": "Untergrenze 1, Obergrenze unbegrenzt."
+    },
+    {
+     "key": "klasse:4",
+     "q": "Eine Unterklasse überschreibt eine Methode. Ein Aufruf verhält sich je nach Objekt anders. Wie heißt das?",
+     "o": [
+      "Kapselung",
+      "Polymorphie",
+      "Komposition",
+      "Abstraktion"
+     ],
+     "correct": 1,
+     "e": "Polymorphie = Vielgestaltigkeit."
+    },
+    {
+     "key": "klasse:5",
+     "q": "Wie viele Interfaces kann eine Klasse implementieren?",
+     "o": [
+      "keins",
+      "genau eins",
+      "mehrere",
+      "nur zwei"
+     ],
+     "correct": 2,
+     "e": "Erben nur von einer Klasse, implementieren beliebig viele Interfaces."
+    },
+    {
+     "key": "klasse:6",
+     "q": "Wie erkennst du in UML ein statisches Attribut?",
+     "o": [
+      "kursiv",
+      "unterstrichen",
+      "fett",
+      "mit Stern"
+     ],
+     "correct": 1,
+     "e": "Unterstrichen = static."
+    },
+    {
+     "key": "klasse:7",
+     "q": "Welcher Pfeil steht für Vererbung?",
+     "o": [
+      "gefüllte Raute",
+      "leeres Dreieck an der Oberklasse",
+      "gestrichelter Pfeil ohne Spitze",
+      "Doppelpfeil"
+     ],
+     "correct": 1,
+     "e": "Das leere Dreieck zeigt auf die Oberklasse."
+    }
+   ],
+   "write": [
+    {
+     "task": "Modelliere in Textform: Eine abstrakte Klasse Person (privat name: String, öffentliche Methode getName). Die Klassen Mitarbeiter (privat gehalt: double) und Mandant (privat mandantNr: int) erben davon. Ein Mitarbeiter betreut 0 bis viele Mandanten, ein Mandant hat genau 1 betreuenden Mitarbeiter.",
+     "model": "{abstract} Person\n  - name: String\n  + getName(): String\n\nMitarbeiter ——▷ Person\n  - gehalt: double\n\nMandant ——▷ Person\n  - mandantNr: int\n\nMitarbeiter 1 ——— betreut ——— 0..* Mandant",
+     "alt": null,
+     "keys": [
+      {
+       "label": "abstrakt kennzeichnen",
+       "pattern": "abstract|abstrakt|kursiv",
+       "flags": "i"
+      },
+      {
+       "label": "- name: String",
+       "pattern": "-\\s*name\\s*:\\s*string",
+       "flags": "i"
+      },
+      {
+       "label": "+ getName(): String",
+       "pattern": "\\+\\s*getname\\s*\\(\\s*\\)\\s*:\\s*string",
+       "flags": "i"
+      },
+      {
+       "label": "Vererbung zu Person",
+       "pattern": "erb|vererb|dreieck|ist ein|extends|▷",
+       "flags": "i"
+      },
+      {
+       "label": "- gehalt: double",
+       "pattern": "-\\s*gehalt\\s*:\\s*(double|float|decimal)",
+       "flags": "i"
+      },
+      {
+       "label": "Multiplizität 0..*",
+       "pattern": "0\\.\\.\\*|\\*",
+       "flags": ""
+      },
+      {
+       "label": "Multiplizität 1",
+       "pattern": "\\b1\\b",
+       "flags": ""
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "erm",
+   "area": "GA1",
+   "prio": 1,
+   "title": "ER-Modell und Normalisierung",
+   "mins": 25,
+   "why": "Datenbanken sind mit 83 % das häufigste Themencluster.",
+   "clip": [
+    {
+     "h": "ER-Modell: die Bausteine",
+     "say": "Im Entity-Relationship-Modell sind Entitäten Rechtecke, zum Beispiel Mandant. Attribute sind Ovale, der Schlüssel wird unterstrichen. Beziehungen sind Rauten. An die Linien schreibst du die Kardinalitäten: eins zu eins, eins zu n oder n zu m.",
+     "v": {
+      "table": [
+       [
+        "Symbol",
+        "Bedeutung"
+       ],
+       [
+        "Rechteck",
+        "Entität (z. B. Mandant)"
+       ],
+       [
+        "Ellipse / Oval",
+        "Attribut, Schlüssel unterstrichen"
+       ],
+       [
+        "Raute",
+        "Beziehung (z. B. erteilt)"
+       ],
+       [
+        "1 : n, n : m",
+        "Kardinalität"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Kardinalitäten in Tabellen umwandeln",
+     "say": "Das ist der wichtigste Punkt. Eins zu n: Der Fremdschlüssel kommt auf die n-Seite. Ein Mandant hat viele Aufträge, also bekommt Auftrag die MandantID. n zu m: Du brauchst eine Zwischentabelle. Ein Mitarbeiter arbeitet an vielen Aufträgen, ein Auftrag hat viele Mitarbeiter. Also Tabelle Mitarbeit mit MitarbeiterID und AuftragID.",
+     "v": {
+      "table": [
+       [
+        "Beziehung",
+        "Umsetzung in Tabellen"
+       ],
+       [
+        "1 : 1",
+        "Fremdschlüssel in eine der Tabellen"
+       ],
+       [
+        "1 : n",
+        "Fremdschlüssel auf der n-Seite"
+       ],
+       [
+        "n : m",
+        "Eigene Zwischentabelle mit beiden Fremdschlüsseln"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Beispiel n : m",
+     "say": "So sieht das aus. Die Zwischentabelle Mitarbeit hat beide Fremdschlüssel. Zusammen bilden sie den Primärschlüssel, das ist ein zusammengesetzter Schlüssel. Zusätzliche Infos wie die Stunden gehören genau in diese Tabelle.",
+     "v": {
+      "code": "Mitarbeiter(MitarbeiterID, Name)\nAuftrag(AuftragID, Art)\nMitarbeit(#MitarbeiterID, #AuftragID, Stunden)\n\nunterstrichen/PK: Primärschlüssel\n#: Fremdschlüssel\nMitarbeit hat einen zusammengesetzten Schlüssel"
+     }
+    },
+    {
+     "h": "Anomalien: warum normalisieren?",
+     "say": "Redundanz führt zu Anomalien. Änderungsanomalie: Zieht der Mandant um, musst du den Ort in vielen Zeilen ändern, und vergisst eine. Einfügeanomalie: Einen neuen Mandanten ohne Auftrag kannst du nicht speichern. Löschanomalie: Löschst du den letzten Auftrag, ist der Mandant auch weg. Deshalb normalisiert man.",
+     "v": {
+      "code": "AuftragID | Mandant       | Ort    | Art\n10        | Bäckerei Gies | Fulda  | Steuer\n11        | Bäckerei Gies | Fulda  | Lohn\n\nÄnderungsanomalie: Ort ändern → in vielen Zeilen\nEinfügeanomalie:  Mandant ohne Auftrag nicht speicherbar\nLöschanomalie:    letzten Auftrag löschen → Mandant weg"
+     }
+    },
+    {
+     "h": "Die 3 Normalformen",
+     "say": "Die drei Normalformen. Erste: Alle Werte sind atomar. Keine Listen wie Telefon eins Komma Telefon zwei in einer Zelle, und Name in Vor- und Nachname trennen. Zweite: Alles hängt vom ganzen Schlüssel ab, nicht nur von einem Teil. Das betrifft nur zusammengesetzte Schlüssel. Dritte: Kein Nicht-Schlüsselattribut hängt von einem anderen Nicht-Schlüsselattribut ab. Klassiker: Postleitzahl bestimmt den Ort. Also Ort in eine eigene Tabelle.",
+     "v": {
+      "table": [
+       [
+        "Normalform",
+        "Regel",
+        "Merksatz"
+       ],
+       [
+        "1. NF",
+        "Alle Werte atomar, keine Listen in einer Zelle",
+        "Ein Feld, ein Wert"
+       ],
+       [
+        "2. NF",
+        "1. NF + jedes Nicht-Schlüsselattribut hängt vom GANZEN Schlüssel ab",
+        "Nur relevant bei zusammengesetztem Schlüssel"
+       ],
+       [
+        "3. NF",
+        "2. NF + keine Abhängigkeit zwischen Nicht-Schlüsselattributen",
+        "Keine transitiven Abhängigkeiten"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Merksatz",
+     "say": "Der Merksatz: Jedes Attribut hängt vom Schlüssel ab, vom ganzen Schlüssel, und von nichts als dem Schlüssel. Das sind die drei Normalformen in einem Satz.",
+     "v": {
+      "stat": "Der Schlüssel, der ganze Schlüssel und nichts als der Schlüssel",
+      "sub": "1. NF: es gibt einen Schlüssel und atomare Werte · 2. NF: der ganze · 3. NF: nichts anderes"
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "fVbYB_34v-E",
+     "t": "Das Entity-Relationship-Modell",
+     "c": "Patrick Boekhoven"
+    },
+    {
+     "id": "I2_hNwaQvBI",
+     "t": "Die drei Normalformen einfach erklärt",
+     "c": "Patrick Boekhoven"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "erm:0",
+     "q": "Bei einer 1:n-Beziehung kommt der Fremdschlüssel ...",
+     "o": [
+      "auf die 1-Seite",
+      "auf die n-Seite",
+      "in eine Zwischentabelle",
+      "gar nicht"
+     ],
+     "correct": 1,
+     "e": "Jeder Auftrag merkt sich seinen einen Mandanten."
+    },
+    {
+     "key": "erm:1",
+     "q": "Was brauchst du bei einer n:m-Beziehung?",
+     "o": [
+      "nichts Besonderes",
+      "eine Zwischentabelle",
+      "zwei Primärschlüssel in einer Tabelle",
+      "einen Index"
+     ],
+     "correct": 1,
+     "e": "Zwischentabelle mit beiden Fremdschlüsseln."
+    },
+    {
+     "key": "erm:2",
+     "q": "In einer Zelle steht \"0661-123, 0171-456\". Welche Normalform ist verletzt?",
+     "o": [
+      "1. NF",
+      "2. NF",
+      "3. NF",
+      "keine"
+     ],
+     "correct": 0,
+     "e": "Werte sind nicht atomar."
+    },
+    {
+     "key": "erm:3",
+     "q": "PLZ bestimmt Ort, PLZ ist kein Schlüssel. Welche Normalform ist verletzt?",
+     "o": [
+      "1. NF",
+      "2. NF",
+      "3. NF",
+      "keine"
+     ],
+     "correct": 2,
+     "e": "Transitive Abhängigkeit: Schlüssel → PLZ → Ort."
+    },
+    {
+     "key": "erm:4",
+     "q": "Die 2. NF ist nur ein Thema, wenn ...",
+     "o": [
+      "die Tabelle leer ist",
+      "der Primärschlüssel zusammengesetzt ist",
+      "es Fremdschlüssel gibt",
+      "Text gespeichert wird"
+     ],
+     "correct": 1,
+     "e": "Teilabhängigkeiten gibt es nur bei mehrteiligen Schlüsseln."
+    },
+    {
+     "key": "erm:5",
+     "q": "Löscht man den letzten Auftrag, ist der Mandant auch weg. Welche Anomalie?",
+     "o": [
+      "Einfügeanomalie",
+      "Änderungsanomalie",
+      "Löschanomalie",
+      "keine"
+     ],
+     "correct": 2,
+     "e": "Löschen reißt ungewollt Daten mit."
+    },
+    {
+     "key": "erm:6",
+     "q": "Was ist im ER-Modell eine Raute?",
+     "o": [
+      "Entität",
+      "Attribut",
+      "Beziehung",
+      "Schlüssel"
+     ],
+     "correct": 2,
+     "e": "Rechteck = Entität, Oval = Attribut, Raute = Beziehung."
+    }
+   ],
+   "write": [
+    {
+     "task": "Eine Kanzlei speichert: Mitarbeiter (Personalnummer, Name), Mandanten (MandantNr, Name, PLZ, Ort) und welcher Mitarbeiter wie viele Stunden für welchen Mandanten gearbeitet hat (ein Mitarbeiter hat viele Mandanten, ein Mandant viele Mitarbeiter). Gib die Tabellen in 3. NF mit Primär- und Fremdschlüsseln an.",
+     "model": "Mitarbeiter(PersonalNr, Name)\nMandant(MandantNr, Name, #PLZ)\nOrt(PLZ, Ort)\nArbeitszeit(#PersonalNr, #MandantNr, Stunden)\n\nPrimärschlüssel: PersonalNr, MandantNr, PLZ, und in Arbeitszeit beide zusammen.\n# = Fremdschlüssel. Ort ist ausgelagert wegen 3. NF (PLZ → Ort).",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Tabelle Mitarbeiter",
+       "pattern": "mitarbeiter\\s*\\(",
+       "flags": "i"
+      },
+      {
+       "label": "Tabelle Mandant",
+       "pattern": "mandant\\s*\\(",
+       "flags": "i"
+      },
+      {
+       "label": "Zwischentabelle mit beiden FK",
+       "pattern": "\\(\\s*#?\\s*\\w*(personal|mitarbeiter)\\w*\\s*,\\s*#?\\s*\\w*mandant\\w*|\\(\\s*#?\\s*\\w*mandant\\w*\\s*,\\s*#?\\s*\\w*(personal|mitarbeiter)",
+       "flags": "i"
+      },
+      {
+       "label": "Stunden in Zwischentabelle",
+       "pattern": "stunden",
+       "flags": "i"
+      },
+      {
+       "label": "PLZ/Ort ausgelagert",
+       "pattern": "(ort|plz)\\s*\\(\\s*#?\\s*plz",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "vorgehen",
+   "area": "GA1",
+   "prio": 2,
+   "title": "Scrum, Vorgehensmodelle, Anforderungen",
+   "mins": 20,
+   "why": "Vorgehensmodelle kamen in 5 von 9 Prüfungen, Anforderungsanalyse sehr häufig.",
+   "clip": [
+    {
+     "h": "Klassisch vs. agil",
+     "say": "Klassische Modelle wie Wasserfall planen alles am Anfang und liefern am Ende. Das ist gut bei festen Anforderungen, aber Änderungen sind teuer. Agile Modelle wie Scrum liefern alle paar Wochen ein funktionierendes Stück. Gut, wenn der Kunde noch nicht genau weiß, was er will.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Wasserfall / V-Modell",
+        "Agil / Scrum"
+       ],
+       [
+        "Anforderungen",
+        "am Anfang komplett",
+        "entwickeln sich"
+       ],
+       [
+        "Ergebnis",
+        "am Ende",
+        "alle 1 bis 4 Wochen"
+       ],
+       [
+        "Änderungen",
+        "teuer",
+        "willkommen"
+       ],
+       [
+        "Gut wenn",
+        "feste, klare Anforderungen",
+        "unklare, sich ändernde Anforderungen"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Wasserfall und V-Modell",
+     "say": "Beim Wasserfall läuft eine Phase nach der anderen. Das V-Modell ist ein Wasserfall mit eingebauter Qualität: Zu jeder Entwurfsphase links gehört rechts eine Teststufe. Zu den Anforderungen gehört der Abnahmetest, zum Modulentwurf der Unit-Test.",
+     "v": {
+      "code": "Wasserfall: Analyse → Entwurf → Implementierung → Test → Betrieb\n            (jede Phase erst nach Abschluss der vorigen)\n\nV-Modell: zu jeder Entwurfsphase gehört eine Teststufe\n Anforderungen ────────── Abnahmetest\n   Systementwurf ───── Systemtest\n     Modulentwurf ─ Integrationstest\n        Implementierung → Unit-Test"
+     }
+    },
+    {
+     "h": "Scrum: 3 Rollen",
+     "say": "Scrum hat drei Rollen. Der Product Owner verantwortet und priorisiert das Product Backlog. Der Scrum Master räumt Hindernisse aus dem Weg und achtet auf die Regeln. Er ist kein Chef. Die Developers organisieren sich selbst und setzen um.",
+     "v": {
+      "table": [
+       [
+        "Rolle",
+        "Aufgabe"
+       ],
+       [
+        "Product Owner",
+        "verantwortet das Product Backlog, priorisiert, vertritt den Kunden"
+       ],
+       [
+        "Scrum Master",
+        "entfernt Hindernisse, achtet auf Scrum-Regeln, ist KEIN Chef"
+       ],
+       [
+        "Developers",
+        "selbstorganisiertes Team, setzt um"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Scrum: Events und Artefakte",
+     "say": "Die Events. Ein Sprint dauert eine bis vier Wochen. Am Anfang das Sprint Planning. Jeden Tag ein Daily von fünfzehn Minuten. Am Ende das Review, wo das Ergebnis gezeigt wird, und die Retrospektive, wo das Team über die Zusammenarbeit spricht. Die Artefakte: Product Backlog, Sprint Backlog und das Increment.",
+     "v": {
+      "table": [
+       [
+        "Event",
+        "Wann / Dauer"
+       ],
+       [
+        "Sprint",
+        "1 bis 4 Wochen, feste Länge"
+       ],
+       [
+        "Sprint Planning",
+        "Start: was kommt in den Sprint"
+       ],
+       [
+        "Daily Scrum",
+        "täglich 15 Minuten"
+       ],
+       [
+        "Sprint Review",
+        "Ende: Ergebnis dem Kunden zeigen"
+       ],
+       [
+        "Retrospektive",
+        "Ende: wie arbeiten wir besser"
+       ]
+      ],
+      "table2": [
+       [
+        "Artefakt",
+        ""
+       ],
+       [
+        "Product Backlog",
+        "alle Anforderungen, priorisiert"
+       ],
+       [
+        "Sprint Backlog",
+        "Aufgaben für diesen Sprint"
+       ],
+       [
+        "Increment",
+        "fertiges, nutzbares Ergebnis"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Lastenheft und Pflichtenheft",
+     "say": "Lastenheft und Pflichtenheft. Das Lastenheft schreibt der Auftraggeber. Es beschreibt, was das System können soll. Das Pflichtenheft schreibt der Auftragnehmer. Es beschreibt, wie es umgesetzt wird. Merke: Lasten trägt der Kunde.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Lastenheft",
+        "Pflichtenheft"
+       ],
+       [
+        "Wer schreibt?",
+        "Auftraggeber",
+        "Auftragnehmer"
+       ],
+       [
+        "Frage",
+        "WAS soll es können?",
+        "WIE wird es umgesetzt?"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Anforderungen",
+     "say": "Funktionale Anforderungen beschreiben, was das System tut. Nicht-funktionale beschreiben, wie gut: Performance, Sicherheit, Bedienbarkeit. Eine User Story hat immer das Muster: Als Rolle möchte ich Ziel, damit Nutzen.",
+     "v": {
+      "code": "Funktional:      WAS das System tut\n                 \"Mandanten können Belege hochladen\"\nNicht-funktional: WIE GUT es das tut\n                 \"Upload in unter 2 Sekunden\", \"DSGVO-konform\"\n\nUser Story:\nAls <Rolle> möchte ich <Ziel>, damit <Nutzen>.\nAls Sachbearbeiter möchte ich Belege filtern,\ndamit ich schneller buchen kann."
+     }
+    },
+    {
+     "h": "Anwendungsfalldiagramm",
+     "say": "Das Anwendungsfalldiagramm. Akteure sind Strichmännchen außerhalb des Systems. Das System ist ein Rechteck, die Anwendungsfälle sind Ovale darin. Include heißt, wird immer mit ausgeführt. Extend heißt, wird nur manchmal, optional ausgeführt.",
+     "v": {
+      "code": "  Strichmännchen = Akteur (außerhalb des Systems)\n  Rechteck       = Systemgrenze\n  Oval           = Anwendungsfall\n\n  «include»: wird IMMER mit ausgeführt\n             (Bestellen → include → Anmelden)\n  «extend»:  wird OPTIONAL ausgeführt\n             (Gutschein einlösen → extend → Bestellen)"
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "Ibz9STVjtzI",
+     "t": "Scrum einfach erklärt",
+     "c": "Sebastian Schneider"
+    },
+    {
+     "id": "P0TgRjj8hQg",
+     "t": "V-Modell",
+     "c": "Thomas Grosser"
+    },
+    {
+     "id": "eQoC4GDzYbI",
+     "t": "UML-Anwendungsfalldiagramm",
+     "c": "Stefan Macke"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "vorgehen:0",
+     "q": "Wer schreibt das Pflichtenheft?",
+     "o": [
+      "Auftraggeber",
+      "Auftragnehmer",
+      "Scrum Master",
+      "Betriebsrat"
+     ],
+     "correct": 1,
+     "e": "Pflichtenheft = wie, vom Auftragnehmer."
+    },
+    {
+     "key": "vorgehen:1",
+     "q": "Wer priorisiert in Scrum das Product Backlog?",
+     "o": [
+      "Scrum Master",
+      "Product Owner",
+      "Developers",
+      "Kunde direkt"
+     ],
+     "correct": 1,
+     "e": "Der Product Owner."
+    },
+    {
+     "key": "vorgehen:2",
+     "q": "Wie lange dauert das Daily Scrum?",
+     "accept": [
+      "15",
+      "15 minuten",
+      "15min",
+      "15 min"
+     ],
+     "e": "Maximal 15 Minuten."
+    },
+    {
+     "key": "vorgehen:3",
+     "q": "\"Die Seite lädt in unter 2 Sekunden.\" Welche Art Anforderung?",
+     "o": [
+      "funktional",
+      "nicht-funktional",
+      "User Story",
+      "Lastenheft"
+     ],
+     "correct": 1,
+     "e": "Beschreibt Qualität (Performance), nicht Funktion."
+    },
+    {
+     "key": "vorgehen:4",
+     "q": "Im V-Modell gehört zur Phase \"Anforderungsdefinition\" welcher Test?",
+     "o": [
+      "Unit-Test",
+      "Integrationstest",
+      "Systemtest",
+      "Abnahmetest"
+     ],
+     "correct": 3,
+     "e": "Ganz oben im V: Anforderungen ↔ Abnahme."
+    },
+    {
+     "key": "vorgehen:5",
+     "q": "In welchem Scrum-Event spricht das Team über die eigene Zusammenarbeit?",
+     "o": [
+      "Review",
+      "Retrospektive",
+      "Planning",
+      "Daily"
+     ],
+     "correct": 1,
+     "e": "Review = Produkt, Retro = Prozess."
+    },
+    {
+     "key": "vorgehen:6",
+     "q": "Anwendungsfall wird nur manchmal zusätzlich ausgeführt. Welche Beziehung?",
+     "o": [
+      "«include»",
+      "«extend»",
+      "Vererbung",
+      "Komposition"
+     ],
+     "correct": 1,
+     "e": "extend = optional."
+    },
+    {
+     "key": "vorgehen:7",
+     "q": "Wann passt Wasserfall besser als Scrum?",
+     "o": [
+      "Anforderungen sind unklar",
+      "Anforderungen sind fest und klar",
+      "Kunde will jede Woche Feedback",
+      "nie"
+     ],
+     "correct": 1,
+     "e": "Klassisch bei stabilen Anforderungen."
+    }
+   ],
+   "write": [
+    {
+     "task": "Ein Mandant soll Belege per App hochladen können. Schreibe eine User Story dazu und nenne je eine funktionale und eine nicht-funktionale Anforderung.",
+     "model": "User Story: Als Mandant möchte ich Belege mit dem Handy fotografieren und hochladen, damit ich sie nicht mehr in die Kanzlei bringen muss.\nFunktional: Die App lädt Fotos und PDFs hoch und ordnet sie dem Mandanten zu.\nNicht-funktional: Die Übertragung ist verschlüsselt (TLS) und ein Upload dauert unter 5 Sekunden.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Als ...",
+       "pattern": "\\bals\\b",
+       "flags": "i"
+      },
+      {
+       "label": "möchte ich ...",
+       "pattern": "m(ö|oe)chte\\s+ich|will\\s+ich",
+       "flags": "i"
+      },
+      {
+       "label": "damit ...",
+       "pattern": "damit",
+       "flags": "i"
+      },
+      {
+       "label": "funktionale Anforderung",
+       "pattern": "funktional",
+       "flags": "i"
+      },
+      {
+       "label": "nicht-funktionale Anforderung",
+       "pattern": "nicht.?funktional",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "security",
+   "area": "GA1",
+   "prio": 2,
+   "title": "IT-Sicherheit und Datenschutz",
+   "mins": 25,
+   "why": "IT-Sicherheit kam in fast jeder zweiten Prüfung. In einer Kanzlei bist du da eh Profi.",
+   "clip": [
+    {
+     "h": "Schutzziele",
+     "say": "Die drei Schutzziele. Vertraulichkeit: Nur Befugte dürfen Daten lesen, zum Beispiel durch Verschlüsselung. Integrität: Daten sind nicht unbemerkt verändert, zum Beispiel durch Hashwerte. Verfügbarkeit: Systeme sind da, wenn man sie braucht, durch Backups und Redundanz. Dazu kommen oft Authentizität und Verbindlichkeit.",
+     "v": {
+      "table": [
+       [
+        "Schutzziel",
+        "Frage",
+        "Maßnahme"
+       ],
+       [
+        "Vertraulichkeit",
+        "Nur Befugte lesen?",
+        "Verschlüsselung, Rechte"
+       ],
+       [
+        "Integrität",
+        "Unverändert?",
+        "Hash, Signatur"
+       ],
+       [
+        "Verfügbarkeit",
+        "Erreichbar wenn nötig?",
+        "Backup, RAID, USV"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Symmetrisch vs. asymmetrisch",
+     "say": "Symmetrische Verschlüsselung nutzt einen gemeinsamen Schlüssel, zum Beispiel AES. Schnell, aber wie tauscht man den Schlüssel sicher aus? Asymmetrische Verschlüsselung nutzt ein Schlüsselpaar, zum Beispiel RSA. Mit dem öffentlichen Schlüssel des Empfängers verschlüsseln, nur sein privater Schlüssel kann entschlüsseln. Langsamer.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Symmetrisch",
+        "Asymmetrisch"
+       ],
+       [
+        "Schlüssel",
+        "1 gemeinsamer",
+        "Paar: öffentlich + privat"
+       ],
+       [
+        "Geschwindigkeit",
+        "schnell",
+        "langsam"
+       ],
+       [
+        "Problem",
+        "Schlüsselaustausch",
+        "Vertrauen in öffentlichen Schlüssel"
+       ],
+       [
+        "Beispiel",
+        "AES",
+        "RSA"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Hybrid, Signatur, Hash",
+     "say": "In der Praxis nutzt man hybride Verfahren wie bei HTTPS. Asymmetrisch wird ein Sitzungsschlüssel ausgetauscht, dann wird symmetrisch schnell verschlüsselt. Ein Hash ist eine Einwegfunktion. Passwörter speichert man nur gehasht und mit Salt. Bei der digitalen Signatur verschlüsselt der Absender den Hash mit seinem privaten Schlüssel. Jeder kann mit dem öffentlichen Schlüssel prüfen. Das sichert Integrität und Authentizität.",
+     "v": {
+      "code": "Hybrid (z. B. TLS/HTTPS):\n  asymmetrisch → Sitzungsschlüssel austauschen\n  symmetrisch  → Daten schnell verschlüsseln\n\nHash: Einwegfunktion, gleiche Eingabe = gleicher Hash\n  Passwörter nur gehasht + Salt speichern (bcrypt, Argon2)\n\nDigitale Signatur:\n  Hash der Nachricht mit PRIVATEM Schlüssel des Absenders\n  Prüfen mit ÖFFENTLICHEM Schlüssel des Absenders\n  → Integrität + Authentizität"
+     }
+    },
+    {
+     "h": "Angriffe",
+     "say": "Typische Angriffe und Schutz. SQL-Injection: Prepared Statements. Cross Site Scripting: Ausgaben escapen. Man in the Middle: TLS und Zertifikate. Phishing und Social Engineering: Schulung der Mitarbeiter und Multi-Faktor-Authentifizierung. DDoS: Firewall und Rate Limiting. Ransomware: Offline-Backups.",
+     "v": {
+      "table": [
+       [
+        "Angriff",
+        "Schutz"
+       ],
+       [
+        "SQL-Injection",
+        "Prepared Statements"
+       ],
+       [
+        "XSS",
+        "Ausgaben escapen"
+       ],
+       [
+        "Man-in-the-Middle",
+        "TLS, Zertifikate prüfen"
+       ],
+       [
+        "Phishing / Social Engineering",
+        "Schulung, MFA"
+       ],
+       [
+        "DDoS",
+        "Firewall, CDN, Rate Limiting"
+       ],
+       [
+        "Brute Force",
+        "Sperre nach Fehlversuchen, MFA"
+       ],
+       [
+        "Ransomware",
+        "Offline-Backups, Updates"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "DSGVO: das Wichtigste",
+     "say": "Die DSGVO schützt personenbezogene Daten. Wichtige Grundsätze: Zweckbindung, Datenminimierung, also nur so viele Daten wie nötig, und Speicherbegrenzung. Betroffene haben Rechte auf Auskunft, Berichtigung und Löschung. Eine Datenpanne muss innerhalb von zweiundsiebzig Stunden gemeldet werden. Wer Daten für andere verarbeitet, braucht einen Auftragsverarbeitungsvertrag.",
+     "v": {
+      "list": [
+       "Personenbezogene Daten: alles, was eine Person identifiziert",
+       "Grundsätze: Zweckbindung, Datenminimierung, Speicherbegrenzung, Rechtmäßigkeit",
+       "Rechte: Auskunft, Berichtigung, Löschung, Datenübertragbarkeit, Widerspruch",
+       "Datenpanne: Meldung an Aufsichtsbehörde binnen 72 Stunden",
+       "Privacy by Design / by Default",
+       "Auftragsverarbeitung braucht AV-Vertrag",
+       "TOM: technische und organisatorische Maßnahmen"
+      ]
+     }
+    },
+    {
+     "h": "TOM-Beispiele",
+     "say": "Technische und organisatorische Maßnahmen, kurz TOM. Technisch: Festplattenverschlüsselung wie BitLocker, Multi-Faktor, Firewall, Backups. Organisatorisch: Berechtigungskonzept, Schulungen, aufgeräumter Schreibtisch, Verschwiegenheitsverpflichtung. Das kennst du alles aus der Kanzlei.",
+     "v": {
+      "table": [
+       [
+        "Technisch",
+        "Organisatorisch"
+       ],
+       [
+        "Verschlüsselung (BitLocker)",
+        "Berechtigungskonzept"
+       ],
+       [
+        "MFA, Passwortrichtlinie",
+        "Schulungen"
+       ],
+       [
+        "Firewall, Backups",
+        "Clean-Desk-Policy"
+       ],
+       [
+        "Protokollierung",
+        "Verpflichtung auf Vertraulichkeit"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "9TuHFuzXKKo",
+     "t": "Schutzziele der Informationssicherheit",
+     "c": "InformatikVideos"
+    },
+    {
+     "id": "xFnkDxccp2g",
+     "t": "DSGVO in 5 Minuten erklärt",
+     "c": "Masterplan.com"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "security:0",
+     "q": "Ein Backup schützt vor allem welches Schutzziel?",
+     "o": [
+      "Vertraulichkeit",
+      "Integrität",
+      "Verfügbarkeit",
+      "Anonymität"
+     ],
+     "correct": 2,
+     "e": "Daten bleiben verfügbar, auch nach Ausfall."
+    },
+    {
+     "key": "security:1",
+     "q": "Womit verschlüsselt man eine Nachricht an Bob asymmetrisch?",
+     "o": [
+      "Bobs privatem Schlüssel",
+      "Bobs öffentlichem Schlüssel",
+      "eigenem privatem Schlüssel",
+      "AES"
+     ],
+     "correct": 1,
+     "e": "Nur Bobs privater Schlüssel kann dann entschlüsseln."
+    },
+    {
+     "key": "security:2",
+     "q": "Womit erstellt der Absender eine digitale Signatur?",
+     "o": [
+      "seinem privaten Schlüssel",
+      "seinem öffentlichen Schlüssel",
+      "dem Schlüssel des Empfängers",
+      "einem Passwort"
+     ],
+     "correct": 0,
+     "e": "Prüfen kann jeder mit dem öffentlichen Schlüssel des Absenders."
+    },
+    {
+     "key": "security:3",
+     "q": "Warum ist HTTPS hybrid?",
+     "o": [
+      "weil es zwei Server gibt",
+      "asymmetrisch für Schlüsselaustausch, symmetrisch für Daten",
+      "weil es Hash und Salt nutzt",
+      "gar nicht"
+     ],
+     "correct": 1,
+     "e": "Kombiniert Sicherheit beim Austausch mit Geschwindigkeit."
+    },
+    {
+     "key": "security:4",
+     "q": "In wie vielen Stunden muss eine Datenpanne gemeldet werden?",
+     "accept": [
+      "72",
+      "72 stunden"
+     ],
+     "e": "Art. 33 DSGVO: binnen 72 Stunden an die Aufsichtsbehörde."
+    },
+    {
+     "key": "security:5",
+     "q": "Wie speichert man Passwörter richtig?",
+     "o": [
+      "verschlüsselt mit AES",
+      "im Klartext",
+      "gehasht mit Salt",
+      "Base64"
+     ],
+     "correct": 2,
+     "e": "Hash plus Salt, z. B. bcrypt oder Argon2."
+    },
+    {
+     "key": "security:6",
+     "q": "\"Nur so viele Daten erheben wie nötig.\" Welcher DSGVO-Grundsatz?",
+     "o": [
+      "Zweckbindung",
+      "Datenminimierung",
+      "Transparenz",
+      "Integrität"
+     ],
+     "correct": 1,
+     "e": "Datenminimierung."
+    },
+    {
+     "key": "security:7",
+     "q": "Ist eine Schulung der Mitarbeiter eine technische oder organisatorische Maßnahme?",
+     "o": [
+      "technisch",
+      "organisatorisch"
+     ],
+     "correct": 1,
+     "e": "Organisatorisch."
+    }
+   ],
+   "write": [
+    {
+     "task": "Eure Kanzlei will Mandanten-Dokumente in einem Webportal bereitstellen. Nenne 4 Maßnahmen zur IT-Sicherheit und ordne jede einem Schutzziel zu.",
+     "model": "1. TLS-Verschlüsselung (HTTPS): Vertraulichkeit.\n2. Multi-Faktor-Authentifizierung: Vertraulichkeit / Authentizität.\n3. Rollen- und Berechtigungskonzept, jeder Mandant sieht nur seine Dokumente: Vertraulichkeit.\n4. Regelmäßige Backups und redundante Server: Verfügbarkeit.\n5. Hashwerte/Protokollierung von Änderungen: Integrität.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Verschlüsselung / TLS",
+       "pattern": "verschl(ü|ue)ssel|tls|https",
+       "flags": "i"
+      },
+      {
+       "label": "Authentifizierung / MFA / Passwort",
+       "pattern": "mfa|2fa|zwei.?faktor|multi.?faktor|passwort|authent",
+       "flags": "i"
+      },
+      {
+       "label": "Backup",
+       "pattern": "backup|sicherung",
+       "flags": "i"
+      },
+      {
+       "label": "Berechtigung / Rechte",
+       "pattern": "recht|berechtig|rolle",
+       "flags": "i"
+      },
+      {
+       "label": "Schutzziel genannt",
+       "pattern": "vertraulich|integrit|verf(ü|ue)gbar",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "patterns",
+   "area": "GA1",
+   "prio": 2,
+   "title": "Entwurfsmuster und MVC",
+   "mins": 15,
+   "why": "Observer kam schon 3 Mal. Singleton, Factory, Facade, MVC stehen im Katalog.",
+   "clip": [
+    {
+     "h": "Was sind Entwurfsmuster?",
+     "say": "Entwurfsmuster sind bewährte Lösungsschablonen für Probleme, die immer wieder auftauchen. Du musst sie nicht programmieren können, aber erkennen und erklären.",
+     "v": {
+      "stat": "Bewährte Lösungen",
+      "sub": "für wiederkehrende Probleme beim Software-Entwurf"
+     }
+    },
+    {
+     "h": "Singleton",
+     "say": "Singleton sorgt dafür, dass es von einer Klasse nur genau ein Objekt gibt. Zum Beispiel eine Datenbankverbindung oder ein Logger. Erkennungsmerkmale: privater Konstruktor, statisches Attribut für die Instanz und eine statische Methode getInstanz.",
+     "v": {
+      "code": "┌───────────────────────────────┐\n│ Datenbankverbindung           │\n├───────────────────────────────┤\n│ - instanz: Datenbankverbindung│ (static)\n├───────────────────────────────┤\n│ - Datenbankverbindung()       │ ← PRIVATER Konstruktor\n│ + getInstanz(): Datenbankverb.│ (static)\n└───────────────────────────────┘"
+     }
+    },
+    {
+     "h": "Observer",
+     "say": "Observer, auf Deutsch Beobachter. Ein Subjekt hat eine Liste von Beobachtern. Ändert sich etwas, ruft es bei allen die Methode update auf. Die Beobachter melden sich selbst an und ab. Beispiel: Ein neuer Beleg kommt rein, und Anzeige, Logger und Mail-Benachrichtigung werden automatisch informiert. Vorteil: lose Kopplung.",
+     "v": {
+      "code": "Subjekt (z. B. Aktienkurs)\n  + anmelden(o: Observer)\n  + abmelden(o: Observer)\n  + benachrichtigen()   → ruft bei allen update() auf\n\n«interface» Observer\n  + update()\n\nAnzeige, Logger, Mailer implementieren Observer"
+     }
+    },
+    {
+     "h": "Factory und Facade",
+     "say": "Die Factory erzeugt Objekte für dich. Du sagst nur, ich brauche einen PDF-Export, und bekommst das passende Objekt, ohne die konkrete Klasse zu kennen. Die Facade ist eine einfache Fassade vor einem komplizierten System. Ein Aufruf, und dahinter passieren zehn Dinge.",
+     "v": {
+      "table": [
+       [
+        "Muster",
+        "Idee"
+       ],
+       [
+        "Factory",
+        "Eine Methode erzeugt Objekte, der Aufrufer muss die konkrete Klasse nicht kennen. erzeugeExport(\"pdf\") → PdfExport"
+       ],
+       [
+        "Facade",
+        "Eine einfache Schnittstelle vor einem komplizierten Subsystem. kanzlei.monatsabschluss() ruft intern 10 Dienste auf"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "MVC",
+     "say": "MVC trennt eine Anwendung in drei Teile. Das Model enthält Daten und Logik. Die View zeigt an. Der Controller nimmt Benutzereingaben an und steuert beides. Vorteil: Du kannst zum Beispiel die Oberfläche austauschen, ohne die Logik anzufassen. Das ist Wartbarkeit durch Trennung der Zuständigkeiten.",
+     "v": {
+      "table": [
+       [
+        "Teil",
+        "Aufgabe"
+       ],
+       [
+        "Model",
+        "Daten und Geschäftslogik"
+       ],
+       [
+        "View",
+        "Darstellung, Oberfläche"
+       ],
+       [
+        "Controller",
+        "nimmt Eingaben an, steuert Model und View"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "bLQVsvEGQFU",
+     "t": "Observer Pattern / Beobachter-Muster",
+     "c": "Patrick Boekhoven"
+    },
+    {
+     "id": "1WnHxLANz9I",
+     "t": "Design-Pattern: Singleton",
+     "c": "moinLeude"
+    },
+    {
+     "id": "VGQMQUa_o5o",
+     "t": "MVC kurz erklärt",
+     "c": "gude Education"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "patterns:0",
+     "q": "Woran erkennst du ein Singleton?",
+     "o": [
+      "öffentlicher Konstruktor",
+      "privater Konstruktor und statisches getInstanz()",
+      "Interface update()",
+      "drei Schichten"
+     ],
+     "correct": 1,
+     "e": "Niemand außer der Klasse kann Objekte erzeugen."
+    },
+    {
+     "key": "patterns:1",
+     "q": "Ein Objekt informiert automatisch alle angemeldeten Objekte über Änderungen.",
+     "o": [
+      "Factory",
+      "Singleton",
+      "Observer",
+      "Facade"
+     ],
+     "correct": 2,
+     "e": "Beobachter-Muster."
+    },
+    {
+     "key": "patterns:2",
+     "q": "Welche Methode ruft das Subjekt beim Observer typischerweise auf?",
+     "o": [
+      "getInstanz()",
+      "update()",
+      "create()",
+      "render()"
+     ],
+     "correct": 1,
+     "e": "update() bzw. aktualisieren()."
+    },
+    {
+     "key": "patterns:3",
+     "q": "Welche MVC-Komponente nimmt Benutzereingaben entgegen?",
+     "o": [
+      "Model",
+      "View",
+      "Controller",
+      "Router"
+     ],
+     "correct": 2,
+     "e": "Controller steuert."
+    },
+    {
+     "key": "patterns:4",
+     "q": "Eine einfache Schnittstelle vor einem komplexen Subsystem heißt:",
+     "o": [
+      "Facade",
+      "Observer",
+      "Adapter",
+      "Singleton"
+     ],
+     "correct": 0,
+     "e": "Fassade."
+    },
+    {
+     "key": "patterns:5",
+     "q": "Was ist der Hauptvorteil von MVC?",
+     "o": [
+      "schnellere Datenbank",
+      "Trennung von Daten, Darstellung und Steuerung",
+      "weniger Klassen",
+      "keine Tests nötig"
+     ],
+     "correct": 1,
+     "e": "Bessere Wartbarkeit und Austauschbarkeit."
+    }
+   ],
+   "write": [
+    {
+     "task": "Erkläre das Observer-Muster in 2 bis 3 Sätzen und nenne ein Beispiel aus einer Kanzlei-Software.",
+     "model": "Beim Observer-Muster gibt es ein Subjekt, bei dem sich beliebig viele Beobachter an- und abmelden können. Ändert sich der Zustand des Subjekts, ruft es bei allen Beobachtern update() auf. So sind die Klassen lose gekoppelt. Beispiel: Geht ein neuer Beleg ein, werden automatisch die Übersicht aktualisiert, der zuständige Sachbearbeiter per Mail informiert und ein Protokolleintrag geschrieben.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Subjekt / Beobachtetes",
+       "pattern": "subjekt|beobachtet|observable|publisher",
+       "flags": "i"
+      },
+      {
+       "label": "Beobachter an-/abmelden",
+       "pattern": "anmeld|registrier|abonn|abmeld",
+       "flags": "i"
+      },
+      {
+       "label": "benachrichtigen / update",
+       "pattern": "benachrichtig|update|informier",
+       "flags": "i"
+      },
+      {
+       "label": "Beispiel",
+       "pattern": "beispiel|z\\.\\s*b|zum beispiel|etwa",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "rest",
+   "area": "GA1",
+   "prio": 3,
+   "title": "REST, HTTP, JSON, Git",
+   "mins": 15,
+   "why": "REST und HTTP kamen in 4 von 9 Prüfungen, oft mit JSON.",
+   "clip": [
+    {
+     "h": "HTTP-Methoden = CRUD",
+     "say": "REST nutzt die HTTP-Methoden für die vier Grundoperationen. GET liest. POST legt neu an. PUT ersetzt komplett, PATCH ändert teilweise. DELETE löscht. Die Ressource steht in der URL, zum Beispiel Mandanten Schrägstrich vier.",
+     "v": {
+      "table": [
+       [
+        "Methode",
+        "CRUD",
+        "Beispiel"
+       ],
+       [
+        "GET",
+        "Read",
+        "GET /mandanten/4"
+       ],
+       [
+        "POST",
+        "Create",
+        "POST /mandanten"
+       ],
+       [
+        "PUT",
+        "Update (komplett)",
+        "PUT /mandanten/4"
+       ],
+       [
+        "PATCH",
+        "Update (teilweise)",
+        "PATCH /mandanten/4"
+       ],
+       [
+        "DELETE",
+        "Delete",
+        "DELETE /mandanten/4"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Statuscodes",
+     "say": "Die Statuscodes. Zweihunderter heißt Erfolg: zweihundert okay, zweihunderteins angelegt. Vierhunderter heißt, der Client hat einen Fehler gemacht: vierhundert falsche Anfrage, vierhunderteins nicht angemeldet, vierhundertdrei keine Rechte, vierhundertvier nicht gefunden. Fünfhunderter heißt, der Server hat einen Fehler.",
+     "v": {
+      "table": [
+       [
+        "Code",
+        "Bedeutung"
+       ],
+       [
+        "200 OK",
+        "alles gut"
+       ],
+       [
+        "201 Created",
+        "neu angelegt (nach POST)"
+       ],
+       [
+        "204 No Content",
+        "ok, keine Daten"
+       ],
+       [
+        "400 Bad Request",
+        "Anfrage fehlerhaft"
+       ],
+       [
+        "401 Unauthorized",
+        "nicht angemeldet"
+       ],
+       [
+        "403 Forbidden",
+        "angemeldet, aber keine Rechte"
+       ],
+       [
+        "404 Not Found",
+        "gibt es nicht"
+       ],
+       [
+        "500 Internal Server Error",
+        "Fehler auf dem Server"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "REST-Prinzipien",
+     "say": "Die REST-Prinzipien. Zustandslos: Der Server merkt sich nichts zwischen Anfragen, jede Anfrage bringt alles mit, zum Beispiel ein Token. Ressourcen haben eindeutige URLs. Daten werden meistens als JSON übertragen.",
+     "v": {
+      "list": [
+       "Zustandslos: jede Anfrage enthält alles Nötige (z. B. Token)",
+       "Ressourcen über eindeutige URLs",
+       "Einheitliche Schnittstelle über HTTP-Methoden",
+       "Daten meist als JSON",
+       "Client und Server getrennt"
+      ]
+     }
+    },
+    {
+     "h": "JSON, XML, CSV",
+     "say": "Drei Datenformate. JSON mit geschweiften Klammern für Objekte und eckigen für Listen. Schlüssel stehen in Anführungszeichen. XML mit Tags, gut validierbar per Schema, aber mehr Text. CSV ist eine einfache Tabelle mit Trennzeichen, gut für Excel, aber ohne Verschachtelung.",
+     "v": {
+      "code": "JSON:\n{ \"id\": 4, \"name\": \"Café Rhön\",\n  \"auftraege\": [ {\"art\": \"Lohn\"}, {\"art\": \"Steuer\"} ] }\n\nXML:\n<mandant id=\"4\"><name>Café Rhön</name></mandant>\n\nCSV:\nid;name;ort\n4;Café Rhön;Fulda"
+     }
+    },
+    {
+     "h": "Git in 6 Befehlen",
+     "say": "Git kennst du aus der Arbeit. Für die Prüfung: Clone holt ein Repository. Add merkt Änderungen vor. Commit speichert lokal. Push und Pull synchronisieren mit dem Server. Branch legt einen Zweig an, Merge führt zusammen. Vorteile: Versionierung, paralleles Arbeiten, Nachvollziehbarkeit.",
+     "v": {
+      "code": "git clone <url>        Repository holen\ngit add datei.py       zum Commit vormerken\ngit commit -m \"...\"    Stand lokal speichern\ngit push / git pull    hoch- / runterladen\ngit branch feature-x   neuen Zweig anlegen\ngit merge feature-x    Zweig zusammenführen"
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "ZuINS_-n-AM",
+     "t": "Was ist eine REST-API?",
+     "c": "Coding Crashkurse"
+    },
+    {
+     "id": "unXWk2plEoc",
+     "t": "JSON in 5 Minuten",
+     "c": "Vibe Venture"
+    },
+    {
+     "id": "V0bXqLxIivo",
+     "t": "Lerne Git in 30 Minuten",
+     "c": "Mit Mario"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "rest:0",
+     "q": "Mit welcher HTTP-Methode legst du per REST einen neuen Datensatz an?",
+     "o": [
+      "GET",
+      "POST",
+      "DELETE",
+      "HEAD"
+     ],
+     "correct": 1,
+     "e": "POST = Create."
+    },
+    {
+     "key": "rest:1",
+     "q": "Welcher Statuscode bedeutet \"angemeldet, aber keine Berechtigung\"?",
+     "accept": [
+      "403"
+     ],
+     "e": "401 = nicht angemeldet, 403 = keine Rechte."
+    },
+    {
+     "key": "rest:2",
+     "q": "Welcher Statuscode kommt typisch nach erfolgreichem POST?",
+     "o": [
+      "200",
+      "201",
+      "204",
+      "404"
+     ],
+     "correct": 1,
+     "e": "201 Created."
+    },
+    {
+     "key": "rest:3",
+     "q": "Was heißt \"REST ist zustandslos\"?",
+     "o": [
+      "Server speichert keine Daten",
+      "Jede Anfrage enthält alle nötigen Infos",
+      "Es gibt keine Statuscodes",
+      "Nur GET erlaubt"
+     ],
+     "correct": 1,
+     "e": "Keine Sitzung auf dem Server zwischen Anfragen."
+    },
+    {
+     "key": "rest:4",
+     "q": "Woran erkennst du eine Liste in JSON?",
+     "o": [
+      "{ }",
+      "[ ]",
+      "< >",
+      "( )"
+     ],
+     "correct": 1,
+     "e": "Eckige Klammern = Array."
+    },
+    {
+     "key": "rest:5",
+     "q": "Welcher git-Befehl speichert einen Stand lokal?",
+     "o": [
+      "git push",
+      "git commit",
+      "git clone",
+      "git pull"
+     ],
+     "correct": 1,
+     "e": "commit lokal, push zum Server."
+    }
+   ],
+   "write": [
+    {
+     "task": "Schreibe ein JSON-Objekt für einen Mandanten mit id 7, name \"Autohaus Ruf\", ort \"Erfurt\" und einer Liste von zwei Aufträgen (art \"Prüfung\" und \"Steuer\").",
+     "model": "{\n  \"id\": 7,\n  \"name\": \"Autohaus Ruf\",\n  \"ort\": \"Erfurt\",\n  \"auftraege\": [\n    { \"art\": \"Prüfung\" },\n    { \"art\": \"Steuer\" }\n  ]\n}",
+     "alt": null,
+     "keys": [
+      {
+       "label": "geschweifte Klammern",
+       "pattern": "\\{[\\s\\S]*\\}",
+       "flags": ""
+      },
+      {
+       "label": "\"id\": 7",
+       "pattern": "\"id\"\\s*:\\s*7",
+       "flags": ""
+      },
+      {
+       "label": "\"name\": \"Autohaus Ruf\"",
+       "pattern": "\"name\"\\s*:\\s*\"autohaus ruf\"",
+       "flags": "i"
+      },
+      {
+       "label": "Liste mit [ ]",
+       "pattern": "\\[[\\s\\S]*\\]",
+       "flags": ""
+      },
+      {
+       "label": "\"art\" als Schlüssel",
+       "pattern": "\"art\"\\s*:",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "quali",
+   "area": "GA1",
+   "prio": 3,
+   "title": "Qualität, UX und Kosten",
+   "mins": 15,
+   "why": "Kleinere Teilaufgaben, aber schnell verdiente Punkte.",
+   "clip": [
+    {
+     "h": "ISO 25010: Softwarequalität",
+     "say": "Die ISO 25010 definiert acht Qualitätsmerkmale. Funktionale Eignung, Leistungseffizienz, Kompatibilität, Benutzbarkeit, Zuverlässigkeit, Sicherheit, Wartbarkeit und Übertragbarkeit. In der Prüfung sollst du oft eins nennen und mit einer Maßnahme verbinden, zum Beispiel Wartbarkeit durch Kommentare, Tests und sauberen Code.",
+     "v": {
+      "list": [
+       "Funktionale Eignung",
+       "Leistungseffizienz (Performance)",
+       "Kompatibilität",
+       "Benutzbarkeit (Usability)",
+       "Zuverlässigkeit",
+       "Sicherheit",
+       "Wartbarkeit",
+       "Übertragbarkeit (Portabilität)"
+      ]
+     }
+    },
+    {
+     "h": "Barrierefreiheit",
+     "say": "Barrierefreiheit heißt, alle Menschen können die Software nutzen. Guter Kontrast, Farbe nie als einzige Information, Alternativtexte für Screenreader, Bedienung per Tastatur und einfache Sprache. Seit Juni 2025 gilt in Deutschland das Barrierefreiheitsstärkungsgesetz. Der Standard dazu heißt WCAG.",
+     "v": {
+      "list": [
+       "Ausreichender Kontrast, nicht nur Farbe als Info",
+       "Schrift skalierbar",
+       "Alternativtexte für Bilder (Screenreader)",
+       "Bedienbar nur mit Tastatur",
+       "Klare, einfache Sprache",
+       "Gesetzlich: BFSG seit 28.06.2025, Standard WCAG"
+      ]
+     }
+    },
+    {
+     "h": "Amortisation",
+     "say": "Die Amortisationsrechnung: Wie lange dauert es, bis sich eine Investition bezahlt gemacht hat? Investition geteilt durch jährliche Ersparnis. Beispiel: Ein Tool kostet zwölftausend Euro und spart nach Abzug der Wartung zehntausend Euro im Jahr. Dann hat es sich nach eins Komma zwei Jahren amortisiert.",
+     "v": {
+      "code": "Amortisationsdauer = Investition / jährliche Ersparnis\n\nBeispiel: Tool kostet 12.000 €\nspart 300 h/Jahr × 40 €/h  = 12.000 €/Jahr\nminus Wartung              −  2.000 €/Jahr\n→ Ersparnis                  10.000 €/Jahr\n→ 12.000 / 10.000 = 1,2 Jahre"
+     }
+    },
+    {
+     "h": "Make or Buy",
+     "say": "Make or Buy: selbst entwickeln oder kaufen. Selbst entwickeln passt genau und das Wissen bleibt im Haus, kostet aber Zeit und Wartung. Kaufen geht sofort und hat Support, bringt aber Lizenzkosten und Abhängigkeit vom Hersteller. Als Entscheidungshilfe nutzt man eine Nutzwertanalyse mit gewichteten Kriterien.",
+     "v": {
+      "table": [
+       [
+        "Make (selbst entwickeln)",
+        "Buy (kaufen)"
+       ],
+       [
+        "passt genau",
+        "sofort verfügbar"
+       ],
+       [
+        "Know-how bleibt im Haus",
+        "Support und Updates vom Hersteller"
+       ],
+       [
+        "hoher Aufwand, Risiko",
+        "Lizenzkosten, Abhängigkeit"
+       ],
+       [
+        "eigene Wartung nötig",
+        "passt evtl. nicht 100 %"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Nutzwertanalyse",
+     "say": "Bei der Nutzwertanalyse gibst du jedem Kriterium ein Gewicht, die Summe ist hundert Prozent. Dann bewertest du jede Alternative, multiplizierst Note mal Gewicht und addierst. Die höchste Summe gewinnt.",
+     "v": {
+      "code": "Kriterium   Gewicht | A Note | A Pkt | B Note | B Pkt\nKosten        40 %  |   3    |  1,2  |   5    |  2,0\nFunktionen    35 %  |   5    |  1,75 |   3    |  1,05\nSupport       25 %  |   4    |  1,0  |   2    |  0,5\nSumme                         3,95            3,55  → A gewinnt"
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "-JUe3QWp0rw",
+     "t": "Amortisationsrechnung einfach erklärt",
+     "c": "Herr Tafelschwamm"
+    },
+    {
+     "id": "LR8_8qaOKT8",
+     "t": "Make or Buy einfach erklärt",
+     "c": "JL Education"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "quali:0",
+     "q": "Investition 20.000 €, jährliche Ersparnis 8.000 €. Amortisationsdauer in Jahren?",
+     "accept": [
+      "2,5",
+      "2.5"
+     ],
+     "e": "20.000 / 8.000 = 2,5 Jahre."
+    },
+    {
+     "key": "quali:1",
+     "q": "Kommentare, Tests und Clean Code verbessern vor allem ...",
+     "o": [
+      "Leistungseffizienz",
+      "Wartbarkeit",
+      "Kompatibilität",
+      "Sicherheit"
+     ],
+     "correct": 1,
+     "e": "Wartbarkeit."
+    },
+    {
+     "key": "quali:2",
+     "q": "Welcher Standard beschreibt Barrierefreiheit im Web?",
+     "o": [
+      "ISO 9001",
+      "WCAG",
+      "DSGVO",
+      "ITIL"
+     ],
+     "correct": 1,
+     "e": "Web Content Accessibility Guidelines."
+    },
+    {
+     "key": "quali:3",
+     "q": "Was ist ein Nachteil von \"Buy\"?",
+     "o": [
+      "Know-how bleibt im Haus",
+      "Abhängigkeit vom Hersteller",
+      "passt genau",
+      "keine Lizenzkosten"
+     ],
+     "correct": 1,
+     "e": "Vendor Lock-in und Lizenzkosten."
+    },
+    {
+     "key": "quali:4",
+     "q": "Gewicht 40 %, Note 5. Welcher gewichtete Punktwert?",
+     "accept": [
+      "2",
+      "2,0",
+      "2.0"
+     ],
+     "e": "0,4 × 5 = 2."
+    },
+    {
+     "key": "quali:5",
+     "q": "Warum sollte Farbe nie die einzige Information sein?",
+     "o": [
+      "Druckkosten",
+      "Farbenblinde Nutzer erkennen sie nicht",
+      "DSGVO",
+      "Performance"
+     ],
+     "correct": 1,
+     "e": "Zusätzlich Text oder Symbol nutzen."
+    }
+   ],
+   "write": [
+    {
+     "task": "Euer Team überlegt, ein Zeiterfassungstool selbst zu entwickeln oder zu kaufen. Nenne je 2 Vorteile von Make und von Buy und eine Methode, um zu entscheiden.",
+     "model": "Make: passt genau zu unseren Abläufen, Know-how bleibt im Haus, keine Lizenzkosten, keine Abhängigkeit vom Hersteller.\nBuy: sofort einsatzbereit, Support und Updates durch Hersteller, erprobt, kalkulierbare Kosten.\nEntscheidung: Nutzwertanalyse mit gewichteten Kriterien, ergänzt um Kostenvergleich und Amortisationsrechnung.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Make: passt genau / individuell",
+       "pattern": "genau|individuell|anforderung|ma(ß|ss)geschneidert",
+       "flags": "i"
+      },
+      {
+       "label": "Make: Know-how / Unabhängigkeit",
+       "pattern": "know|wissen|unabh(ä|ae)ngig|kontrolle",
+       "flags": "i"
+      },
+      {
+       "label": "Buy: schnell verfügbar",
+       "pattern": "schnell|sofort|verf(ü|ue)gbar",
+       "flags": "i"
+      },
+      {
+       "label": "Buy: Support / Updates",
+       "pattern": "support|update|wartung|hersteller",
+       "flags": "i"
+      },
+      {
+       "label": "Entscheidungsmethode",
+       "pattern": "nutzwert|kosten.?vergleich|amortisation",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "ausbildung",
+   "area": "WISO",
+   "prio": 1,
+   "title": "Ausbildung: BBiG und Jugendschutz",
+   "mins": 20,
+   "why": "Fragen zur eigenen Ausbildung sind in WiSo fast garantiert.",
+   "clip": [
+    {
+     "h": "Duales System",
+     "say": "Deine Ausbildung ist dual: Betrieb und Berufsschule. Für den Betrieb gilt das Berufsbildungsgesetz, kurz BBiG, und die Ausbildungsordnung. Die IHK überwacht als zuständige Stelle, führt das Verzeichnis der Ausbildungsverträge und nimmt die Prüfungen ab. Die Berufsschule ist Sache des Bundeslandes.",
+     "v": {
+      "table": [
+       [
+        "Lernort",
+        "Rechtsgrundlage",
+        "Aufsicht"
+       ],
+       [
+        "Betrieb",
+        "BBiG, Ausbildungsordnung",
+        "IHK (zuständige Stelle)"
+       ],
+       [
+        "Berufsschule",
+        "Schulgesetz, Rahmenlehrplan",
+        "Land"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Der Ausbildungsvertrag",
+     "say": "Der Ausbildungsvertrag muss vor Beginn schriftlich festgehalten werden. Drin stehen unter anderem Beruf, Beginn und Dauer, die tägliche Ausbildungszeit, die Probezeit, Vergütung, Urlaub und die Kündigungsvoraussetzungen. Die IHK trägt ihn ins Verzeichnis ein. Bei Minderjährigen unterschreiben die Eltern mit.",
+     "v": {
+      "list": [
+       "Muss vor Beginn schriftlich bzw. in Textform festgehalten werden",
+       "Inhalte u. a.: Beruf, Beginn und Dauer, tägliche Ausbildungszeit, Probezeit, Vergütung, Urlaub, Kündigungsvoraussetzungen",
+       "Wird bei der IHK ins Verzeichnis eingetragen",
+       "Bei Minderjährigen unterschreiben auch die Eltern"
+      ]
+     }
+    },
+    {
+     "h": "Pflichten",
+     "say": "Deine Pflichten: lernen, Weisungen befolgen, Berufsschule besuchen, den Ausbildungsnachweis führen, schweigen über Betriebsgeheimnisse. Die Pflichten des Betriebs: dich ausbilden, Ausbildungsmittel kostenlos stellen, dich für Schule und Prüfung freistellen, Vergütung zahlen, dir nur ausbildungsbezogene Aufgaben geben und am Ende ein Zeugnis ausstellen.",
+     "v": {
+      "table": [
+       [
+        "Azubi",
+        "Ausbildender (Betrieb)"
+       ],
+       [
+        "Lernpflicht, sorgfältig arbeiten",
+        "Ausbildungsziel vermitteln"
+       ],
+       [
+        "Weisungen befolgen",
+        "Ausbildungsmittel kostenlos stellen"
+       ],
+       [
+        "Berufsschule besuchen",
+        "für Berufsschule und Prüfung freistellen"
+       ],
+       [
+        "Ausbildungsnachweis führen",
+        "Ausbildungsnachweis kontrollieren"
+       ],
+       [
+        "Schweigepflicht",
+        "Vergütung zahlen, nur ausbildungsbezogene Aufgaben"
+       ],
+       [
+        "Betriebsordnung einhalten",
+        "Zeugnis ausstellen"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Probezeit und Kündigung",
+     "say": "Die Probezeit dauert mindestens einen und höchstens vier Monate. In der Probezeit können beide jederzeit ohne Frist und ohne Grund kündigen, aber schriftlich. Nach der Probezeit kann der Betrieb nur noch fristlos aus wichtigem Grund kündigen. Du als Azubi kannst zusätzlich mit vier Wochen Frist kündigen, wenn du den Beruf wechselst oder die Ausbildung aufgibst. Immer schriftlich, nach der Probezeit mit Begründung.",
+     "v": {
+      "table": [
+       [
+        "Zeitpunkt",
+        "Wer",
+        "Wie"
+       ],
+       [
+        "In der Probezeit (1 bis 4 Monate)",
+        "beide",
+        "jederzeit, ohne Frist, ohne Grund, schriftlich"
+       ],
+       [
+        "Nach der Probezeit",
+        "beide",
+        "nur fristlos aus wichtigem Grund, schriftlich mit Gründen"
+       ],
+       [
+        "Nach der Probezeit",
+        "nur Azubi",
+        "4 Wochen Frist bei Berufswechsel oder Aufgabe der Ausbildung"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Ende der Ausbildung",
+     "say": "Die Ausbildung endet mit Ablauf der Zeit. Bestehst du vorher, endet sie mit der Bekanntgabe des Ergebnisses durch den Prüfungsausschuss. Fällst du durch, kannst du verlangen, dass sie bis zur Wiederholungsprüfung verlängert wird, höchstens ein Jahr. Die Prüfung darf zweimal wiederholt werden. Und Achtung: Arbeitest du nach der Ausbildung einfach weiter, ohne dass etwas vereinbart wurde, entsteht ein unbefristetes Arbeitsverhältnis.",
+     "v": {
+      "list": [
+       "Endet mit Ablauf der Ausbildungszeit",
+       "Oder vorher: mit Bekanntgabe des Prüfungsergebnisses durch den Ausschuss (bestanden)",
+       "Durchgefallen: Verlängerung auf Verlangen bis zur Wiederholungsprüfung, max. 1 Jahr",
+       "Prüfung darf 2× wiederholt werden",
+       "Weiterarbeit ohne Absprache → unbefristetes Arbeitsverhältnis",
+       "Verkürzung auf Antrag bei guten Leistungen"
+      ]
+     }
+    },
+    {
+     "h": "Zeugnis",
+     "say": "Am Ende gibt es ein Zeugnis. Das einfache Zeugnis nennt Art, Dauer und Ziel der Ausbildung und die erworbenen Fertigkeiten. Das qualifizierte enthält zusätzlich Verhalten und Leistung, aber nur, wenn du es verlangst.",
+     "v": {
+      "table": [
+       [
+        "Einfaches Zeugnis",
+        "Qualifiziertes Zeugnis"
+       ],
+       [
+        "Art, Dauer, Ziel der Ausbildung",
+        "zusätzlich Verhalten und Leistung"
+       ],
+       [
+        "immer",
+        "nur auf Verlangen des Azubis"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Jugendarbeitsschutz (unter 18)",
+     "say": "Für Jugendliche unter achtzehn gilt das Jugendarbeitsschutzgesetz. Maximal acht Stunden am Tag und vierzig in der Woche, Fünf-Tage-Woche. Pausen: dreißig Minuten ab viereinhalb Stunden, sechzig Minuten ab sechs Stunden. Zwölf Stunden Freizeit zwischen zwei Arbeitstagen. Ein Berufsschultag mit mehr als fünf Unterrichtsstunden zählt einmal pro Woche als acht Stunden. Urlaub: dreißig, siebenundzwanzig oder fünfundzwanzig Werktage, je nach Alter.",
+     "v": {
+      "table": [
+       [
+        "Regel",
+        "Wert"
+       ],
+       [
+        "Arbeitszeit",
+        "max. 8 h/Tag, 40 h/Woche, 5-Tage-Woche"
+       ],
+       [
+        "Pausen",
+        "30 min ab 4,5 h, 60 min ab 6 h"
+       ],
+       [
+        "Freizeit zwischen zwei Tagen",
+        "mind. 12 h"
+       ],
+       [
+        "Berufsschule mit mehr als 5 Unterrichtsstunden",
+        "1× pro Woche = 8 h Arbeitszeit"
+       ],
+       [
+        "Urlaub",
+        "30 / 27 / 25 Werktage (unter 16 / 17 / 18)"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Mindestausbildungsvergütung",
+     "say": "Die Mindestausbildungsvergütung für Ausbildungen, die 2026 beginnen, liegt im ersten Jahr bei siebenhundertvierundzwanzig Euro. In den Folgejahren gibt es Aufschläge von achtzehn, fünfunddreißig und vierzig Prozent.",
+     "v": {
+      "stat": "724 €",
+      "sub": "1. Ausbildungsjahr bei Beginn 2026. Danach +18 %, +35 %, +40 %. Tarifverträge dürfen abweichen."
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "98ClY1Qp7Bc",
+     "t": "Rechte und Pflichten im Ausbildungsvertrag",
+     "c": "Die Merkhilfe Wirtschaft"
+    },
+    {
+     "id": "vN-nyhEp0nI",
+     "t": "Kündigung des Ausbildungsvertrages",
+     "c": "#Sogeht by Sven Stemmler"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "ausbildung:0",
+     "q": "Wie lange darf die Probezeit in der Ausbildung höchstens dauern?",
+     "o": [
+      "1 Monat",
+      "3 Monate",
+      "4 Monate",
+      "6 Monate"
+     ],
+     "correct": 2,
+     "e": "Mindestens 1, höchstens 4 Monate (§ 20 BBiG)."
+    },
+    {
+     "key": "ausbildung:1",
+     "q": "Wie kann der Betrieb NACH der Probezeit kündigen?",
+     "o": [
+      "mit 4 Wochen Frist",
+      "nur fristlos aus wichtigem Grund",
+      "gar nicht",
+      "mündlich jederzeit"
+     ],
+     "correct": 1,
+     "e": "Ordentliche Kündigung durch den Betrieb ist nach der Probezeit ausgeschlossen."
+    },
+    {
+     "key": "ausbildung:2",
+     "q": "Der Azubi will den Beruf wechseln. Welche Kündigungsfrist gilt nach der Probezeit?",
+     "o": [
+      "keine",
+      "2 Wochen",
+      "4 Wochen",
+      "3 Monate"
+     ],
+     "correct": 2,
+     "e": "4 Wochen bei Aufgabe oder Wechsel der Ausbildung."
+    },
+    {
+     "key": "ausbildung:3",
+     "q": "Wann endet die Ausbildung, wenn du die Prüfung vorzeitig bestehst?",
+     "o": [
+      "Ende des Monats",
+      "mit Bekanntgabe des Ergebnisses durch den Prüfungsausschuss",
+      "nach Vertragsende",
+      "nach Zeugnisübergabe"
+     ],
+     "correct": 1,
+     "e": "§ 21 BBiG."
+    },
+    {
+     "key": "ausbildung:4",
+     "q": "Du arbeitest nach der bestandenen Prüfung ohne Absprache weiter. Was entsteht?",
+     "o": [
+      "nichts",
+      "befristetes Arbeitsverhältnis",
+      "unbefristetes Arbeitsverhältnis",
+      "Praktikum"
+     ],
+     "correct": 2,
+     "e": "§ 24 BBiG."
+    },
+    {
+     "key": "ausbildung:5",
+     "q": "Wer muss die Ausbildungsmittel (z. B. Laptop, Fachbücher für den Betrieb) bezahlen?",
+     "o": [
+      "Azubi",
+      "Berufsschule",
+      "Ausbildender, kostenlos für den Azubi",
+      "IHK"
+     ],
+     "correct": 2,
+     "e": "Pflicht des Ausbildenden."
+    },
+    {
+     "key": "ausbildung:6",
+     "q": "Was enthält das qualifizierte Zeugnis zusätzlich?",
+     "o": [
+      "Gehalt",
+      "Verhalten und Leistung",
+      "Krankheitstage",
+      "Noten der Berufsschule"
+     ],
+     "correct": 1,
+     "e": "Nur auf Verlangen."
+    },
+    {
+     "key": "ausbildung:7",
+     "q": "Wer überwacht die Ausbildung und nimmt die Prüfung ab?",
+     "o": [
+      "Berufsschule",
+      "IHK als zuständige Stelle",
+      "Agentur für Arbeit",
+      "Betriebsrat"
+     ],
+     "correct": 1,
+     "e": "Die IHK."
+    },
+    {
+     "key": "ausbildung:8",
+     "q": "Wie lange muss die Pause für Jugendliche bei mehr als 6 Stunden Arbeit insgesamt sein?",
+     "o": [
+      "30 min",
+      "45 min",
+      "60 min",
+      "90 min"
+     ],
+     "correct": 2,
+     "e": "JArbSchG: 60 Minuten."
+    },
+    {
+     "key": "ausbildung:9",
+     "q": "Wie oft darf die Abschlussprüfung wiederholt werden?",
+     "accept": [
+      "2",
+      "zweimal",
+      "2x",
+      "2 mal"
+     ],
+     "e": "Zweimal."
+    }
+   ],
+   "write": [
+    {
+     "task": "Nenne 3 Pflichten des Azubis und 3 Pflichten des Ausbildenden.",
+     "model": "Azubi: Lernpflicht, Weisungen befolgen, Berufsschule besuchen, Ausbildungsnachweis führen, Schweigepflicht.\nAusbildender: Ausbildungsziel vermitteln, Ausbildungsmittel kostenlos stellen, für Berufsschule und Prüfung freistellen, Vergütung zahlen, Zeugnis ausstellen.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Lernpflicht",
+       "pattern": "lern",
+       "flags": "i"
+      },
+      {
+       "label": "Berufsschule",
+       "pattern": "berufsschul|schule",
+       "flags": "i"
+      },
+      {
+       "label": "Ausbildungsnachweis / Berichtsheft",
+       "pattern": "nachweis|berichtsheft",
+       "flags": "i"
+      },
+      {
+       "label": "Schweigepflicht / Weisungen",
+       "pattern": "schweig|weisung|verschwieg",
+       "flags": "i"
+      },
+      {
+       "label": "Ausbildungsmittel kostenlos",
+       "pattern": "mittel|kostenlos",
+       "flags": "i"
+      },
+      {
+       "label": "Vergütung",
+       "pattern": "verg(ü|ue)tung|bezahl|lohn",
+       "flags": "i"
+      },
+      {
+       "label": "Freistellung",
+       "pattern": "freistell",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "arbeitsrecht",
+   "area": "WISO",
+   "prio": 1,
+   "title": "Arbeitsrecht, Betriebsrat, Tarif",
+   "mins": 25,
+   "why": "Gewerkschaft, Betriebsrat und JAV sind typische WiSo-Fragen.",
+   "clip": [
+    {
+     "h": "Rangfolge der Regeln",
+     "say": "Die Rangfolge im Arbeitsrecht: oben Grundgesetz und Gesetze, dann Tarifvertrag, dann Betriebsvereinbarung, ganz unten der Arbeitsvertrag. Eine niedrigere Regel darf nur abweichen, wenn sie für den Arbeitnehmer günstiger ist. Das ist das Günstigkeitsprinzip.",
+     "v": {
+      "code": "Grundgesetz\n └ Gesetze (BGB, ArbZG, KSchG, BUrlG ...)\n    └ Tarifvertrag\n       └ Betriebsvereinbarung\n          └ Arbeitsvertrag\n\nGünstigkeitsprinzip: Abweichen nach unten nur,\nwenn es für den Arbeitnehmer BESSER ist."
+     }
+    },
+    {
+     "h": "Arbeitszeit und Urlaub (Erwachsene)",
+     "say": "Für Erwachsene gilt das Arbeitszeitgesetz: acht Stunden am Tag, bis zu zehn, wenn es im Durchschnitt auf acht ausgeglichen wird. Pause dreißig Minuten ab sechs Stunden, fünfundvierzig ab neun. Elf Stunden Ruhezeit. Mindesturlaub sind vierundzwanzig Werktage, bei einer Fünf-Tage-Woche also zwanzig Arbeitstage.",
+     "v": {
+      "table": [
+       [
+        "Regel",
+        "Wert"
+       ],
+       [
+        "Arbeitszeit",
+        "8 h/Tag, bis 10 h wenn Ausgleich auf Ø 8 h"
+       ],
+       [
+        "Pause",
+        "30 min ab 6 h, 45 min ab 9 h"
+       ],
+       [
+        "Ruhezeit",
+        "11 h zwischen zwei Arbeitstagen"
+       ],
+       [
+        "Mindesturlaub",
+        "24 Werktage (6-Tage-Woche) = 20 Arbeitstage bei 5-Tage-Woche"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Kündigung",
+     "say": "Eine Kündigung muss immer schriftlich auf Papier mit Unterschrift sein. E-Mail reicht nicht. Die Grundfrist ist vier Wochen zum fünfzehnten oder zum Monatsende. Für den Arbeitgeber wird sie länger, je länger du im Betrieb bist. Fristlos geht nur aus wichtigem Grund, innerhalb von zwei Wochen. Vor einer verhaltensbedingten Kündigung kommt meist eine Abmahnung. Und der Betriebsrat muss vorher angehört werden, sonst ist die Kündigung unwirksam.",
+     "v": {
+      "table": [
+       [
+        "Art",
+        "Regel"
+       ],
+       [
+        "Form",
+        "immer schriftlich, keine E-Mail, kein WhatsApp"
+       ],
+       [
+        "Grundfrist",
+        "4 Wochen zum 15. oder zum Monatsende"
+       ],
+       [
+        "Längere Frist",
+        "für den Arbeitgeber, je länger man im Betrieb ist"
+       ],
+       [
+        "Fristlos",
+        "wichtiger Grund, innerhalb 2 Wochen nach Kenntnis"
+       ],
+       [
+        "Abmahnung",
+        "meist vor verhaltensbedingter Kündigung nötig"
+       ],
+       [
+        "Betriebsrat",
+        "muss vor JEDER Kündigung angehört werden"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Kündigungsschutzgesetz",
+     "say": "Das Kündigungsschutzgesetz gilt in Betrieben mit mehr als zehn Arbeitnehmern, wenn du länger als sechs Monate da bist. Dann braucht der Arbeitgeber einen Grund: personenbedingt, verhaltensbedingt oder betriebsbedingt. Du kannst innerhalb von drei Wochen beim Arbeitsgericht klagen. Besonders geschützt sind Schwangere, Leute in Elternzeit, Betriebsräte, Schwerbehinderte und Azubis nach der Probezeit.",
+     "v": {
+      "list": [
+       "Gilt ab mehr als 10 Arbeitnehmern im Betrieb und 6 Monaten Betriebszugehörigkeit",
+       "Kündigung muss sozial gerechtfertigt sein: personen-, verhaltens- oder betriebsbedingt",
+       "Klage beim Arbeitsgericht innerhalb von 3 Wochen",
+       "Besonderer Schutz: Schwangere, Elternzeit, Betriebsrat/JAV, Schwerbehinderte, Azubis nach Probezeit"
+      ]
+     }
+    },
+    {
+     "h": "Betriebsrat",
+     "say": "Ein Betriebsrat kann gewählt werden, wenn ein Betrieb mindestens fünf ständige wahlberechtigte Arbeitnehmer hat. Die Amtszeit beträgt vier Jahre. Wählen darf man ab sechzehn, gewählt werden ab achtzehn und nach sechs Monaten im Betrieb.",
+     "v": {
+      "table": [
+       [
+        "Fakt",
+        "Wert"
+       ],
+       [
+        "Wählbar ab",
+        "5 ständigen wahlberechtigten Arbeitnehmern"
+       ],
+       [
+        "Amtszeit",
+        "4 Jahre"
+       ],
+       [
+        "Wählen darf",
+        "wer mind. 16 Jahre alt ist"
+       ],
+       [
+        "Gewählt werden darf",
+        "wer 18 ist und 6 Monate im Betrieb"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Rechte des Betriebsrats",
+     "say": "Der Betriebsrat hat drei Stufen von Rechten. Mitbestimmung: Ohne seine Zustimmung geht nichts. Das gilt bei Arbeitszeiten, Pausen, Urlaubsplan und bei technischen Einrichtungen, die Leistung oder Verhalten überwachen können. Für dich als ITler wichtig: Neue Software, die so etwas kann, braucht die Zustimmung des Betriebsrats. Mitwirkung: Er wird angehört, aber der Arbeitgeber entscheidet, zum Beispiel bei Kündigungen. Information: Er wird nur unterrichtet.",
+     "v": {
+      "table": [
+       [
+        "Stufe",
+        "Bedeutung",
+        "Beispiele"
+       ],
+       [
+        "Mitbestimmung",
+        "ohne Zustimmung geht nichts",
+        "Arbeitszeitbeginn, Pausen, Urlaubsplan, technische Überwachung (z. B. neue Software, die Leistung messen kann)"
+       ],
+       [
+        "Mitwirkung",
+        "Anhörung / Beratung, Arbeitgeber entscheidet",
+        "Kündigung (Anhörung), Personalplanung"
+       ],
+       [
+        "Information",
+        "nur unterrichten",
+        "wirtschaftliche Lage"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "JAV",
+     "say": "Die Jugend- und Auszubildendenvertretung, kurz JAV, gibt es ab fünf Arbeitnehmern unter achtzehn oder Azubis unter fünfundzwanzig. Es muss aber einen Betriebsrat geben. Die Amtszeit ist zwei Jahre. Die JAV arbeitet über den Betriebsrat, nicht direkt mit dem Arbeitgeber.",
+     "v": {
+      "table": [
+       [
+        "Fakt",
+        "Wert"
+       ],
+       [
+        "Wer",
+        "Jugend- und Auszubildendenvertretung"
+       ],
+       [
+        "Voraussetzung",
+        "mind. 5 AN unter 18 oder Azubis unter 25 UND ein Betriebsrat"
+       ],
+       [
+        "Amtszeit",
+        "2 Jahre"
+       ],
+       [
+        "Rolle",
+        "vertritt Jugendliche und Azubis gegenüber dem Betriebsrat"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Tarifvertrag",
+     "say": "Tarifverträge schließen Gewerkschaften mit Arbeitgeberverbänden oder einzelnen Arbeitgebern ab. Der Staat mischt sich nicht ein, das nennt man Tarifautonomie. Der Manteltarifvertrag regelt Arbeitszeit und Urlaub, der Lohn- und Gehaltstarifvertrag die Bezahlung. Während der Laufzeit gilt Friedenspflicht, also kein Streik. Für einen Streik braucht es eine Urabstimmung, bei der meist fünfundsiebzig Prozent zustimmen müssen.",
+     "v": {
+      "list": [
+       "Tarifparteien: Gewerkschaft und Arbeitgeberverband (Verbandstarif) oder einzelner Arbeitgeber (Haustarif)",
+       "Tarifautonomie: Staat mischt sich nicht ein (Art. 9 GG)",
+       "Manteltarifvertrag: Arbeitszeit, Urlaub, Kündigung (lange Laufzeit)",
+       "Lohn- und Gehaltstarifvertrag: Höhe der Bezahlung (kurze Laufzeit)",
+       "Friedenspflicht: kein Streik während der Laufzeit",
+       "Ablauf: Verhandlung → Scheitern → Schlichtung → Urabstimmung (75 %) → Streik → Einigung → Urabstimmung (25 %)"
+      ]
+     }
+    },
+    {
+     "h": "Mutterschutz und Elternzeit",
+     "say": "Mutterschutz gilt sechs Wochen vor und acht Wochen nach der Geburt. Schwangere sind bis vier Monate nach der Geburt vor Kündigung geschützt. Elternzeit gibt es bis zu drei Jahre pro Kind für beide Elternteile, anmelden sieben Wochen vorher. Und der gesetzliche Mindestlohn liegt 2026 bei dreizehn Euro neunzig.",
+     "v": {
+      "table": [
+       [
+        "Regel",
+        "Wert"
+       ],
+       [
+        "Mutterschutz",
+        "6 Wochen vor, 8 Wochen nach der Geburt"
+       ],
+       [
+        "Kündigungsverbot",
+        "Schwangerschaft bis 4 Monate nach Geburt"
+       ],
+       [
+        "Elternzeit",
+        "bis 3 Jahre pro Kind, für beide Eltern"
+       ],
+       [
+        "Anmeldung Elternzeit",
+        "7 Wochen vorher (bis 3. Geburtstag)"
+       ],
+       [
+        "Mindestlohn 2026",
+        "13,90 € pro Stunde"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "fTcNA__4d0w",
+     "t": "Betriebsrat einfach erklärt",
+     "c": "Poko-Institut Münster"
+    },
+    {
+     "id": "FNuQffezCPw",
+     "t": "Tarifvertrag einfach erklärt",
+     "c": "BetriebsratVideo by W.A.F."
+    }
+   ],
+   "quiz": [
+    {
+     "key": "arbeitsrecht:0",
+     "q": "Ab wie vielen ständigen wahlberechtigten Arbeitnehmern kann ein Betriebsrat gewählt werden?",
+     "accept": [
+      "5",
+      "fünf"
+     ],
+     "e": "§ 1 BetrVG."
+    },
+    {
+     "key": "arbeitsrecht:1",
+     "q": "Wie lange ist die Amtszeit der JAV?",
+     "o": [
+      "1 Jahr",
+      "2 Jahre",
+      "4 Jahre",
+      "5 Jahre"
+     ],
+     "correct": 1,
+     "e": "JAV 2 Jahre, Betriebsrat 4 Jahre."
+    },
+    {
+     "key": "arbeitsrecht:2",
+     "q": "Ist eine Kündigung per E-Mail wirksam?",
+     "o": [
+      "ja",
+      "nein, Schriftform mit Unterschrift nötig",
+      "nur in der Probezeit",
+      "nur mit Lesebestätigung"
+     ],
+     "correct": 1,
+     "e": "§ 623 BGB."
+    },
+    {
+     "key": "arbeitsrecht:3",
+     "q": "Was passiert, wenn der Betriebsrat vor einer Kündigung nicht angehört wurde?",
+     "o": [
+      "nichts",
+      "Kündigung ist unwirksam",
+      "Frist verlängert sich",
+      "Abfindung fällig"
+     ],
+     "correct": 1,
+     "e": "§ 102 BetrVG."
+    },
+    {
+     "key": "arbeitsrecht:4",
+     "q": "Neue Software kann die Leistung der Mitarbeiter auswerten. Welches Recht hat der Betriebsrat?",
+     "o": [
+      "Information",
+      "Mitwirkung",
+      "Mitbestimmung",
+      "keins"
+     ],
+     "correct": 2,
+     "e": "§ 87 Abs. 1 Nr. 6 BetrVG: technische Überwachungseinrichtungen."
+    },
+    {
+     "key": "arbeitsrecht:5",
+     "q": "Innerhalb welcher Frist muss eine Kündigungsschutzklage erhoben werden?",
+     "o": [
+      "1 Woche",
+      "2 Wochen",
+      "3 Wochen",
+      "3 Monate"
+     ],
+     "correct": 2,
+     "e": "3 Wochen nach Zugang der Kündigung."
+    },
+    {
+     "key": "arbeitsrecht:6",
+     "q": "Was bedeutet Friedenspflicht?",
+     "o": [
+      "Kein Streik während der Laufzeit des Tarifvertrags",
+      "Kein Streit im Betrieb",
+      "Kündigungsverbot",
+      "Schlichtung ist Pflicht"
+     ],
+     "correct": 0,
+     "e": "Nur über Punkte, die der laufende Vertrag regelt."
+    },
+    {
+     "key": "arbeitsrecht:7",
+     "q": "Was regelt der Manteltarifvertrag?",
+     "o": [
+      "nur die Gehaltshöhe",
+      "Rahmenbedingungen wie Arbeitszeit und Urlaub",
+      "Betriebsratswahl",
+      "Sozialversicherung"
+     ],
+     "correct": 1,
+     "e": "Lohn/Gehalt steht im Lohn- und Gehaltstarifvertrag."
+    },
+    {
+     "key": "arbeitsrecht:8",
+     "q": "Wie lange gilt Mutterschutz nach der Geburt (normal)?",
+     "o": [
+      "6 Wochen",
+      "8 Wochen",
+      "12 Wochen",
+      "14 Wochen"
+     ],
+     "correct": 1,
+     "e": "6 Wochen vor, 8 Wochen nach."
+    },
+    {
+     "key": "arbeitsrecht:9",
+     "q": "Wie hoch ist der Mindestlohn 2026 pro Stunde?",
+     "accept": [
+      "13,90",
+      "13.90",
+      "13,9",
+      "13.9",
+      "13,90 €",
+      "13,90€"
+     ],
+     "e": "Seit 1.1.2026: 13,90 €; ab 2027: 14,60 €."
+    },
+    {
+     "key": "arbeitsrecht:10",
+     "q": "Mindesturlaub bei 5-Tage-Woche nach BUrlG in Arbeitstagen?",
+     "accept": [
+      "20"
+     ],
+     "e": "24 Werktage bei 6-Tage-Woche = 20 Arbeitstage bei 5-Tage-Woche."
+    },
+    {
+     "key": "arbeitsrecht:11",
+     "q": "Ab wann gilt das Kündigungsschutzgesetz?",
+     "o": [
+      "ab 1. Tag",
+      "ab mehr als 10 AN und 6 Monaten Betriebszugehörigkeit",
+      "ab 5 AN",
+      "nur im öffentlichen Dienst"
+     ],
+     "correct": 1,
+     "e": "§§ 1, 23 KSchG."
+    }
+   ],
+   "write": [
+    {
+     "task": "Erkläre den Unterschied zwischen Mitbestimmung, Mitwirkung und Information des Betriebsrats mit je einem Beispiel.",
+     "model": "Mitbestimmung: Der Arbeitgeber kann ohne Zustimmung des Betriebsrats nicht handeln, z. B. bei Arbeitszeitregelungen oder Einführung einer Software, die Leistung überwachen kann.\nMitwirkung: Der Betriebsrat wird angehört oder beraten, der Arbeitgeber entscheidet aber, z. B. Anhörung vor einer Kündigung.\nInformation: Der Betriebsrat wird nur unterrichtet, z. B. über die wirtschaftliche Lage.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Mitbestimmung = Zustimmung nötig",
+       "pattern": "mitbestimm.*(zustimm|ohne|nicht)",
+       "flags": "is"
+      },
+      {
+       "label": "Beispiel Mitbestimmung",
+       "pattern": "arbeitszeit|pause|urlaubsplan|(ü|ue)berwach|software",
+       "flags": "i"
+      },
+      {
+       "label": "Mitwirkung = Anhörung / Beratung",
+       "pattern": "mitwirk.*(anh(ö|oe)r|berat)",
+       "flags": "is"
+      },
+      {
+       "label": "Beispiel Mitwirkung",
+       "pattern": "k(ü|ue)ndig|personalplan",
+       "flags": "i"
+      },
+      {
+       "label": "Information = nur unterrichten",
+       "pattern": "informat.*(unterricht|inform|mitteil)",
+       "flags": "is"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "sozial",
+   "area": "WISO",
+   "prio": 1,
+   "title": "Sozialversicherung und Lohn",
+   "mins": 20,
+   "why": "Die 5 Säulen und die Abrechnung sind WiSo-Dauerbrenner.",
+   "clip": [
+    {
+     "h": "Die 5 Säulen",
+     "say": "Die Sozialversicherung hat fünf Säulen. Krankenversicherung bei den Krankenkassen: vierzehn Komma sechs Prozent plus Zusatzbeitrag, im Schnitt zwei Komma neun. Rentenversicherung bei der Deutschen Rentenversicherung: achtzehn Komma sechs Prozent. Arbeitslosenversicherung bei der Bundesagentur für Arbeit: zwei Komma sechs Prozent. Pflegeversicherung bei den Pflegekassen: drei Komma sechs Prozent. Und die Unfallversicherung bei den Berufsgenossenschaften, die zahlt der Arbeitgeber allein.",
+     "v": {
+      "table": [
+       [
+        "Versicherung",
+        "Träger",
+        "Beitrag 2026"
+       ],
+       [
+        "Krankenversicherung",
+        "Krankenkassen",
+        "14,6 % + Zusatzbeitrag (Ø 2,9 %)"
+       ],
+       [
+        "Rentenversicherung",
+        "Deutsche Rentenversicherung",
+        "18,6 %"
+       ],
+       [
+        "Arbeitslosenversicherung",
+        "Bundesagentur für Arbeit",
+        "2,6 %"
+       ],
+       [
+        "Pflegeversicherung",
+        "Pflegekassen",
+        "3,6 %"
+       ],
+       [
+        "Unfallversicherung",
+        "Berufsgenossenschaften",
+        "zahlt nur der Arbeitgeber"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Wer zahlt was?",
+     "say": "Die ersten vier Versicherungen teilen sich Arbeitgeber und Arbeitnehmer zur Hälfte. Ausnahme: Kinderlose ab dreiundzwanzig zahlen einen Pflegezuschlag von null Komma sechs Prozent allein. Die Unfallversicherung zahlt nur der Arbeitgeber. Und bei Azubis mit höchstens dreihundertfünfundzwanzig Euro im Monat zahlt der Arbeitgeber alles allein.",
+     "v": {
+      "list": [
+       "Kranken-, Renten-, Arbeitslosen-, Pflegeversicherung: Arbeitgeber und Arbeitnehmer je zur Hälfte",
+       "Ausnahme Pflege: Kinderlose ab 23 zahlen 0,6 % Zuschlag allein",
+       "Unfallversicherung: nur Arbeitgeber",
+       "Azubis bis 325 € Vergütung im Monat: Arbeitgeber zahlt alles allein"
+      ]
+     }
+    },
+    {
+     "h": "Unfallversicherung",
+     "say": "Die Unfallversicherung deckt Arbeitsunfälle, Berufskrankheiten und Wegeunfälle. Wegeunfall heißt auf dem direkten Weg zur Arbeit oder Berufsschule und zurück. Machst du einen privaten Umweg, zum Beispiel zum Einkaufen, bist du in der Regel nicht versichert.",
+     "v": {
+      "list": [
+       "Arbeitsunfälle",
+       "Wegeunfälle: direkter Weg zur Arbeit / Berufsschule und zurück",
+       "Berufskrankheiten",
+       "Auch Azubis und Berufsschüler sind versichert",
+       "Unfall sofort dem Arbeitgeber melden, D-Arzt aufsuchen"
+      ]
+     }
+    },
+    {
+     "h": "Brutto zu Netto",
+     "say": "Vom Brutto zum Netto: Abgezogen werden Lohnsteuer, gegebenenfalls Soli und Kirchensteuer, und die Arbeitnehmeranteile zur Sozialversicherung. Beispiel unter dreiundzwanzig: Krankenversicherung sieben Komma drei plus halber Zusatzbeitrag, Rente neun Komma drei, Arbeitslosen eins Komma drei, Pflege eins Komma acht. Zusammen rund einundzwanzig Prozent. Bei tausend Euro brutto also etwa zweihundertelf Euro fünfzig.",
+     "v": {
+      "code": "  Bruttogehalt\n− Lohnsteuer (nach Steuerklasse)\n− Solidaritätszuschlag (meist entfallen)\n− Kirchensteuer (8 % / 9 % der Lohnsteuer)\n− Sozialversicherung (Arbeitnehmeranteile)\n= Nettogehalt\n\nBeispiel AN-Anteile, unter 23:\nKV 7,3 % + 1,45 % | RV 9,3 % | AV 1,3 % | PV 1,8 %\n= 21,15 % → bei 1.000 € brutto: 211,50 €"
+     }
+    },
+    {
+     "h": "Steuerklassen",
+     "say": "Die Steuerklassen. Eins für Ledige. Zwei für Alleinerziehende. Drei und fünf für Verheiratete mit unterschiedlichem Einkommen. Vier für Verheiratete mit ähnlichem Einkommen. Sechs für einen Zweitjob.",
+     "v": {
+      "table": [
+       [
+        "Klasse",
+        "Wer"
+       ],
+       [
+        "I",
+        "ledig"
+       ],
+       [
+        "II",
+        "alleinerziehend"
+       ],
+       [
+        "III",
+        "verheiratet, besser verdienend (Partner V)"
+       ],
+       [
+        "IV",
+        "verheiratet, ähnlich verdienend"
+       ],
+       [
+        "V",
+        "verheiratet, geringer verdienend"
+       ],
+       [
+        "VI",
+        "Zweitjob"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Prinzipien",
+     "say": "Die Prinzipien: Solidaritätsprinzip, du zahlst nach deinem Einkommen, bekommst aber Leistung nach Bedarf. Generationenvertrag in der Rente: Die Arbeitenden zahlen die heutigen Renten. Und die Beitragsbemessungsgrenze: Einkommen darüber wird nicht mehr verbeitragt.",
+     "v": {
+      "table": [
+       [
+        "Prinzip",
+        "Bedeutung"
+       ],
+       [
+        "Solidaritätsprinzip",
+        "Beitrag nach Einkommen, Leistung nach Bedarf"
+       ],
+       [
+        "Generationenvertrag",
+        "Junge zahlen die Renten der Alten (Umlage)"
+       ],
+       [
+        "Versicherungspflicht",
+        "gilt automatisch für Arbeitnehmer"
+       ],
+       [
+        "Beitragsbemessungsgrenze",
+        "bis dahin wird Beitrag berechnet, darüber nicht"
+       ]
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "YcsiF3lI670",
+     "t": "Sozialversicherung: 5 Säulen einfach erklärt",
+     "c": "Die Merkhilfe Wirtschaft"
+    },
+    {
+     "id": "PaLmldtLryQ",
+     "t": "5 Säulen der Sozialversicherung",
+     "c": "Politik & Gesellschaft einfach erklärt"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "sozial:0",
+     "q": "Wer zahlt die Unfallversicherung?",
+     "o": [
+      "Arbeitnehmer allein",
+      "Arbeitgeber allein",
+      "beide je zur Hälfte",
+      "der Staat"
+     ],
+     "correct": 1,
+     "e": "Träger sind die Berufsgenossenschaften."
+    },
+    {
+     "key": "sozial:1",
+     "q": "Wer ist Träger der Arbeitslosenversicherung?",
+     "o": [
+      "Krankenkassen",
+      "Berufsgenossenschaft",
+      "Bundesagentur für Arbeit",
+      "Deutsche Rentenversicherung"
+     ],
+     "correct": 2,
+     "e": "Bundesagentur für Arbeit."
+    },
+    {
+     "key": "sozial:2",
+     "q": "Wie hoch ist der Beitragssatz zur Rentenversicherung 2026 (gesamt, in %)?",
+     "accept": [
+      "18,6",
+      "18.6",
+      "18,6 %",
+      "18,6%"
+     ],
+     "e": "18,6 %, je 9,3 % für AG und AN."
+    },
+    {
+     "key": "sozial:3",
+     "q": "Du fährst nach der Arbeit einen Umweg zum Einkaufen und verunglückst. Bist du über die Unfallversicherung versichert?",
+     "o": [
+      "ja, immer",
+      "in der Regel nein, da privater Umweg",
+      "nur bei Schulden",
+      "nur samstags"
+     ],
+     "correct": 1,
+     "e": "Nur der direkte Weg ist versichert."
+    },
+    {
+     "key": "sozial:4",
+     "q": "Ein Azubi verdient 300 € im Monat. Wer zahlt die Sozialversicherung?",
+     "o": [
+      "Azubi allein",
+      "Arbeitgeber allein",
+      "beide hälftig",
+      "niemand"
+     ],
+     "correct": 1,
+     "e": "Geringverdienergrenze 325 € für Azubis."
+    },
+    {
+     "key": "sozial:5",
+     "q": "Welche Steuerklasse hat ein lediger Arbeitnehmer ohne Kinder?",
+     "o": [
+      "I",
+      "II",
+      "III",
+      "IV"
+     ],
+     "correct": 0,
+     "e": "Klasse I."
+    },
+    {
+     "key": "sozial:6",
+     "q": "Wer zahlt den Kinderlosenzuschlag zur Pflegeversicherung?",
+     "o": [
+      "Arbeitgeber",
+      "Arbeitnehmer allein (ab 23)",
+      "beide",
+      "Staat"
+     ],
+     "correct": 1,
+     "e": "0,6 %, nur Arbeitnehmer."
+    },
+    {
+     "key": "sozial:7",
+     "q": "\"Die Arbeitenden finanzieren die heutigen Renten.\" Wie heißt das?",
+     "o": [
+      "Äquivalenzprinzip",
+      "Generationenvertrag",
+      "Subsidiarität",
+      "Kapitaldeckung"
+     ],
+     "correct": 1,
+     "e": "Umlageverfahren."
+    },
+    {
+     "key": "sozial:8",
+     "q": "Wie hoch ist der Beitragssatz zur Arbeitslosenversicherung 2026 (gesamt, in %)?",
+     "accept": [
+      "2,6",
+      "2.6",
+      "2,6 %",
+      "2,6%"
+     ],
+     "e": "2,6 %, je 1,3 %."
+    }
+   ],
+   "write": [
+    {
+     "task": "Nenne alle 5 Zweige der Sozialversicherung mit ihrem Träger und schreibe dazu, wer die Beiträge zahlt.",
+     "model": "Krankenversicherung: Krankenkassen.\nRentenversicherung: Deutsche Rentenversicherung.\nArbeitslosenversicherung: Bundesagentur für Arbeit.\nPflegeversicherung: Pflegekassen.\nUnfallversicherung: Berufsgenossenschaften.\nDie ersten vier zahlen Arbeitgeber und Arbeitnehmer je zur Hälfte (Kinderlosenzuschlag Pflege nur AN), die Unfallversicherung zahlt der Arbeitgeber allein.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "Krankenversicherung / Krankenkasse",
+       "pattern": "kranken",
+       "flags": "i"
+      },
+      {
+       "label": "Rentenversicherung / DRV",
+       "pattern": "rente",
+       "flags": "i"
+      },
+      {
+       "label": "Arbeitslosenversicherung / Bundesagentur",
+       "pattern": "arbeitslos|bundesagentur",
+       "flags": "i"
+      },
+      {
+       "label": "Pflegeversicherung / Pflegekasse",
+       "pattern": "pflege",
+       "flags": "i"
+      },
+      {
+       "label": "Unfallversicherung / Berufsgenossenschaft",
+       "pattern": "unfall|berufsgenoss",
+       "flags": "i"
+      },
+      {
+       "label": "hälftig AG/AN",
+       "pattern": "h(ä|ae)lft|je zur|50",
+       "flags": "i"
+      },
+      {
+       "label": "Unfall nur Arbeitgeber",
+       "pattern": "(nur|allein).*arbeitgeber|arbeitgeber.*(nur|allein)",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "unternehmen",
+   "area": "WISO",
+   "prio": 2,
+   "title": "Unternehmen, Markt, Kaufvertrag",
+   "mins": 25,
+   "why": "Rechtsformen und Vertragsrecht runden WiSo ab.",
+   "clip": [
+    {
+     "h": "Rechtsformen",
+     "say": "Die Rechtsformen. Bei Einzelunternehmen, GbR und OHG haften die Inhaber mit ihrem Privatvermögen. Bei der KG haftet der Komplementär voll, der Kommanditist nur mit seiner Einlage. Bei Kapitalgesellschaften haftet nur das Gesellschaftsvermögen. GmbH: fünfundzwanzigtausend Euro Stammkapital. UG: ab einem Euro, muss aber Rücklagen bilden. AG: fünfzigtausend Euro Grundkapital.",
+     "v": {
+      "table": [
+       [
+        "Form",
+        "Gründer",
+        "Kapital",
+        "Haftung"
+       ],
+       [
+        "Einzelunternehmen",
+        "1",
+        "kein Minimum",
+        "unbeschränkt, privat"
+       ],
+       [
+        "GbR",
+        "mind. 2",
+        "kein Minimum",
+        "alle unbeschränkt"
+       ],
+       [
+        "OHG",
+        "mind. 2",
+        "kein Minimum",
+        "alle unbeschränkt, unmittelbar, solidarisch"
+       ],
+       [
+        "KG",
+        "mind. 2",
+        "kein Minimum",
+        "Komplementär voll, Kommanditist nur Einlage"
+       ],
+       [
+        "GmbH",
+        "ab 1",
+        "25.000 € Stammkapital",
+        "nur Gesellschaftsvermögen"
+       ],
+       [
+        "UG (haftungsbeschränkt)",
+        "ab 1",
+        "ab 1 €",
+        "nur Gesellschaftsvermögen"
+       ],
+       [
+        "AG",
+        "ab 1",
+        "50.000 € Grundkapital",
+        "nur Gesellschaftsvermögen"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Organe",
+     "say": "Die Organe. Die GmbH wird vom Geschäftsführer geleitet, die Eigentümer treffen sich in der Gesellschafterversammlung. Die AG hat drei Organe: Vorstand leitet, Aufsichtsrat kontrolliert, Hauptversammlung der Aktionäre entscheidet Grundsätzliches.",
+     "v": {
+      "table": [
+       [
+        "",
+        "GmbH",
+        "AG"
+       ],
+       [
+        "Leitung",
+        "Geschäftsführer",
+        "Vorstand"
+       ],
+       [
+        "Kontrolle",
+        "(Aufsichtsrat ab 500 AN)",
+        "Aufsichtsrat"
+       ],
+       [
+        "Eigentümer",
+        "Gesellschafterversammlung",
+        "Hauptversammlung"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Deine Kanzlei",
+     "say": "Kleiner Bonus aus deinem Alltag. Muth und Partner ist eine Partnerschaftsgesellschaft mit beschränkter Berufshaftung, kurz PartG mbB. Diese Rechtsform gibt es nur für Freie Berufe wie Steuerberater, Wirtschaftsprüfer und Anwälte. Für Berufsfehler haftet nur das Gesellschaftsvermögen. Dafür braucht die Gesellschaft eine erhöhte Berufshaftpflichtversicherung.",
+     "v": {
+      "stat": "PartG mbB",
+      "sub": "Partnerschaftsgesellschaft mit beschränkter Berufshaftung: für Freie Berufe wie Steuerberater, Wirtschaftsprüfer, Anwälte. Eintrag im Partnerschaftsregister. Für Fehler bei der Berufsausübung haftet nur das Gesellschaftsvermögen, dafür ist eine erhöhte Berufshaftpflicht Pflicht."
+     }
+    },
+    {
+     "h": "Vollmachten",
+     "say": "Vollmachten. Prokura wird im Handelsregister eingetragen, man unterschreibt mit ppa. Der Prokurist darf fast alles, aber keine Grundstücke verkaufen oder belasten, keine Bilanz unterschreiben und keine Prokura erteilen. Die Handlungsvollmacht wird nicht eingetragen, man unterschreibt mit i. V. Sie gilt nur für gewöhnliche Geschäfte.",
+     "v": {
+      "table": [
+       [
+        "",
+        "Prokura",
+        "Handlungsvollmacht"
+       ],
+       [
+        "Eintrag ins Handelsregister",
+        "ja",
+        "nein"
+       ],
+       [
+        "Zusatz bei Unterschrift",
+        "ppa.",
+        "i. V. / i. A."
+       ],
+       [
+        "Darf",
+        "fast alle Geschäfte",
+        "gewöhnliche Geschäfte des Betriebs"
+       ],
+       [
+        "Darf NICHT",
+        "Grundstücke verkaufen/belasten, Bilanz unterschreiben, Prokura erteilen, Insolvenz anmelden",
+        "zusätzlich ohne Sondervollmacht: Kredite, Prozesse, Grundstücke"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Ziele und Nachhaltigkeit",
+     "say": "Unternehmensziele. Das ökonomische Prinzip gibt es als Maximalprinzip, also mit gegebenen Mitteln das Beste rausholen, und als Minimalprinzip, also ein Ziel mit möglichst wenig Mitteln erreichen. Nachhaltigkeit hat drei Säulen: ökologisch, ökonomisch, sozial. Zielbeziehungen sind komplementär, wenn sie sich fördern, konkurrierend, wenn sie sich behindern, und indifferent, wenn sie sich nicht beeinflussen.",
+     "v": {
+      "table": [
+       [
+        "Begriff",
+        "Bedeutung"
+       ],
+       [
+        "Ökonomisches Prinzip",
+        "Maximalprinzip: mit gegebenen Mitteln max. Ergebnis. Minimalprinzip: Ziel mit min. Mitteln"
+       ],
+       [
+        "3 Säulen der Nachhaltigkeit",
+        "ökologisch, ökonomisch, sozial"
+       ],
+       [
+        "Zielbeziehungen",
+        "komplementär (fördern sich), konkurrierend (behindern sich), indifferent (egal)"
+       ],
+       [
+        "Green IT",
+        "Energieeffizienz, lange Nutzung, Recycling, Blauer Engel"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Markt und Marktformen",
+     "say": "In der sozialen Marktwirtschaft bilden sich Preise über Angebot und Nachfrage. Wo beide sich treffen, liegt der Gleichgewichtspreis. Bei den Marktformen zählt die Anzahl der Anbieter: viele heißt Polypol, wenige heißt Oligopol, einer heißt Monopol.",
+     "v": {
+      "table": [
+       [
+        "Anbieter / Nachfrager",
+        "viele",
+        "wenige",
+        "einer"
+       ],
+       [
+        "viele",
+        "Polypol",
+        "Oligopol",
+        "Monopol"
+       ]
+      ]
+     }
+    },
+    {
+     "h": "Kaufvertrag",
+     "say": "Ein Kaufvertrag entsteht durch zwei übereinstimmende Willenserklärungen: Antrag und Annahme. Ein Schaufenster oder ein Onlineshop ist noch kein Angebot, sondern nur eine Aufforderung, ein Angebot zu machen. Geschäftsfähigkeit: unter sieben geschäftsunfähig, sieben bis siebzehn beschränkt, ab achtzehn voll. Die Gewährleistung beträgt zwei Jahre. Zuerst hat der Verkäufer das Recht auf Nacherfüllung, also Reparatur oder Ersatz. Erst danach Rücktritt oder Minderung. Online gekauft hast du vierzehn Tage Widerrufsrecht. Garantie ist freiwillig, Gewährleistung ist Gesetz.",
+     "v": {
+      "list": [
+       "Entsteht durch zwei übereinstimmende Willenserklärungen: Antrag + Annahme",
+       "Schaufenster, Katalog, Onlineshop = nur Aufforderung zum Angebot",
+       "Geschäftsfähigkeit: unter 7 geschäftsunfähig, 7 bis 17 beschränkt (Taschengeldparagraf), ab 18 voll",
+       "Gewährleistung: 2 Jahre, zuerst Nacherfüllung (Reparatur oder Ersatz)",
+       "Danach: Rücktritt, Minderung oder Schadensersatz",
+       "Online gekauft: 14 Tage Widerrufsrecht",
+       "Garantie = freiwillig vom Hersteller, Gewährleistung = gesetzlich vom Verkäufer"
+      ]
+     }
+    }
+   ],
+   "videos": [
+    {
+     "id": "8so4aRl7kiw",
+     "t": "Unternehmensformen einfach erklärt",
+     "c": "Wirtschaft verstehen"
+    }
+   ],
+   "quiz": [
+    {
+     "key": "unternehmen:0",
+     "q": "Wie hoch ist das Mindest-Stammkapital einer GmbH?",
+     "o": [
+      "1 €",
+      "12.500 €",
+      "25.000 €",
+      "50.000 €"
+     ],
+     "correct": 2,
+     "e": "AG: 50.000 € Grundkapital."
+    },
+    {
+     "key": "unternehmen:1",
+     "q": "Wer haftet bei der KG unbeschränkt?",
+     "o": [
+      "Kommanditist",
+      "Komplementär",
+      "beide",
+      "keiner"
+     ],
+     "correct": 1,
+     "e": "Kommanditist nur mit seiner Einlage."
+    },
+    {
+     "key": "unternehmen:2",
+     "q": "Welches Organ kontrolliert bei der AG den Vorstand?",
+     "o": [
+      "Hauptversammlung",
+      "Aufsichtsrat",
+      "Geschäftsführer",
+      "Betriebsrat"
+     ],
+     "correct": 1,
+     "e": "Aufsichtsrat."
+    },
+    {
+     "key": "unternehmen:3",
+     "q": "Was darf ein Prokurist NICHT?",
+     "o": [
+      "Mitarbeiter einstellen",
+      "Kredite aufnehmen",
+      "Grundstücke verkaufen",
+      "Verträge unterschreiben"
+     ],
+     "correct": 2,
+     "e": "Grundstücke veräußern oder belasten nur mit Sondervollmacht."
+    },
+    {
+     "key": "unternehmen:4",
+     "q": "Wie unterschreibt ein Prokurist?",
+     "o": [
+      "i. V.",
+      "i. A.",
+      "ppa.",
+      "gez."
+     ],
+     "correct": 2,
+     "e": "per procura."
+    },
+    {
+     "key": "unternehmen:5",
+     "q": "Wenige Anbieter, viele Nachfrager:",
+     "o": [
+      "Polypol",
+      "Oligopol",
+      "Monopol",
+      "Monopson"
+     ],
+     "correct": 1,
+     "e": "Z. B. Mobilfunkanbieter."
+    },
+    {
+     "key": "unternehmen:6",
+     "q": "Ein Onlineshop zeigt eine Grafikkarte für 499 €. Ist das ein Angebot im rechtlichen Sinn?",
+     "o": [
+      "ja",
+      "nein, nur Aufforderung zur Abgabe eines Angebots",
+      "nur mit AGB",
+      "nur bei Lagerbestand"
+     ],
+     "correct": 1,
+     "e": "Die Bestellung des Kunden ist der Antrag."
+    },
+    {
+     "key": "unternehmen:7",
+     "q": "Ein 15-Jähriger kauft ohne Zustimmung der Eltern ein Handy auf Raten. Der Vertrag ist ...",
+     "o": [
+      "wirksam",
+      "schwebend unwirksam",
+      "nichtig",
+      "strafbar"
+     ],
+     "correct": 1,
+     "e": "Beschränkt geschäftsfähig, Ratenkauf nicht vom Taschengeldparagrafen gedeckt."
+    },
+    {
+     "key": "unternehmen:8",
+     "q": "Was muss der Käufer bei einem Mangel zuerst verlangen?",
+     "o": [
+      "Rücktritt",
+      "Minderung",
+      "Nacherfüllung",
+      "Schadensersatz"
+     ],
+     "correct": 2,
+     "e": "Vorrang der Nacherfüllung."
+    },
+    {
+     "key": "unternehmen:9",
+     "q": "Umweltschutz senkt kurzfristig den Gewinn. Welche Zielbeziehung?",
+     "o": [
+      "komplementär",
+      "konkurrierend",
+      "indifferent",
+      "identisch"
+     ],
+     "correct": 1,
+     "e": "Die Ziele behindern sich."
+    },
+    {
+     "key": "unternehmen:10",
+     "q": "Wie viele Tage Widerrufsrecht gibt es beim Online-Kauf?",
+     "accept": [
+      "14",
+      "14 tage"
+     ],
+     "e": "14 Tage."
+    },
+    {
+     "key": "unternehmen:11",
+     "q": "Welche Rechtsform hat Muth & Partner?",
+     "o": [
+      "GmbH",
+      "AG",
+      "PartG mbB",
+      "OHG"
+     ],
+     "correct": 2,
+     "e": "Partnerschaftsgesellschaft mit beschränkter Berufshaftung."
+    }
+   ],
+   "write": [
+    {
+     "task": "Ein Freund will eine IT-Firma gründen und wenig persönlich haften, hat aber nur 2.000 € Startkapital. Welche Rechtsform empfiehlst du? Begründe mit Haftung und Kapital.",
+     "model": "Ich empfehle die UG (haftungsbeschränkt). Sie kann schon mit 1 € Stammkapital gegründet werden, die 2.000 € reichen also. Es haftet nur das Gesellschaftsvermögen, nicht das Privatvermögen. Die UG muss jedes Jahr 25 % des Gewinns in eine Rücklage stecken, bis 25.000 € erreicht sind, dann kann sie zur GmbH werden.",
+     "alt": null,
+     "keys": [
+      {
+       "label": "UG (haftungsbeschränkt)",
+       "pattern": "\\bug\\b|unternehmergesellschaft",
+       "flags": "i"
+      },
+      {
+       "label": "Mindestkapital 1 €",
+       "pattern": "1\\s*(€|euro)|ein\\s*euro",
+       "flags": "i"
+      },
+      {
+       "label": "Haftung nur Gesellschaftsvermögen",
+       "pattern": "gesellschaftsverm(ö|oe)gen|beschr(ä|ae)nkt|nicht.*privat|privat.*nicht",
+       "flags": "i"
+      },
+      {
+       "label": "Rücklage / später GmbH",
+       "pattern": "r(ü|ue)cklage|25\\s*%|gmbh",
+       "flags": "i"
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

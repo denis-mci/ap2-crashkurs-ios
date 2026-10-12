@@ -1,0 +1,68 @@
+name: iOS Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: ios-build
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Projekt erzeugen
+        run: |
+          brew install xcodegen
+          xcodegen generate
+
+      - name: Bauen (unsigniert)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project AP2Crashkurs.xcodeproj \
+            -scheme AP2Crashkurs \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            CURRENT_PROJECT_VERSION=${{ github.run_number }} \
+            build 2>&1 | tee build.log | grep -E "error:|warning: .*deprecated|BUILD (SUCCEEDED|FAILED)" || true
+          test -d build/Build/Products/Release-iphoneos/AP2Crashkurs.app
+
+      - name: Fehlerlog
+        if: failure()
+        run: grep -E "error:" -A3 build.log | head -100 || true
+
+      - name: IPA packen
+        run: |
+          mkdir -p Payload
+          cp -R build/Build/Products/Release-iphoneos/AP2Crashkurs.app Payload/
+          zip -qry AP2Crashkurs.ipa Payload
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AP2Crashkurs-ipa
+          path: AP2Crashkurs.ipa
+
+      - name: Release "latest" aktualisieren
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest AP2Crashkurs.ipa \
+            --title "AP2 Crashkurs, Build ${{ github.run_number }}" \
+            --notes "Unsignierte IPA. Auf dem iPhone herunterladen und mit SideStore installieren."
