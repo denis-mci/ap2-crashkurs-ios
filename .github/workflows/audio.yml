@@ -6,6 +6,7 @@ on:
     paths:
       - App/Resources/clips.json
       - tools/make_audio.py
+      - .github/workflows/audio.yml
   workflow_dispatch:
 
 permissions:
