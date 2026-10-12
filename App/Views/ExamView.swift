@@ -117,6 +117,19 @@ struct ExamView: View {
                 } footer: {
                     Text("Typischer Ablauf, die genauen Zeiten stehen in deiner Einladung der IHK.")
                 }
+
+                Section {
+                    Link(destination: URL(string: "https://it-berufe-podcast.de/vorbereitung-auf-die-ihk-abschlusspruefung-der-it-berufe/themen-der-schriftlichen-ihk-pruefungen-der-it-berufe/")!) {
+                        ModeRow(title: "Themen aller AP2-Prüfungen seit 2021", sub: "Auswertung, welche Themen wie oft drankamen", icon: "chart.bar.fill", color: .cobalt)
+                    }
+                    Link(destination: URL(string: "https://it-berufe-podcast.de/neuer-pruefungskatalog-fuer-die-ap2-als-fachinformatiker-anwendungsentwicklung-ab-2025-it-berufe-podcast-191/")!) {
+                        ModeRow(title: "Folge 191: Neuer Prüfungskatalog ab 2025", sub: "Was neu ist, was gestrichen wurde", icon: "mic.fill", color: .cobalt)
+                    }
+                } header: {
+                    Text("IT-Berufe-Podcast (Stefan Macke)")
+                } footer: {
+                    Text("Daher stammen die Zahlen zur Prüfungsrelevanz in dieser App.")
+                }
             }
             .navigationTitle("Prüfung")
             .navigationDestination(for: RunRoute.self) { r in
