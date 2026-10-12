@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Vertonung (Piper Thorsten)"]
+    types: [completed]
 
 permissions:
   contents: write
@@ -29,6 +32,7 @@ jobs:
           xcodegen generate
 
       - name: Bauen (unsigniert)
+        id: build
         run: |
           set -o pipefail
           xcodebuild \
@@ -115,3 +119,16 @@ jobs:
           gh release create latest AP2Crashkurs.ipa screenshots.zip \
             --title "AP2 Crashkurs, Build ${{ github.run_number }}" \
             --notes "Unsignierte IPA. Auf dem iPhone herunterladen und mit SideStore installieren."
+
+      - name: Ergebnis in Branch ci-results ablegen
+        if: always()
+        run: |
+          mkdir -p /tmp/ci && cd /tmp/ci
+          echo "run=${{ github.run_number }} sha=${{ github.sha }} job=${{ job.status }}" > status.txt
+          if [ -f "$GITHUB_WORKSPACE/build.log" ]; then grep -E "error:|warning: unre|BUILD (SUCCEEDED|FAILED)" -A3 "$GITHUB_WORKSPACE/build.log" | head -300 > errors.txt || true; fi
+          if [ -d "$GITHUB_WORKSPACE/shots" ]; then cp -R "$GITHUB_WORKSPACE/shots" .; fi
+          git init -q -b ci-results
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A && git commit -q -m "CI ${{ github.run_number }}: ${{ job.status }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" ci-results
