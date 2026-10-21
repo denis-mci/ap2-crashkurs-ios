@@ -3,6 +3,10 @@ name: iOS Build
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - web/**
+      - .github/workflows/pages.yml
+      - README.md
   workflow_dispatch:
   workflow_run:
     workflows: ["Vertonung (Piper Thorsten)"]
