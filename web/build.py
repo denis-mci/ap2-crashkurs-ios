@@ -14,6 +14,7 @@ CONTENT = [
     "c_ga2.js", "c_ga1.js", "c_wiso.js", "clips_ga2.js", "clips_ga1.js", "clips_wiso.js",
     "n_a.js", "n_b.js", "n_c.js", "n_d.js", "nclips_a.js", "nclips_b.js", "nclips_c.js", "nclips_d.js",
     "wiso_bank.js", "cases_ga1.js", "cases_ga2.js", "cases_ga1b.js", "cases_ga2b.js", "belegsatz.js",
+    "dialog_ga1.js", "dialog_ga2.js", "dialog_wiso.js", "merke.js", "extra_ga1.js", "extra_ga2.js", "extra_wiso.js",
 ]
 
 HEAD = """<!doctype html>
@@ -23,9 +24,9 @@ HEAD = """<!doctype html>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="AP2 Crashkurs">
+<meta name="apple-mobile-web-app-title" content="AP2 Trainer">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#EEF0F5">
+<meta name="theme-color" content="#F4F5FA">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -34,14 +35,14 @@ HEAD = """<!doctype html>
 """
 
 MANIFEST = {
-    "name": "AP2 Crashkurs",
-    "short_name": "AP2",
+    "name": "AP2 Trainer",
+    "short_name": "AP2 Trainer",
     "lang": "de",
     "start_url": "./",
     "scope": "./",
     "display": "standalone",
-    "background_color": "#EEF0F5",
-    "theme_color": "#EEF0F5",
+    "background_color": "#F4F5FA",
+    "theme_color": "#F4F5FA",
     "icons": [
         {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
         {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"},
@@ -54,7 +55,7 @@ def main():
     content = "\n".join((SRC / f).read_text() for f in CONTENT)
     page = (
         shell.replace("/*CONTENT*/", content)
-        .replace("/*PLAYER*/", (SRC / "clipplayer.js").read_text())
+        .replace("/*PLAYER*/", (SRC / "clipplayer.js").read_text() + "\n" + (SRC / "player.js").read_text())
         .replace("/*APP*/", (SRC / "app.js").read_text())
     )
     if OUT.exists():
@@ -68,6 +69,8 @@ def main():
     # Diagramme teilt sich die Web-Version mit der iOS-App
     shutil.copytree(ROOT.parent / "App" / "Resources" / "diagrams", OUT / "diagrams")
     (OUT / ".nojekyll").write_text("")
+    # Variante für claude.ai (Artifact): ohne eigenen <head>, Gerüst kommt beim Veröffentlichen
+    (OUT / "artifact.html").write_text('<meta name="theme-color" content="#F4F5FA">\n' + page)
     print(f"index.html: {len(page) // 1024} KB")
 
 
