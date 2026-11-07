@@ -23,7 +23,8 @@ SRC = ROOT / "web" / "audio_src.json"
 OUT = ROOT / "web" / "audio"
 VOICE_T = os.environ.get("VOICE_TOM", "de_DE-thorsten-high")
 VOICE_L = os.environ.get("VOICE_LISA", "de_DE-kerstin-low")
-GAP = 0.4   # Sekunden Stille zwischen den Beats
+GAP = 0.45  # Standardpause vor einem Satz, falls im Export keine angegeben ist
+RENDER_VERSION = "v2-fliessend"
 SR = 24000
 
 
@@ -40,9 +41,23 @@ def synth(voice, cfg, text, wav_path):
 
 
 def to_pcm(wav_in, raw_out):
-    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", wav_in,
-                    "-af", "silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,loudnorm=I=-16:TP=-1.5",
+    """Stille an den Rändern nur sanft kürzen (etwas Ausklang bleibt), weiche Ein- und Ausblendung gegen Knackser.
+    Keine Lautheitsanpassung pro Satz: das macht später einmal der ganze Track, sonst springt die Lautstärke."""
+    af = ("silenceremove=start_periods=1:start_silence=0.04:start_threshold=-55dB,"
+          "areverse,silenceremove=start_periods=1:start_silence=0.12:start_threshold=-55dB,areverse,"
+          "afade=t=in:d=0.015")
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", wav_in, "-af", af,
                     "-ac", "1", "-ar", str(SR), "-f", "s16le", raw_out], check=True)
+    # kurzes Ausblenden der letzten 40 ms direkt im PCM
+    data = bytearray(pathlib.Path(raw_out).read_bytes())
+    n = len(data) // 2
+    fade = min(n, int(SR * 0.04))
+    import struct
+    for i in range(fade):
+        idx = (n - fade + i) * 2
+        v = struct.unpack_from("<h", data, idx)[0]
+        struct.pack_into("<h", data, idx, int(v * (1 - i / fade)))
+    pathlib.Path(raw_out).write_bytes(bytes(data))
 
 
 ENGINE = os.environ.get("TTS_ENGINE", "piper")
@@ -125,7 +140,7 @@ def run(voices):
     lessons, digest = {}, {}
     only = set(filter(None, os.environ.get("ONLY", "").split(",")))
     for lid, beats in src.items():
-        d = hashlib.sha1((ENGINE + voice_id() + json.dumps(beats, ensure_ascii=False)).encode()).hexdigest()[:12]
+        d = hashlib.sha1((RENDER_VERSION + ENGINE + voice_id() + json.dumps(beats, ensure_ascii=False)).encode()).hexdigest()[:12]
         digest[lid] = d
         mp3 = OUT / f"{lid}.mp3"
         if old_digest.get(lid) == d and mp3.exists() and lid in old.get("lessons", {}) and not (only and lid in only):
@@ -134,9 +149,10 @@ def run(voices):
         print(f"vertone {lid} ({len(beats)} Beats)", flush=True)
         tmp = pathlib.Path(tempfile.mkdtemp())
         pcm = bytearray()
-        gap = b"\x00\x00" * int(SR * GAP)
         seg = {}
         for i, b in enumerate(beats):
+            pause = b.get("g", GAP) if i else 0
+            pcm += b"\x00\x00" * int(SR * pause)
             w, r = str(tmp / f"{i}.wav"), str(tmp / f"{i}.raw")
             if ENGINE == "piper":
                 voice, cfg = voices[b["who"]]
@@ -148,10 +164,12 @@ def run(voices):
             start = len(pcm) / 2 / SR
             pcm += data
             seg[key(b["who"], b["say"])] = [round(start, 3), round(len(pcm) / 2 / SR, 3)]
-            pcm += gap
+        pcm += b"\x00\x00" * int(SR * 0.6)
         raw_all = tmp / "all.raw"
         raw_all.write_bytes(bytes(pcm))
+        # Lautheit einmal für die ganze Lektion angleichen (lineare Verstärkung, keine Pumpeffekte)
         subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-f", "s16le", "-ar", str(SR), "-ac", "1", "-i", str(raw_all),
+                        "-af", "loudnorm=I=-16:TP=-1.5:LRA=11:linear=true", "-ar", str(SR),
                         "-b:a", "64k", str(mp3)], check=True)
         lessons[lid] = seg
     for f in OUT.glob("*.mp3"):

@@ -78,7 +78,9 @@ function mount(root,lesson,opts){
   const seg=f=>{const m=AUDIO&&AUDIO[lesson.id];return m?m[keyOf(f.who,f.say)]:null;};
   const estDur=f=>{const s=seg(f);return s?(s[1]-s[0]):Math.max(1.8,f.say.length/14.5);};
   let total=0;let starts=[];
-  function computeStarts(){starts=[];let t=0;flat.forEach(f=>{starts.push(t);t+=estDur(f)+.4;});total=t;}
+  function computeStarts(){starts=[];const sp=flat.map(seg);
+    if(sp.every(Boolean)){const o=sp[0][0];sp.forEach(x=>starts.push(x[0]-o));total=sp[sp.length-1][1]-o+0.6;return;}
+    let t=0;flat.forEach(f=>{starts.push(t);t+=estDur(f)+.4;});total=t;}
   computeStarts();
   let beatT0=0,beatOff=0,dragging=false,pendingOff=0;
   const keySets=scenes.map(s=>visualWords(s.v));
@@ -185,20 +187,33 @@ function mount(root,lesson,opts){
     wrap.classList.toggle('idle',!playing&&pos===0&&!ended&&!checkOpen);
   }
   function stopSound(){gen++;clearTimeout(timer);cancelAnimationFrame(raf);try{audio.pause();}catch(e){}if(window.speechSynthesis){try{speechSynthesis.cancel();}catch(e){}}wrap.classList.remove('talk');}
-  function playSeg(sg,rate,onEnd,onFail,off){
+  /* Spielt einen Abschnitt des Sprites. keep=true: am Ende nicht pausieren, die Aufnahme läuft ins nächste Segment weiter */
+  function watchSeg(endAt,keep,onEnd){cancelAnimationFrame(raf);const tick=()=>{if(audio.currentTime>=endAt-0.02||audio.ended){if(!keep||audio.ended)audio.pause();onEnd();return;}raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);}
+  function playSeg(sg,rate,onEnd,onFail,off,endAt,keep){
     const start=()=>{ensureGraph();if(actx&&actx.state==='suspended')actx.resume();applyVol();try{audio.currentTime=sg[0]+(off||0);}catch(e){}audio.playbackRate=rate;try{audio.preservesPitch=true;}catch(e){}
-      const pr=audio.play();if(pr&&pr.catch)pr.catch(onFail);
-      cancelAnimationFrame(raf);const tick=()=>{if(audio.currentTime>=sg[1]-0.02||audio.ended){audio.pause();onEnd();return;}raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);};
+      const pr=audio.play();if(pr&&pr.catch)pr.catch(onFail);watchSeg(endAt||sg[1],keep,onEnd);};
     if(!audio.src.endsWith(spriteSrc)){audio.src=spriteSrc;audio.addEventListener('loadedmetadata',start,{once:true});audio.load();}
     else if(audio.readyState>=1)start();else audio.addEventListener('loadedmetadata',start,{once:true});
   }
-  function playBeat(off){stopSound();const my=gen;const f=flat[pos];const rate=S.rate||1;off=off||pendingOff||0;pendingOff=0;
+  function playBeat(off,cont){
+    if(cont){gen++;clearTimeout(timer);cancelAnimationFrame(raf);}else stopSound();
+    const my=gen;const f=flat[pos];const rate=S.rate||1;off=off||pendingOff||0;pendingOff=0;
     beatOff=off;beatT0=performance.now();
     wrap.classList.add('talk');timeWords(f);restartWords();
+    const sg=seg(f);const nf=flat[pos+1];const nsg=nf&&seg(nf);
+    const stopHere=f.last&&f.si>=0&&scenes[f.si].check&&!scenes[f.si]._answered;
+    /* Fließend weiterspielen, wenn der nächste Satz direkt dahinter im Sprite liegt: keine Schnitte, keine Sprünge */
+    const keep=!!(S.sound&&sg&&nsg&&!stopHere&&nsg[0]>=sg[1]-0.05&&nsg[0]-sg[1]<3);
     const pause=f.merke?1100:(f.last?650:320);
-    const done=()=>{if(my!==gen)return;wrap.classList.remove('talk');showAllWords();timer=setTimeout(()=>{if(my===gen&&playing)afterBeat();},Math.round(pause/rate));};
-    const sg=seg(f);const est=Math.max(400,(sg?0:Math.max(1800,f.say.length*68/rate))-off*1000/rate);
-    if(S.sound&&sg){playSeg(sg,rate,done,()=>{timer=setTimeout(done,est);},off);timer=setTimeout(done,((sg[1]-sg[0]-off)*1000/rate)*2+4000);}
+    const done=()=>{if(my!==gen)return;showAllWords();
+      if(keep&&playing){pos++;paint();playBeat(0,true);return;}
+      wrap.classList.remove('talk');timer=setTimeout(()=>{if(my===gen&&playing)afterBeat();},Math.round(pause/rate));};
+    const est=Math.max(400,(sg?0:Math.max(1800,f.say.length*68/rate))-off*1000/rate);
+    if(S.sound&&sg){const endAt=keep?nsg[0]:sg[1];
+      const near=cont&&!audio.paused&&audio.src.endsWith(spriteSrc)&&audio.currentTime>=sg[0]-0.6&&audio.currentTime<endAt;
+      if(near){audio.playbackRate=rate;watchSeg(endAt,keep,done);}
+      else playSeg(sg,rate,done,()=>{timer=setTimeout(done,est);},off,endAt,keep);
+      timer=setTimeout(done,((endAt-sg[0]-off)*1000/rate)*2+4000);}
     else if(S.sound&&window.speechSynthesis){try{const u=new SpeechSynthesisUtterance(f.say);u.lang='de-DE';if(VO)u.voice=VO;u.rate=rate;u.volume=Math.min(1,vol());u.onend=done;u.onerror=done;
         speechSynthesis.speak(u);timer=setTimeout(done,est*1.8+2500);}catch(e){timer=setTimeout(done,est);}}
     else timer=setTimeout(done,est);
@@ -234,7 +249,8 @@ function mount(root,lesson,opts){
   function advance(){if(pos<flat.length-1){pos++;paint();if(playing)playBeat();}else finish();}
   function finish(){playing=false;stopSound();ended=true;paint();setCtl();showAllWords();opts.onFinish&&opts.onFinish(notes);}
   function openCheck(sc){checkOpen=true;stopSound();setCtl();const c=$('vpCheck');const ch=sc.check;
-    c.innerHTML=`<div class="ck-in"><div class="ck-ey">Kurz mitdenken, bevor es weitergeht</div><div class="ck-q">${esc(ch.q)}</div><div class="ck-o">${ch.o.map((o,i)=>`<button data-i="${i}">${esc(o)}</button>`).join('')}</div><div class="ck-fb" id="ckFb"></div><button class="ck-skip" id="ckSkip">Überspringen</button></div>`;
+    const lastShow=(sc.beats[sc.beats.length-1]||{}).show;const vis=ClipPlayer.renderVisual(sc.v,lastShow);
+    c.innerHTML=`<div class="ck-in"><div class="ck-ey">Kurz mitdenken, bevor es weitergeht</div>${vis?`<div class="ck-vis"><span class="ck-vl">Zur Erinnerung aus dem Video</span>${vis}</div>`:''}<div class="ck-q">${esc(ch.q)}</div><div class="ck-o">${ch.o.map((o,i)=>`<button data-i="${i}">${esc(o)}</button>`).join('')}</div><div class="ck-fb" id="ckFb"></div><button class="ck-skip" id="ckSkip">Überspringen</button></div>`;
     c.hidden=false;
     const cont=()=>{c.hidden=true;checkOpen=false;playing=true;setCtl();advance();};
     c.querySelector('#ckSkip').addEventListener('click',()=>{sc._answered=true;cont();});

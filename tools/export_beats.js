@@ -14,11 +14,12 @@ const clips=Object.assign({},...names.filter(n=>/CLIPS/.test(n)).map(n=>X[n]));
 const dialog=Object.assign({},...names.filter(n=>/^DIALOG/.test(n)).map(n=>X[n]));
 const out={};
 for(const l of lessons){const sc=clips[l.id]||[];const d=dialog[l.id]||{};const beats=[];
-  beats.push({who:'T',say:'Heute geht es um '+l.title.replace(/:/g,',')+'. '+(l.why||'')});
+  // g = Pause vor dem Satz in Sekunden (natürlicher Sprechrhythmus statt harter Schnitte)
+  beats.push({who:'T',say:'Heute geht es um '+l.title.replace(/:/g,',')+'. '+(l.why||''),g:0});
   const M=(X.MERKE||{})[l.id]||[];
   const E=Object.assign({},X.EXTRA_GA1||{},X.EXTRA_GA2||{},X.EXTRA_WISO||{})[l.id]||{};
-  sc.forEach((s,si)=>{s.beats.forEach(b=>beats.push({who:'T',say:b.say}));(E[si]||[]).forEach(t=>beats.push({who:'T',say:t}));if(M[si])beats.push({who:'T',say:'Merk dir: '+M[si]});});
-  if(d.o||M.some(Boolean))beats.push({who:'T',say:d.o?'Zum Mitnehmen. '+d.o.replace(/^(Also zusammengefasst|Zusammengefasst|Also|Merke|Merksatz)\s*:\s*/i,''):'Zum Mitnehmen: dein Merkzettel.'});
+  sc.forEach((s,si)=>{s.beats.forEach((b,bi)=>beats.push({who:'T',say:b.say,g:bi===0?1.1:0.45}));(E[si]||[]).forEach(t=>beats.push({who:'T',say:t,g:0.5}));if(M[si])beats.push({who:'T',say:'Merk dir: '+M[si],g:0.8});});
+  if(d.o||M.some(Boolean))beats.push({who:'T',g:1.2,say:d.o?'Zum Mitnehmen. '+d.o.replace(/^(Also zusammengefasst|Zusammengefasst|Also|Merke|Merksatz)\s*:\s*/i,''):'Zum Mitnehmen: dein Merkzettel.'});
   out[l.id]=beats;}
 fs.writeFileSync(path.join(__dirname,'..','web','audio_src.json'),JSON.stringify(out,null,0));
 console.log('Lektionen:',Object.keys(out).length,'Beats:',Object.values(out).reduce((a,b)=>a+b.length,0));

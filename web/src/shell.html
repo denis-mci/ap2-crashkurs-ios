@@ -440,8 +440,8 @@ td.key{font-weight:800;color:var(--red)}
 .cv-stack .fr.res{background:var(--hl2)}
 .cv-stack .fr .r{font-weight:800;color:var(--ok)}
 .cv-stack .ghost{opacity:.4}
-.vp-check{position:absolute;inset:0;background:rgba(251,249,242,.97);display:flex;align-items:center;justify-content:center;padding:20px;animation:capIn .3s ease;overflow-y:auto;color:var(--nb-ink)}
-.ck-in{width:100%;max-width:620px;display:flex;flex-direction:column;gap:12px;background:#FFF6B8;border:2px solid var(--nb-ink);padding:18px;transform:rotate(-.6deg);box-shadow:4px 5px 0 var(--nb-ink)}
+.vp-check{position:absolute;inset:0;z-index:12;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:20px;animation:capIn .3s ease;overflow-y:auto;color:var(--nb-ink)}
+.ck-in{width:100%;max-width:640px;display:flex;flex-direction:column;gap:10px;margin:auto 0;background:#FFF6B8;border:2px solid var(--nb-ink);padding:18px;transform:rotate(-.6deg);box-shadow:4px 5px 0 var(--nb-ink)}
 .ck-ey{font-family:var(--f-hand);font-size:1.15rem;color:var(--red);font-weight:700}
 .ck-q{font-weight:800;font-size:1.2rem;line-height:1.3}
 .ck-o{display:flex;flex-direction:column;gap:8px}
@@ -505,6 +505,14 @@ td.key{font-weight:800;color:var(--red)}
 .vp-volpop input{flex:1;accent-color:var(--accent);min-width:0}
 .vp-vs{width:30px;height:30px;border:1px solid var(--line);background:var(--sunk);border-radius:6px;cursor:pointer;font-weight:700;font-size:1.05rem;color:var(--ink)}
 @media (max-width:480px){#vpVolB b{display:none}.vp-volpop{right:-60px}}
+/* Bild der Szene in der Mitdenk-Frage */
+.ck-vis{background:#fff;border:1.5px solid var(--nb-ink);padding:8px 10px;max-height:30vh;overflow:auto;transform:rotate(.3deg)}
+.ck-vis .ck-vl{display:block;font-family:var(--f-hand);font-weight:700;color:var(--nb-ink2);font-size:.95rem;margin-bottom:4px}
+.ck-vis .cv-code,.ck-vis .cv-tw{box-shadow:none;transform:none}
+.ck-vis .cv-code .off,.ck-vis .cv-code .on,.ck-vis .cv-list .off,.ck-vis .cv-list .on,.ck-vis .cv-table tr.off td,.ck-vis .cv-table tr.on td{opacity:1;transform:none}
+.ck-vis .cv-bub{height:170px}
+.vp-check{align-items:flex-start}
+@media (max-width:640px){.vp-check{position:fixed;inset:0;z-index:70;padding:calc(env(safe-area-inset-top,0px) + 14px) 14px calc(env(safe-area-inset-bottom,0px) + 14px)}.vp-ctrl{flex-wrap:wrap;row-gap:8px}}
 /* Zeitleiste */
 .vp-tl{position:relative;height:22px;display:flex;align-items:center;cursor:pointer;touch-action:none;outline:none}
 .tl-track{position:relative;width:100%;height:6px;border-radius:3px;background:var(--sunk);transition:height .12s}
