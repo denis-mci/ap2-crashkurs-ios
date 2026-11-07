@@ -35,3 +35,28 @@ SideStore erneuert die 7-Tage-Signatur danach selbst.
 ## Inhalte
 
 `App/Resources/lessons.json`, Quelle der Inhalte ist die Web-Version des Crashkurses.
+
+## Sicherheit (Web-Version)
+
+- Strenge Content-Security-Policy: Inline-Skripte nur per SHA-256-Hash (wird beim Build berechnet), keine fremden Skript-CDNs. Erlaubt sind nur die eigene Domain und Googles Anmeldedienst.
+- Firebase-SDK liegt selbst gehostet unter `web/vendor/firebase` (Version 10.12.2 aus npm), nicht per CDN.
+- Sync per Google-Login (optional, `web/src/firebase-config.js`): Jede Person liest und schreibt nur ihr eigenes Dokument `progress/{uid}`. Firestore-Regeln:
+
+```
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+    match /progress/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['json', 'updatedAt'])
+        && request.resource.data.json is string
+        && request.resource.data.json.size() < 300000
+        && request.resource.data.updatedAt is number;
+    }
+  }
+}
+```
+
+- Importierte oder synchronisierte Fortschrittsdaten werden vor dem Übernehmen geprüft (Größe, Typen, bekannte Felder).
+- GitHub Actions: TTS-Schlüssel nur im Vertonungsschritt als Umgebungsvariable, Dependabot hält die Actions aktuell.

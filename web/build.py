@@ -2,8 +2,11 @@
 
 Aufruf aus dem Repo-Root: python3 web/build.py
 """
+import base64
+import hashlib
 import json
 import pathlib
+import re
 import shutil
 
 ROOT = pathlib.Path(__file__).resolve().parent
@@ -14,7 +17,7 @@ CONTENT = [
     "c_ga2.js", "c_ga1.js", "c_wiso.js", "clips_ga2.js", "clips_ga1.js", "clips_wiso.js",
     "n_a.js", "n_b.js", "n_c.js", "n_d.js", "nclips_a.js", "nclips_b.js", "nclips_c.js", "nclips_d.js",
     "wiso_bank.js", "cases_ga1.js", "cases_ga2.js", "cases_ga1b.js", "cases_ga2b.js", "belegsatz.js",
-    "dialog_ga1.js", "dialog_ga2.js", "dialog_wiso.js", "merke.js", "extra_ga1.js", "extra_ga2.js", "extra_wiso.js",
+    "firebase-config.js", "dialog_ga1.js", "dialog_ga2.js", "dialog_wiso.js", "merke.js", "qfix.js", "extra_ga1.js", "extra_ga2.js", "extra_wiso.js",
 ]
 
 HEAD = """<!doctype html>
@@ -50,6 +53,37 @@ MANIFEST = {
 }
 
 
+def csp_meta(page):
+    """Strenge Content-Security-Policy: Inline-Skripte nur per SHA-256-Hash, keine fremden Skriptquellen
+    außer Googles Login (apis.google.com), das Firebase Auth für den Anmeldedialog braucht."""
+    hashes = []
+    for m in re.finditer(r"<script>(.*?)</script>", page, re.S):
+        h = base64.b64encode(hashlib.sha256(m.group(1).encode("utf-8")).digest()).decode()
+        hashes.append(f"'sha256-{h}'")
+    auth = ""
+    cfg = (SRC / "firebase-config.js").read_text()
+    m = re.search(r'authDomain:\s*"([^"]+)"', cfg)
+    if m:
+        auth = " https://" + m.group(1)
+    policy = "; ".join([
+        "default-src 'none'",
+        "script-src 'self' " + " ".join(hashes) + " https://apis.google.com",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src https://fonts.gstatic.com",
+        "img-src 'self' data: blob: https://*.googleusercontent.com",
+        "media-src 'self' blob:",
+        "connect-src 'self' blob: https://firestore.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com",
+        "frame-src https://accounts.google.com https://apis.google.com" + auth,
+        "manifest-src 'self'",
+        "worker-src 'none'",
+        "object-src 'none'",
+        "base-uri 'none'",
+        "form-action 'none'",
+    ])
+    return (f'<meta http-equiv="Content-Security-Policy" content="{policy}">\n'
+            '<meta name="referrer" content="strict-origin-when-cross-origin">')
+
+
 def main():
     shell = (SRC / "shell.html").read_text()
     content = "\n".join((SRC / f).read_text() for f in CONTENT)
@@ -61,11 +95,13 @@ def main():
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir()
-    (OUT / "index.html").write_text(HEAD + page + "\n</body>\n</html>\n")
+    (OUT / "index.html").write_text(HEAD.replace("</head>", csp_meta(page) + "\n</head>") + page + "\n</body>\n</html>\n")
     (OUT / "manifest.webmanifest").write_text(json.dumps(MANIFEST, ensure_ascii=False, indent=2))
     for s in (180, 192, 512):
         shutil.copy(ROOT / f"icon-{s}.png", OUT)
     shutil.copytree(ROOT / "audio", OUT / "audio")
+    # Firebase-SDK selbst gehostet (kein Fremd-CDN, CSP bleibt bei 'self')
+    shutil.copytree(ROOT / "vendor", OUT / "vendor")
     # Diagramme teilt sich die Web-Version mit der iOS-App
     shutil.copytree(ROOT.parent / "App" / "Resources" / "diagrams", OUT / "diagrams")
     (OUT / ".nojekyll").write_text("")

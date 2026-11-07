@@ -3,6 +3,11 @@
 /* ================= Daten ================= */
 const LESSONS=[...L_GA2,...L_GA1,...L_WISO,...L_NEU_A,...L_NEU_B,...L_NEU_C,...L_NEU_D];
 const BY=Object.fromEntries(LESSONS.map(l=>[l.id,l]));
+/* Überarbeitete Antwortoptionen (falsche Antworten gleich lang und plausibel) */
+if(typeof QFIX!=='undefined'){const SRC={L_GA2,L_GA1,L_WISO,L_NEU_A,L_NEU_B,L_NEU_C,L_NEU_D,CLIPS_GA2,CLIPS_GA1,CLIPS_WISO,CLIPS_NEU_A,CLIPS_NEU_B,CLIPS_NEU_C,CLIPS_NEU_D,WISO_BANK};
+  for(const k in QFIX){const [src,id,i]=k.split('|');const o=QFIX[k];let q=null;
+    if(src==='WISO_BANK')q=WISO_BANK[+i];else if(/^L_/.test(src)){const l=(SRC[src]||[]).find(x=>x.id===id);q=l&&l.quiz[+i];}else{const c=SRC[src]&&SRC[src][id];q=c&&c[+i]&&c[+i].check;}
+    if(q&&q.o&&q.o.length===o.length)q.o=o.slice();}}
 LESSONS.forEach(l=>l.quiz.forEach((q,i)=>{q._k=l.id+':'+i;q._l=l.id;}));
 const CLIPS=Object.assign({},CLIPS_GA2,CLIPS_GA1,CLIPS_WISO,CLIPS_NEU_A,CLIPS_NEU_B,CLIPS_NEU_C,CLIPS_NEU_D);
 const DIALOG=Object.assign({},typeof DIALOG_GA2!=='undefined'?DIALOG_GA2:{},typeof DIALOG_GA1!=='undefined'?DIALOG_GA1:{},typeof DIALOG_WISO!=='undefined'?DIALOG_WISO:{});
@@ -14,7 +19,6 @@ const areaOf=q=>q._l?BY[q._l].area:'WISO';
 const AREA={GA2:'GA2 Algorithmen',GA1:'GA1 Planen',WISO:'WiSo',EXAM:'Prüfung'};
 /* Kategorien wie im Themenbaum: Oberthema → Themen. Reihenfolge = empfohlene Lernreihenfolge */
 const CATS=[
- {id:'start',t:'Prüfungsstart',ic:'🎯',items:['technik']},
  {id:'algo',t:'Programmierung & Algorithmen',items:['pseudo1','pseudo3','pseudo2','test','qs']},
  {id:'db',t:'Datenbanken & SQL',items:['sql1','sql2','erm','sql4','sql3','db2']},
  {id:'uml',t:'Modellierung & UML',items:['klasse','umlv','patterns']},
@@ -22,19 +26,35 @@ const CATS=[
  {id:'sec',t:'IT-Sicherheit & Datenschutz',items:['sec2','security']},
  {id:'arch',t:'Architektur, Schnittstellen & Betrieb',items:['architektur','rest','betrieb']},
  {id:'wiso1',t:'WiSo: Ausbildung & Arbeit',items:['ausbildung','arbeitsrecht','sozial','beruf_recht']},
- {id:'wiso2',t:'WiSo: Betrieb & Wirtschaft',items:['betrieb_org','unternehmen','wirtschaft']}
+ {id:'wiso2',t:'WiSo: Betrieb & Wirtschaft',items:['betrieb_org','unternehmen','wirtschaft']},
+ {id:'start',t:'Extra: Prüfungstechnik (optional)',items:['technik']}
 ];
 const CAT_OF={};CATS.forEach(c=>c.items.forEach(id=>CAT_OF[id]=c));
 /* Lernreihenfolge nach Prüfungsrelevanz (Punkte pro Stunde), nicht nach Baum */
-const ORDER=['technik','pseudo1','sql1','sql2','klasse','erm','test','pseudo3','sql4','ausbildung','arbeitsrecht','sozial','betrieb_org','umlv','ui','anforderung','sec2','qs','db2','vorgehen','security','pseudo2','sql3','unternehmen','patterns','rest','quali','projekt','architektur','betrieb','wirtschaft','beruf_recht'];
+const ORDER=['pseudo1','sql1','sql2','klasse','erm','test','pseudo3','sql4','ausbildung','arbeitsrecht','sozial','betrieb_org','umlv','ui','anforderung','sec2','qs','db2','vorgehen','security','pseudo2','sql3','unternehmen','patterns','rest','quali','projekt','architektur','betrieb','wirtschaft','beruf_recht','technik'];
 const EXAM=new Date('2026-11-25T08:00:00+01:00');
 const DAY=864e5;
 
 /* ================= Zustand ================= */
 const LS='ap2crashkurs.v1';
+/* Fremde Daten (Sync-Code, Cloud, localStorage) nur nach Prüfung übernehmen: Größe, Typen, bekannte Schlüssel */
+function cleanState(json){
+  try{if(typeof json!=='string'||json.length>1500000)return null;const o=JSON.parse(json);if(!o||typeof o!=='object'||Array.isArray(o))return null;
+    const f=fresh();const out={};const isObj=v=>v&&typeof v==='object'&&!Array.isArray(v);
+    for(const k of Object.keys(f)){if(!(k in o))continue;const v=o[k];const d=f[k];
+      if(typeof d==='number'&&typeof v==='number'&&isFinite(v))out[k]=v;
+      else if(typeof d==='boolean'&&typeof v==='boolean')out[k]=v;
+      else if(isObj(d)&&isObj(v))out[k]=v;
+      else if(d===null&&(typeof v==='string'||v===null))out[k]=v;
+      else if(typeof d==='string'&&typeof v==='string'&&v.length<40)out[k]=v;}
+    for(const k of ['af','openCat'])if(typeof o[k]==='string'&&o[k].length<20)out[k]=o[k];
+    if(typeof o.vol==='number'&&isFinite(o.vol))out.vol=Math.max(0,Math.min(1.5,o.vol));
+    if(!['auto','light','dark'].includes(out.theme))delete out.theme;
+    if(out.rate!=null&&!(out.rate>=0.5&&out.rate<=2))delete out.rate;
+    return Object.assign(fresh(),out);}catch(e){return null;}}
 const fresh=()=>({v:2,updatedAt:0,xp:0,days:{},lessons:{},review:{},writes:{},sound:true,rate:1,cc:true,theme:'auto',planStart:null,cases:{},wrong:{},daylog:{},open:{start:true,algo:true}});
 let S=fresh();
-try{const raw=localStorage.getItem(LS);if(raw)S=Object.assign(fresh(),JSON.parse(raw));}catch(e){}
+try{const raw=localStorage.getItem(LS);const c=raw&&cleanState(raw);if(c)S=c;}catch(e){}
 if(!S.planStart)S.planStart=today();
 function today(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function L(id){return S.lessons[id]||(S.lessons[id]={clip:false,quizBest:-1,write:{}});}
@@ -52,13 +72,45 @@ async function connect(){
     const uid=await user.id();if(!uid)return true;
     const ref=db.doc('data/users/'+uid+'/progress');
     const snap=await ref.get();
-    if(snap.exists){const d=snap.data();try{const rs=JSON.parse(d.json);if((rs.updatedAt||0)>(S.updatedAt||0)){S=Object.assign(fresh(),rs);try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}applyTheme();render();}}catch(e){}}
+    if(snap.exists){const d=snap.data();try{const rs=cleanState(d.json);if(rs&&(rs.updatedAt||0)>(S.updatedAt||0)){S=rs;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}applyTheme();render();}}catch(e){}}
     remoteRef=ref;syncState='sync';paintSync();
     if(!snap.exists||(S.updatedAt>((snap.data()||{}).updatedAt||0)))push();
   }catch(e){}
   return true;
 }
 (async()=>{for(let i=0;i<6;i++){if(await connect())return;await new Promise(r=>setTimeout(r,800));}})();
+
+/* ---------- Sync ohne Claude: Google-Login über Firebase (nur wenn konfiguriert) ---------- */
+const FBC=window.FIREBASE_CONFIG;let fbAuth=null,fbUser=null,fbUnsub=null,pendingRemote=null,fbReady=false;
+const fbOn=()=>!!(FBC&&FBC.apiKey);
+function loadScript(u){return new Promise((res,rej)=>{const sc=document.createElement('script');sc.src=u;sc.onload=res;sc.onerror=rej;document.head.appendChild(sc);});}
+function applyRemote(json){try{const rs=cleanState(json);if(!rs)return;if((rs.updatedAt||0)<=(S.updatedAt||0))return;S=Object.assign(fresh(),rs);try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}applyTheme();}catch(e){}}
+const busyRoute=()=>['topic','case','run'].includes(R.v);
+async function fbInit(){
+  if(!fbOn()||(window.claude&&window.claude.use))return;
+  try{const b='vendor/firebase/';
+    await loadScript(b+'firebase-app-compat.js');await loadScript(b+'firebase-auth-compat.js');await loadScript(b+'firebase-firestore-compat.js');
+    firebase.initializeApp(FBC);fbAuth=firebase.auth();const fdb=firebase.firestore();fbReady=true;
+    try{await fbAuth.getRedirectResult();}catch(e){}
+    fbAuth.onAuthStateChanged(async u=>{fbUser=u;if(fbUnsub){fbUnsub();fbUnsub=null;}
+      if(!u){remoteRef=null;syncState='lokal';paintSync();if(R.v==='settings')render();return;}
+      const ref=fdb.collection('progress').doc(u.uid);
+      try{const snap=await ref.get();
+        if(snap.exists){const d=snap.data();if((d.updatedAt||0)>(S.updatedAt||0)){if(busyRoute())pendingRemote=d.json;else{applyRemote(d.json);render();}}}
+        remoteRef={set:d=>ref.set(d)};syncState='sync';paintSync();
+        if(!snap.exists||(S.updatedAt>((snap.data()||{}).updatedAt||0)))push();
+        fbUnsub=ref.onSnapshot(sn=>{if(!sn.exists||sn.metadata.hasPendingWrites)return;const d=sn.data();if((d.updatedAt||0)<=(S.updatedAt||0))return;
+          if(busyRoute())pendingRemote=d.json;else{applyRemote(d.json);render();}});
+        if(R.v==='settings')render();
+      }catch(e){syncState='fehler';paintSync();}
+    });
+  }catch(e){fbReady=false;}
+}
+function fbLogin(){if(!fbReady){toast('Sync lädt noch, kurz warten');return;}const pr=new firebase.auth.GoogleAuthProvider();
+  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||window.matchMedia('(display-mode: standalone)').matches;
+  if(mobile)fbAuth.signInWithRedirect(pr);else fbAuth.signInWithPopup(pr).catch(()=>fbAuth.signInWithRedirect(pr));}
+function fbLogout(){if(fbAuth)fbAuth.signOut();}
+fbInit();
 
 /* ================= Lernlogik ================= */
 function gain(n){S.xp+=n;const t=today();S.days[t]=(S.days[t]||0)+n;save();}
@@ -143,7 +195,7 @@ const I={
 function applyTheme(){const r=document.documentElement;if(S.theme==='auto')r.removeAttribute('data-theme');else r.setAttribute('data-theme',S.theme);}
 applyTheme();
 $('#themeBtn').addEventListener('click',()=>{const dark=document.documentElement.getAttribute('data-theme')==='dark'||(S.theme==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches);S.theme=dark?'light':'dark';applyTheme();save();});
-function paintSync(){const el=$('#syncNote');if(el)el.textContent=syncState==='sync'?'● synchron (Konto)':'lokal gespeichert';}
+function paintSync(){const el=$('#syncNote');if(!el)return;el.textContent=syncState==='sync'?(fbUser?'● synchron (Google)':'● synchron (Konto)'):(syncState==='fehler'?'Sync-Fehler':(fbOn()?'Sync einrichten →':'lokal gespeichert'));el.style.cursor=fbOn()?'pointer':'';}
 
 /* ================= Router ================= */
 let cleanup=null,R={v:'heute'},runCfg=null;
@@ -157,6 +209,7 @@ const topicHash=(id,step)=>'#/thema/'+id+(step!=null?'/'+['video','quiz','schrei
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0);});
 function render(){
   stopAll();closeDrawer();R=parse();
+  if(pendingRemote&&!busyRoute()){applyRemote(pendingRemote);pendingRemote=null;}
   if(R.v==='topic'&&!BY[R.id])R={v:'heute'};
   if(R.v==='run'&&!runCfg)R={v:'heute'};
   if(R.v==='themen'&&window.matchMedia('(min-width:960px)').matches)R={v:'heute'};
@@ -176,6 +229,7 @@ function renderSide(){
   const items=[['heute','#/heute','Heute',I.home],['plan','#/plan','Lernplan',I.cal],['wdh','#/wiederholen','Wiederholen',I.rep,due],['fehler','#/fehlerheft','Fehlerheft',I.err,nWrong],['pruefung','#/pruefung','Prüfungstraining',I.exam]];
   const act=v=>R.v===v||(v==='pruefung'&&(R.v==='case'||R.v==='beleg'))||(v==='wdh'&&R.v==='run');
   $('#nav').innerHTML=items.map(([v,href,t,ic,b])=>`<button class="nv" data-href="${href}" aria-current="${act(v)?'page':'false'}">${ic}<span>${t}</span>${b?`<span class="badge num">${b}</span>`:''}</button>`).join('');
+  const dp=dayProgress();const dpEl=$('#dayp');if(dpEl){dpEl.innerHTML=`<span>Heute <b class="num">${dp.n}/${dp.all}</b>${dayLog().closed?' · abgeschlossen ✓':''}</span><span class="rs-bar"><i style="width:${dp.all?dp.n/dp.all*100:0}%"></i></span>`;}
   const next=ORDER.find(id=>!isDone(id));
   const rs=$('#resume');
   if(next){const l=BY[next];const st=nextStep(next);const pc=lessonPct(next);
@@ -217,7 +271,7 @@ function bindTree(root){
 }
 function openDrawer(toTree){document.body.classList.add('drawer');const sc=$('.side-scroll');if(toTree){const t=$('.tree-tools');if(t)sc.scrollTop=t.getBoundingClientRect().top-sc.getBoundingClientRect().top+sc.scrollTop-6;}}
 function closeDrawer(){document.body.classList.remove('drawer');}
-bindTree($('#side'));$('#settingsBtn').addEventListener('click',()=>nav('#/einstellungen'));
+bindTree($('#side'));$('#syncNote').addEventListener('click',()=>{if(fbOn())nav('#/einstellungen');});$('#settingsBtn').addEventListener('click',()=>nav('#/einstellungen'));
 $('#menuBtn').addEventListener('click',()=>openDrawer());$('#scrim').addEventListener('click',closeDrawer);
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>nav('#/'+b.dataset.go)));
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{const t=b.dataset.tab;if(t==='themen'){openDrawer(true);return;}nav({heute:'#/heute',wdh:'#/wiederholen',pruefung:'#/pruefung'}[t]);}));
@@ -226,37 +280,65 @@ function bindCommon(root){root=root||view;
   root.querySelectorAll('[data-href]').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.href)));
   root.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',()=>ACT[b.dataset.act](b)));}
 const ACT={
-  review:()=>{const due=dueReview();if(!due.length){toast('Gerade nichts fällig');return;}startRun(shuffle(due).slice(0,25).map(qByKey),{title:'Wiederholen',showLesson:true,xpEach:5});},
-  mix:()=>{const ids=ORDER.filter(id=>L(id).quizBest>=0);const pool=(ids.length?ids:ORDER.slice(0,6)).flatMap(id=>BY[id].quiz);startRun(shuffle(pool).slice(0,15),{title:'Mix-Runde',showLesson:true,xpEach:5});},
-  wiso:()=>startRun(shuffle(LESSONS.filter(l=>l.area==='WISO').flatMap(l=>l.quiz).concat(WISO_BANK)).slice(0,30),{title:'WiSo-Prüfung',total:3600,xpEach:5}),
+  review:()=>{const due=dueReview();if(!due.length){toast('Gerade nichts fällig');return;}startRun(shuffle(due).slice(0,25).map(qByKey),{title:'Wiederholen',showLesson:true,xpEach:5,kind:'review'});},
+  mix:()=>{const ids=ORDER.filter(id=>L(id).quizBest>=0);const pool=(ids.length?ids:ORDER.slice(0,6)).flatMap(id=>BY[id].quiz);startRun(shuffle(pool).slice(0,15),{title:'Mix-Runde',showLesson:true,xpEach:5,kind:'mix'});},
+  wiso:()=>startRun(shuffle(LESSONS.filter(l=>l.area==='WISO').flatMap(l=>l.quiz).concat(WISO_BANK)).slice(0,30),{title:'WiSo-Prüfung',total:3600,xpEach:5,kind:'wiso'}),
   blitz:()=>startRun(shuffle(LESSONS.flatMap(l=>l.quiz).concat(WISO_BANK)).slice(0,10),{title:'Blitzrunde',timer:20,showLesson:true}),
   gamix:()=>startRun(shuffle(LESSONS.filter(l=>l.area!=='WISO').flatMap(l=>l.quiz)).slice(0,15),{title:'GA-Mix',timer:45,showLesson:true}),
   fehler:()=>{const ks=Object.keys(S.wrong).filter(k=>!S.wrong[k].fixed&&qByKey(k));if(!ks.length){toast('Fehlerheft ist leer');return;}startRun(shuffle(ks).slice(0,25).map(qByKey),{title:'Fehlerheft üben',showLesson:true,xpEach:5});}
 };
 
 /* ================= HEUTE ================= */
+/* Tagesplan: wird beim ersten Öffnen des Tages eingefroren, damit sich die Liste nicht verschiebt, während du lernst */
+function dayLog(){const t=today();return S.daylog[t]||(S.daylog[t]={topics:[]});}
+function dayTasks(){
+  const lg=dayLog();
+  if(lg.snap&&lg.snap.topics.includes('technik')&&lessonPct('technik')===0)delete lg.snap;
+  if(!lg.snap){const p=buildPlan().plan[0];lg.snap={topics:p.topics.slice(),cases:p.cases.slice(),wiso:p.wiso,mix:p.mix,light:p.light};save();}
+  const sn=lg.snap;const man=lg.manual||{};const due=dueReview().length;const T=[];
+  sn.topics.forEach(id=>{const l=BY[id];if(!l)return;const d=stepsDone(id);const st=nextStep(id);const fin=d.every(Boolean);
+    T.push({key:'t:'+id,done:fin||!!man['t:'+id],auto:fin,title:l.title,sub:fin?'Video, Quiz und Schreiben erledigt':`${d.filter(Boolean).length} von 3 Schritten · als Nächstes ${['Video','Quiz','Schreiben'][st]}`,mins:fin?0:Math.round((l.mins+25)*(3-d.filter(Boolean).length)/3),href:topicHash(id,fin?null:st),ic:fin?'✓':[I.play,I.quiz,I.pen][st],go:d.some(Boolean)?'Weiter':'Starten'});});
+  T.push({key:'review',done:due===0||!!man.review,auto:due===0,title:'Wiederholen',sub:due?`${due} Fragen fällig`:'gerade nichts fällig',mins:due?Math.max(5,Math.round(due*.6)):0,act:'review',ic:I.rep,go:'Starten'});
+  if(sn.mix)T.push({key:'mix',done:!!lg.mixDone||!!man.mix,auto:!!lg.mixDone,title:'Mix-Runde',sub:'15 gemischte Fragen aus deinen Themen',mins:10,act:'mix',ic:I.mix,go:'Starten'});
+  sn.cases.forEach(cid=>{const c=CASES.find(x=>x.id===cid);if(!c)return;const r=caseResult(c);T.push({key:'c:'+cid,done:r.checked||!!man['c:'+cid],auto:r.checked,title:c.title,sub:`Prüfungsfall ${c.area} · 90 Minuten unter Zeitdruck`,mins:95,href:'#/fall/'+cid,ic:I.case,go:'Starten'});});
+  if(sn.wiso)T.push({key:'wiso',done:!!lg.wisoDone||!!man.wiso,auto:!!lg.wisoDone,title:'WiSo-Prüfung simulieren',sub:'30 Fragen in 60 Minuten',mins:60,act:'wiso',ic:I.exam,go:'Starten'});
+  if(sn.light)T.push({key:'light',done:!!man.light,auto:false,title:'Generalprobe light',sub:'Belegsatz und Fehlerheft durchgehen, früh schlafen',mins:60,href:'#/belegsatz',ic:I.bulb,go:'Öffnen'});
+  return T;
+}
+function dayProgress(){const T=dayTasks();const n=T.filter(t=>t.done).length;return {T,n,all:T.length,rest:T.filter(t=>!t.done).reduce((a,t)=>a+t.mins,0)};}
+
 function renderHeute(){
-  const {plan}=buildPlan();const p=plan[0];const tk=today();const due=dueReview().length;
-  const lg=S.daylog[tk]||{topics:[]};
-  const next=ORDER.find(id=>!isDone(id));
-  const todo=[];
-  p.topics.forEach(id=>{const l=BY[id];const d=isDone(id);const st=nextStep(id);todo.push(`<button class="td ${d?'done':''}" data-href="${topicHash(id,d?null:st)}"><span class="ic">${d?'✓':[I.play,I.quiz,I.pen][st]}</span><span><b>${esc(l.title)}</b><small>${d?'erledigt':['Video','Quiz','Schreiben'][st]+' als Nächstes'} · ${esc(CAT_OF[id].t)} · ca. ${l.mins+25} min</small></span>${ring(lessonPct(id))}</button>`);});
-  if(p.review&&Object.keys(S.review).length)todo.push(`<button class="td ${due?'':'done'}" data-act="review"><span class="ic">${I.rep}</span><span><b>Wiederholen</b><small>${due?due+' Fragen fällig · ca. '+Math.max(5,Math.round(due*0.6))+' min':'heute nichts mehr fällig'}</small></span><span class="chip ${due?'bad':'ok'} num">${due}</span></button>`);
-  if(p.mix)todo.push(`<button class="td" data-act="mix"><span class="ic">${I.mix}</span><span><b>Mix-Runde</b><small>15 Fragen quer durch alles, was du schon hattest · 10 min</small></span><span class="chip acc">Mix</span></button>`);
-  p.cases.forEach(cid=>{const c=CASES.find(x=>x.id===cid);const r=caseResult(c);todo.push(`<button class="td ${r.checked?'done':''}" data-href="#/fall/${cid}"><span class="ic">${I.case}</span><span><b>${esc(c.title)}</b><small>Prüfungsfall ${c.area} · 90 min unter Zeitdruck</small></span><span class="area ${c.area}">${c.area}</span></button>`);});
-  if(p.wiso)todo.push(`<button class="td" data-act="wiso"><span class="ic">${I.exam}</span><span><b>WiSo-Prüfung simulieren</b><small>30 Fragen, 60 Minuten</small></span><span class="area WISO">WiSo</span></button>`);
-  if(p.light)todo.push(`<button class="td" data-href="#/belegsatz"><span class="ic">${I.bulb}</span><span><b>Generalprobe light</b><small>Belegsatz durchgehen, Fehlerheft, früh schlafen</small></span></button>`);
-  const nl=next&&BY[next];
+  const tk=today();const lg=dayLog();const {T,n,all,rest}=dayProgress();const due=dueReview().length;
+  const cur=T.find(t=>!t.done);const closed=!!lg.closed;
+  const nextPlan=buildPlan().plan[1];
+  const row=t=>`<div class="td ${t.done?'done':''} ${t===cur&&!closed?'now':''}">
+      <button class="tick" data-tick="${t.key}" aria-label="${t.done?'Als offen markieren':'Als erledigt markieren'}" ${t.auto?'disabled title="automatisch erledigt"':''}>${t.done?'✓':''}</button>
+      <button class="td-main" ${t.href?`data-href="${t.href}"`:`data-act="${t.act}"`}><span class="td-t">${t===cur&&!closed?'<span class="nowtag">Jetzt dran</span>':''}<b>${esc(t.title)}</b><small>${t.sub}${!t.done&&t.mins?' · ca. '+t.mins+' min':''}</small></span></button>
+      ${t.done?'':`<button class="btn sm ${t===cur?'':'ghost'}" ${t.href?`data-href="${t.href}"`:`data-act="${t.act}"`}>${t.go}</button>`}
+    </div>`;
+  const pct=all?Math.round(n/all*100):0;
   view.replaceChildren(h(`<div class="stack-lg">
-    <section class="hero"><div><p>${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})}</p><h1>${lg.topics.length?'Stark, weiter so.':(S.xp?'Willkommen zurück.':'Los geht’s.')}</h1><p>Heute geplant: ${fmtMin(p.mins)} · ${p.topics.length} Themen${p.cases.length?' · '+p.cases.length+' Prüfungsfall':''}</p></div>
+    ${closed?`<section class="hero done-day"><div><p>${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})}</p><h1>Tag geschafft ✓</h1><p>${n} von ${all} Aufgaben erledigt · ${S.days[tk]||0} XP · ${streak()} ${streak()===1?'Tag':'Tage'} am Stück</p></div><div class="cd"><b class="num">${daysLeft()}</b><span>Tage bis 25.11.</span></div>
+        <div class="go"><button class="btn ghost" id="reopen">Tag wieder öffnen</button>${nextPlan&&nextPlan.topics[0]?`<button class="btn" data-href="${topicHash(nextPlan.topics[0])}">Bonus: schon mit morgen anfangen</button>`:''}</div></section>`
+    :`<section class="hero"><div><p>${new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'})}</p><h1>${n===0?(S.xp?'Willkommen zurück.':'Los geht’s.'):(n===all?'Alles erledigt!':'Weiter so.')}</h1><p>${n} von ${all} erledigt${rest?' · noch ca. '+fmtMin(rest):''}</p></div>
       <div class="cd"><b class="num">${daysLeft()}</b><span>Tage bis 25.11.</span></div>
-      <div class="go">${nl?`<button class="btn" data-href="${topicHash(next,nextStep(next))}">${I.play} Weiter: ${esc(nl.title)}</button>`:`<button class="btn" data-href="#/pruefung">Zum Prüfungstraining</button>`}${due?`<button class="btn ghost" data-act="review">${due} wiederholen</button>`:''}</div></section>
-    <p class="sumline">Fortschritt <b>${allPct()} %</b> · <b>${LESSONS.filter(l=>isDone(l.id)).length} von ${LESSONS.length}</b> Themen fertig · <b>${streak()}</b> ${streak()===1?'Tag':'Tage'} am Stück · heute <b>${S.days[tk]||0} XP</b></p>
-    <section class="stack"><div class="row between"><h2>Dein Plan für heute</h2><button class="btn ghost sm" data-href="#/plan">Ganzer Plan</button></div><div class="todo">${todo.join('')}</div></section>
+      <div class="go">${cur?`<button class="btn" ${cur.href?`data-href="${cur.href}"`:`data-act="${cur.act}"`}>${I.play} Jetzt: ${esc(cur.title)}</button>`:`<button class="btn" id="close1">Tag abschließen</button>`}</div></section>`}
+    <section class="stack">
+      <div class="row between"><h2>Dein Plan für heute</h2><span class="num muted">${n}/${all} · ${pct} %</span></div>
+      <div class="bar ok"><i style="width:${pct}%"></i></div>
+      <div class="todo">${T.map(row).join('')}</div>
+      ${closed?'':`<div class="row between dayfoot"><p class="small muted">Haken setzen sich von selbst, sobald du etwas fertig hast. Du kannst sie auch selbst setzen.</p><button class="btn ${n===all?'':'ghost'}" id="closeDay">${n===all?'Tag abschließen ✓':'Tag abschließen'}</button></div>`}
+    </section>
+    ${nextPlan?`<section class="stack" style="gap:8px"><h3>Morgen dran</h3><p class="small muted">${[...nextPlan.topics.map(id=>esc(BY[id].title)),...nextPlan.cases.map(cid=>esc(CASES.find(c=>c.id===cid).title)),nextPlan.wiso?'WiSo-Simulation':'',nextPlan.light?'Generalprobe light':''].filter(Boolean).join(' · ')||'Wiederholen'}</p></section>`:''}
+    <p class="sumline">Gesamt <b>${allPct()} %</b> · <b>${LESSONS.filter(l=>isDone(l.id)).length} von ${LESSONS.length}</b> Themen fertig · <b>${streak()}</b> ${streak()===1?'Tag':'Tage'} am Stück</p>
     <section class="stack" style="gap:10px"><h2>Stand pro Prüfungsbereich</h2><div class="areas">${['GA1','GA2','WISO'].map(a=>`<span class="area ${a}">${AREA[a]}</span><div class="bar"><i style="width:${areaPct(a)}%"></i></div><span class="num muted">${LESSONS.filter(l=>l.area===a&&isDone(l.id)).length}/${LESSONS.filter(l=>l.area===a).length} · <b style="color:var(--ink)">${areaPct(a)} %</b></span>`).join('')}</div></section>
-    <section class="card stack"><h3>So läuft ein Thema</h3><p class="small muted">Links im Themenbaum ein Thema wählen. Rechts geht es dann in drei Schritten: <b>Video</b> mit Erklärer Tom und Mitdenk-Fragen, <b>Quiz</b> sofort danach (aktives Abrufen), <b>Schreiben</b> wie in der Prüfung mit Musterlösung. Falsche Antworten wandern automatisch in Wiederholen und Fehlerheft.</p></section>
   </div>`));
   bindCommon();
+  view.querySelectorAll('[data-tick]').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.tick;lg.manual=lg.manual||{};lg.manual[k]=!lg.manual[k];save();renderHeute();renderSide();}));
+  const close=()=>{lg.closed=true;lg.closedAt=Date.now();if(!S.days[tk])S.days[tk]=1;save();toast('Tag abgeschlossen');renderHeute();renderSide();window.scrollTo(0,0);};
+  const cb=$('#closeDay');if(cb)cb.addEventListener('click',()=>{if(n<all&&!cb.dataset.sure){cb.dataset.sure=1;cb.textContent=`Noch ${all-n} offen. Trotzdem abschließen?`;return;}close();});
+  const c1=$('#close1');if(c1)c1.addEventListener('click',close);
+  const ro=$('#reopen');if(ro)ro.addEventListener('click',()=>{lg.closed=false;save();renderHeute();renderSide();});
 }
 
 /* ================= LERNPLAN & METHODEN ================= */
@@ -479,7 +561,6 @@ function mdFor(l){
   md+=`## Schreibaufgaben mit Musterlösung\n\n`+l.write.map((w,i)=>`### Aufgabe ${i+1}\n\n${w.task}\n\n\`\`\`\n${w.model}\n\`\`\`\n`).join('\n');
   return md;
 }
-function downloadNLM(l){const blob=new Blob([mdFor(l)],{type:'text/markdown'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='AP2_'+l.id+'_NotebookLM.md';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);toast('Quellpaket geladen');}
 
 /* ================= WIEDERHOLEN ================= */
 function renderWdh(){
@@ -518,8 +599,8 @@ function startRun(items,o){runCfg={items,o};nav('#/runde');}
 function renderRun(){const {items,o}=runCfg;
   view.replaceChildren(h(`<div class="stack"><div class="row"><button class="iconbtn" id="back" aria-label="Zurück">${I.back}</button><h1>${esc(o.title)}</h1></div><div id="rb"></div></div>`));
   $('#back').addEventListener('click',()=>history.back());
-  cleanup=runQuiz($('#rb'),items,{timer:o.timer,total:o.total,showLesson:o.showLesson,onEnd:(pct,right)=>{gain(right*(o.xpEach||5));},
-    endButtons:el=>{el.append(h(`<button class="btn block" id="bk">Fertig</button>`));$('#bk',el).addEventListener('click',()=>{runCfg=null;nav('#/heute');});}});
+  cleanup=runQuiz($('#rb'),items,{timer:o.timer,total:o.total,showLesson:o.showLesson,onEnd:(pct,right)=>{if(o.kind){dayLog()[o.kind+'Done']=true;}gain(right*(o.xpEach||5));},
+    endButtons:el=>{el.append(h(`<button class="btn block" id="bk">Zurück zum Tagesplan</button>`));$('#bk',el).addEventListener('click',()=>{runCfg=null;nav('#/heute');});}});
 }
 
 /* ================= PRÜFUNG ================= */
@@ -605,7 +686,7 @@ function calc(){
   const ok=r.every(x=>x[1]);
   $('#cres').replaceChildren(h(`<div class="stack"><div class="verdict ${ok?'ok':'bad'}">${ok?'Bestanden':'Nicht bestanden'}</div>
     <ul class="rules">${r.map(x=>`<li><span class="chip ${x[1]?'ok':'bad'}">${x[1]?'erfüllt':'fehlt'}</span><span style="flex:1">${x[0]}</span><span class="num small muted">${x[2]}</span></li>`).join('')}</ul>
-    <p class="small muted">Liegt ein Bereich zwischen 30 und 49, kannst du dort eine 15-minütige mündliche Ergänzungsprüfung beantragen, wenn sie über das Bestehen entscheidet. Regeln nach § 16 und § 17 FIAusbV, Rundung durch die IHK kann leicht abweichen.</p></div>`));
+    <p class="small muted">Ist GA1, GA2 oder WiSo schlechter als ausreichend, kannst du in einem dieser Bereiche eine etwa 15-minütige mündliche Ergänzungsprüfung beantragen, wenn sie über das Bestehen entscheiden kann. Regeln nach § 16 und § 17 FIAusbV, Rundung durch die IHK kann leicht abweichen.</p></div>`));
 }
 
 /* ================= EINSTELLUNGEN & SYNC ================= */
@@ -617,7 +698,10 @@ function renderSettings(){
     <section class="card stack"><h3>Darstellung</h3><div class="seg2" style="grid-template-columns:repeat(3,1fr)">${[['auto','Automatisch'],['light','Hell'],['dark','Dunkel']].map(([k,t])=>`<button data-th="${k}" class="${S.theme===k?'on':''}">${t}</button>`).join('')}</div><p class="small muted">Dunkel ist angenehmer zum Lernen im Bett.</p></section>
     <section class="card stack"><h3>Video</h3><label class="row between"><span>Ton an</span><input type="checkbox" id="sSnd" ${S.sound?'checked':''}></label><label class="row between"><span>Untertitel</span><input type="checkbox" id="sCC" ${S.cc!==false?'checked':''}></label><p class="small muted">Tempo stellst du direkt im Player ein (bis 2×).</p></section>
     <section class="card stack"><h3>Fortschritt zwischen Handy und PC</h3>
-      <p class="small muted">${syncState==='sync'?'<b style="color:var(--ok)">Automatisch synchron</b> über dein Claude-Konto. Nichts weiter zu tun.':'Auf dieser Seite wird lokal gespeichert. Für automatischen Abgleich die claude.ai-Version nutzen. Oder hier per Code übertragen: auf Gerät A kopieren, auf Gerät B einfügen.'}</p>
+      ${fbOn()?(fbUser?`<p class="small"><b style="color:var(--ok)">● Synchron mit Google</b> als ${esc(fbUser.email||fbUser.displayName||'')}. Melde dich auf deinen anderen Geräten mit demselben Google-Konto an, dann ist alles überall gleich.</p><button class="btn ghost sm" id="fbOut" style="align-self:flex-start">Abmelden</button>`
+        :`<p class="small muted">Melde dich auf Handy und PC mit demselben Google-Konto an. Danach wird dein Fortschritt automatisch abgeglichen, auch live.</p><button class="btn" id="fbIn" style="align-self:flex-start">Mit Google anmelden</button>`)
+      :`<p class="small muted">${syncState==='sync'?'<b style="color:var(--ok)">Automatisch synchron</b> über dein Claude-Konto. Nichts weiter zu tun.':'Auf dieser Seite wird lokal gespeichert. Hier per Code übertragen: auf Gerät A kopieren, auf Gerät B einfügen.'}</p>`}
+      <p class="small muted">Ohne Anmeldung: Sync-Code auf Gerät A kopieren, auf Gerät B einfügen.</p>
       <div class="row"><button class="btn ghost sm" id="exp">Sync-Code kopieren</button><button class="btn ghost sm" id="imp">Sync-Code einfügen</button></div>
       <textarea class="ta" id="code" style="min-height:90px;font-family:var(--f-mono);font-size:12px" placeholder="Sync-Code" hidden></textarea>
       <button class="btn sm" id="impGo" hidden>Übernehmen</button></section>
@@ -625,11 +709,12 @@ function renderSettings(){
   </div>`));
   view.querySelectorAll('[data-th]').forEach(b=>b.addEventListener('click',()=>{S.theme=b.dataset.th;applyTheme();save();render();}));
   $('#sSnd').addEventListener('change',e=>{S.sound=e.target.checked;save();});
+  const fi=$('#fbIn');if(fi)fi.addEventListener('click',fbLogin);const fo=$('#fbOut');if(fo)fo.addEventListener('click',fbLogout);
   $('#sCC').addEventListener('change',e=>{S.cc=e.target.checked;save();});
   const code=$('#code');
   $('#exp').addEventListener('click',async()=>{const c=b64e(JSON.stringify(S));code.hidden=false;code.value=c;$('#impGo').hidden=true;try{await navigator.clipboard.writeText(c);toast('Code kopiert');}catch(e){code.select();toast('Code markiert, bitte kopieren');}});
   $('#imp').addEventListener('click',()=>{code.hidden=false;code.value='';$('#impGo').hidden=false;code.focus();});
-  $('#impGo').addEventListener('click',()=>{try{const o=JSON.parse(b64d(code.value));if(!o||typeof o!=='object'||!o.lessons)throw 0;S=Object.assign(fresh(),o);save();applyTheme();toast('Fortschritt übernommen');nav('#/heute');}catch(e){toast('Code ungültig');}});
+  $('#impGo').addEventListener('click',()=>{try{if(code.value.length>2000000)throw 0;const o=cleanState(b64d(code.value));if(!o||!Object.keys(o.lessons).length&&!o.xp)throw 0;S=o;save();applyTheme();toast('Fortschritt übernommen');nav('#/heute');}catch(e){toast('Code ungültig');}});
   $('#reset').addEventListener('click',e=>{const b=e.currentTarget;if(!b.dataset.sure){b.dataset.sure=1;b.textContent='Wirklich alles löschen? Nochmal tippen';return;}S=fresh();save();nav('#/heute');});
 }
 
