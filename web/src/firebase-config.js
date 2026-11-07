@@ -1,11 +1,10 @@
-// Sync über Google-Login (Firebase). Hier die Web-App-Konfiguration aus der Firebase-Konsole eintragen.
-// Diese Werte sind nicht geheim, der Schutz läuft über die Firestore-Regeln (nur der eigene Nutzer darf lesen/schreiben).
-window.FIREBASE_CONFIG = null;
-/* Beispiel:
+// Sync über Google-Login (Firebase). Diese Werte sind nicht geheim, der Schutz läuft über die Firestore-Regeln
+// (jede Person darf nur ihr eigenes Dokument progress/{uid} lesen und schreiben).
 window.FIREBASE_CONFIG = {
-  apiKey: "AIza...",
-  authDomain: "ap2-trainer-xxxx.firebaseapp.com",
-  projectId: "ap2-trainer-xxxx",
-  appId: "1:123:web:abc"
+  apiKey: "AIzaSyDDWjIRPv943GuUYUbU67mQqTrhBr1iPMM",
+  authDomain: "ap2-trainer.firebaseapp.com",
+  projectId: "ap2-trainer",
+  storageBucket: "ap2-trainer.firebasestorage.app",
+  messagingSenderId: "398959427971",
+  appId: "1:398959427971:web:3b5670f790115793ff36b6"
 };
-*/

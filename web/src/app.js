@@ -107,8 +107,11 @@ async function fbInit(){
   }catch(e){fbReady=false;}
 }
 function fbLogin(){if(!fbReady){toast('Sync lädt noch, kurz warten');return;}const pr=new firebase.auth.GoogleAuthProvider();
-  const mobile=/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)||window.matchMedia('(display-mode: standalone)').matches;
-  if(mobile)fbAuth.signInWithRedirect(pr);else fbAuth.signInWithPopup(pr).catch(()=>fbAuth.signInWithRedirect(pr));}
+  pr.setCustomParameters({prompt:'select_account'});
+  /* Popup zuerst: Redirect scheitert auf GitHub Pages oft an der Speichertrennung moderner Browser (Safari, Chrome) */
+  fbAuth.signInWithPopup(pr).catch(e=>{const c=e&&e.code||'';
+    if(c==='auth/popup-blocked'||c==='auth/operation-not-supported-in-this-environment')fbAuth.signInWithRedirect(pr);
+    else if(c!=='auth/popup-closed-by-user'&&c!=='auth/cancelled-popup-request')toast('Anmeldung fehlgeschlagen: '+c.replace('auth/',''));});}
 function fbLogout(){if(fbAuth)fbAuth.signOut();}
 fbInit();
 
