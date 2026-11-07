@@ -16,6 +16,7 @@ Läuft im Browser auf iPhone, Android und PC: **https://denis-mci.github.io/ap2-
 
 - Auf dem Handy: Seite öffnen, Teilen → „Zum Home-Bildschirm“, dann startet sie wie eine App.
 - Fortschritt wird lokal im Browser gespeichert (pro Gerät, kein Konto nötig).
+- SQL-Labor (`#/sql`): 44 Aufgaben in 7 Stufen auf einer Kanzlei-Datenbank, echte Ausführung im Browser (SQLite über sql.js), Prüfung gegen das Ergebnis der Musterlösung, dazu eine freie Spielwiese. Daten und Aufgaben in `web/src/sqllab_data.js`.
 - Quellcode in `web/src`, Build mit `python3 web/build.py`. Jeder Push auf `web/**` veröffentlicht automatisch über GitHub Pages.
 
 ## Build iOS
@@ -40,6 +41,7 @@ SideStore erneuert die 7-Tage-Signatur danach selbst.
 
 - Strenge Content-Security-Policy: Inline-Skripte nur per SHA-256-Hash (wird beim Build berechnet), keine fremden Skript-CDNs. Erlaubt sind nur die eigene Domain und Googles Anmeldedienst.
 - Firebase-SDK liegt selbst gehostet unter `web/vendor/firebase` (Version 10.12.2 aus npm), nicht per CDN.
+- sql.js 1.13.0 (MIT) liegt selbst gehostet unter `web/vendor/sqljs`, Integrität gegen den npm-Hash geprüft. Die CSP erlaubt dafür `'wasm-unsafe-eval'` (nur WebAssembly kompilieren, kein `eval` für JavaScript). Die Datenbank läuft nur im Speicher des Browsers.
 - Sync per Google-Login (optional, `web/src/firebase-config.js`): Jede Person liest und schreibt nur ihr eigenes Dokument `progress/{uid}`. Firestore-Regeln:
 
 ```

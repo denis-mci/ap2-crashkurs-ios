@@ -17,7 +17,7 @@ CONTENT = [
     "c_ga2.js", "c_ga1.js", "c_wiso.js", "clips_ga2.js", "clips_ga1.js", "clips_wiso.js",
     "n_a.js", "n_b.js", "n_c.js", "n_d.js", "nclips_a.js", "nclips_b.js", "nclips_c.js", "nclips_d.js",
     "wiso_bank.js", "cases_ga1.js", "cases_ga2.js", "cases_ga1b.js", "cases_ga2b.js", "belegsatz.js",
-    "firebase-config.js", "dialog_ga1.js", "dialog_ga2.js", "dialog_wiso.js", "merke.js", "qfix.js", "extra_ga1.js", "extra_ga2.js", "extra_wiso.js",
+    "firebase-config.js", "dialog_ga1.js", "dialog_ga2.js", "dialog_wiso.js", "merke.js", "qfix.js", "extra_ga1.js", "extra_ga2.js", "extra_wiso.js", "sqllab_data.js", "addq.js",
 ]
 
 HEAD = """<!doctype html>
@@ -67,7 +67,7 @@ def csp_meta(page):
         auth = " https://" + m.group(1)
     policy = "; ".join([
         "default-src 'none'",
-        "script-src 'self' " + " ".join(hashes) + " https://apis.google.com",
+        "script-src 'self' 'wasm-unsafe-eval' " + " ".join(hashes) + " https://apis.google.com",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src https://fonts.gstatic.com",
         "img-src 'self' data: blob: https://*.googleusercontent.com",
@@ -90,7 +90,7 @@ def main():
     page = (
         shell.replace("/*CONTENT*/", content)
         .replace("/*PLAYER*/", (SRC / "clipplayer.js").read_text() + "\n" + (SRC / "player.js").read_text())
-        .replace("/*APP*/", (SRC / "app.js").read_text())
+        .replace("/*APP*/", (SRC / "app.js").read_text().replace("/*SQLLAB*/", (SRC / "sqllab.js").read_text()))
     )
     if OUT.exists():
         shutil.rmtree(OUT)

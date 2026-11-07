@@ -8,6 +8,7 @@ if(typeof QFIX!=='undefined'){const SRC={L_GA2,L_GA1,L_WISO,L_NEU_A,L_NEU_B,L_NE
   for(const k in QFIX){const [src,id,i]=k.split('|');const o=QFIX[k];let q=null;
     if(src==='WISO_BANK')q=WISO_BANK[+i];else if(/^L_/.test(src)){const l=(SRC[src]||[]).find(x=>x.id===id);q=l&&l.quiz[+i];}else{const c=SRC[src]&&SRC[src][id];q=c&&c[+i]&&c[+i].check;}
     if(q&&q.o&&q.o.length===o.length)q.o=o.slice();}}
+if(typeof QADD!=='undefined')for(const id in QADD)if(BY[id])BY[id].quiz.push(...QADD[id]);
 LESSONS.forEach(l=>l.quiz.forEach((q,i)=>{q._k=l.id+':'+i;q._l=l.id;}));
 const CLIPS=Object.assign({},CLIPS_GA2,CLIPS_GA1,CLIPS_WISO,CLIPS_NEU_A,CLIPS_NEU_B,CLIPS_NEU_C,CLIPS_NEU_D);
 const DIALOG=Object.assign({},typeof DIALOG_GA2!=='undefined'?DIALOG_GA2:{},typeof DIALOG_GA1!=='undefined'?DIALOG_GA1:{},typeof DIALOG_WISO!=='undefined'?DIALOG_WISO:{});
@@ -47,12 +48,14 @@ function cleanState(json){
       else if(isObj(d)&&isObj(v))out[k]=v;
       else if(d===null&&(typeof v==='string'||v===null))out[k]=v;
       else if(typeof d==='string'&&typeof v==='string'&&v.length<40)out[k]=v;}
+    if(typeof o.sqlFree==='string')out.sqlFree=o.sqlFree.slice(0,3000);
+    if(isObj(out.sql)){const q={};for(const [k,v] of Object.entries(out.sql))if(/^[a-z]\d{1,2}$/.test(k)&&isObj(v))q[k]={ok:v.ok?1:0,q:typeof v.q==='string'?v.q.slice(0,1500):''};out.sql=q;}
     for(const k of ['af','openCat'])if(typeof o[k]==='string'&&o[k].length<20)out[k]=o[k];
     if(typeof o.vol==='number'&&isFinite(o.vol))out.vol=Math.max(0,Math.min(1.5,o.vol));
     if(!['auto','light','dark'].includes(out.theme))delete out.theme;
     if(out.rate!=null&&!(out.rate>=0.5&&out.rate<=2))delete out.rate;
     return Object.assign(fresh(),out);}catch(e){return null;}}
-const fresh=()=>({v:2,updatedAt:0,xp:0,days:{},lessons:{},review:{},writes:{},sound:true,rate:1,cc:true,theme:'auto',planStart:null,cases:{},wrong:{},daylog:{},open:{start:true,algo:true}});
+const fresh=()=>({v:2,updatedAt:0,xp:0,days:{},lessons:{},review:{},writes:{},sound:true,rate:1,cc:true,theme:'auto',planStart:null,cases:{},wrong:{},daylog:{},open:{start:true,algo:true},sql:{},sqlFree:''});
 let S=fresh();
 try{const raw=localStorage.getItem(LS);const c=raw&&cleanState(raw);if(c)S=c;}catch(e){}
 if(!S.planStart)S.planStart=today();
@@ -191,6 +194,7 @@ const I={
  case:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
  mix:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>',
  dl:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+ db:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5.5" rx="8" ry="3"/><path d="M4 5.5v13c0 1.7 3.6 3 8 3s8-1.3 8-3v-13M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>',
  yt:'<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'
 };
 
@@ -204,7 +208,7 @@ function paintSync(){const el=$('#syncNote');if(!el)return;el.textContent=syncSt
 let cleanup=null,R={v:'heute'},runCfg=null;
 function stopAll(){if(cleanup){cleanup();cleanup=null;}}
 function parse(){const p=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean).map(decodeURIComponent);
-  const m={thema:'topic',heute:'heute',plan:'plan',wiederholen:'wdh',fehlerheft:'fehler',pruefung:'pruefung',fall:'case',belegsatz:'beleg',einstellungen:'settings',runde:'run',themen:'themen'};
+  const m={thema:'topic',heute:'heute',plan:'plan',wiederholen:'wdh',fehlerheft:'fehler',pruefung:'pruefung',fall:'case',belegsatz:'beleg',sql:'sql',einstellungen:'settings',runde:'run',themen:'themen'};
   const v=m[p[0]]||'heute';const steps={video:0,quiz:1,schreiben:2};
   return {v,id:p[1],step:p[2]!=null?steps[p[2]]:null};}
 function nav(hash){if(location.hash===hash)render();else location.hash=hash;}
@@ -217,11 +221,11 @@ function render(){
   if(R.v==='run'&&!runCfg)R={v:'heute'};
   if(R.v==='themen'&&window.matchMedia('(min-width:960px)').matches)R={v:'heute'};
   renderSide();
-  const fn={heute:renderHeute,plan:renderPlan,topic:renderTopic,wdh:renderWdh,fehler:renderFehler,pruefung:renderPruefung,case:()=>openCase(R.id),beleg:openBeleg,settings:renderSettings,run:renderRun,themen:renderThemenMobile}[R.v];
+  const fn={heute:renderHeute,plan:renderPlan,topic:renderTopic,wdh:renderWdh,fehler:renderFehler,pruefung:renderPruefung,case:()=>openCase(R.id),beleg:openBeleg,sql:renderSql,settings:renderSettings,run:renderRun,themen:renderThemenMobile}[R.v];
   fn();
-  const titles={heute:'Heute',plan:'Lernplan',wdh:'Wiederholen',fehler:'Fehlerheft',pruefung:'Prüfungstraining',beleg:'Belegsatz',settings:'Einstellungen',run:runCfg&&runCfg.title,themen:'Themen'};
+  const titles={heute:'Heute',plan:'Lernplan',wdh:'Wiederholen',fehler:'Fehlerheft',pruefung:'Prüfungstraining',beleg:'Belegsatz',sql:'SQL-Labor',settings:'Einstellungen',run:runCfg&&runCfg.title,themen:'Themen'};
   $('#mTitle').textContent=R.v==='topic'?BY[R.id].title:(R.v==='case'?'Prüfungsfall':(titles[R.v]||'AP2 Trainer'));
-  document.querySelectorAll('.tab').forEach(b=>{const map={heute:['heute','plan','settings'],themen:['topic','themen'],wdh:['wdh','fehler','run'],pruefung:['pruefung','case','beleg']};b.setAttribute('aria-current',(map[b.dataset.tab]||[]).includes(R.v)?'page':'false');});
+  document.querySelectorAll('.tab').forEach(b=>{const map={heute:['heute','plan','settings'],themen:['topic','themen'],wdh:['wdh','fehler','run'],pruefung:['pruefung','case','beleg','sql']};b.setAttribute('aria-current',(map[b.dataset.tab]||[]).includes(R.v)?'page':'false');});
 }
 
 /* ================= Seitenleiste ================= */
@@ -229,7 +233,7 @@ function renderSide(){
   const due=dueReview().length;$('#cd').textContent=daysLeft();$('#cdM').textContent=daysLeft()+' T';
   const bd=$('#wdhBadge');bd.hidden=!due;bd.textContent=due;
   const nWrong=Object.values(S.wrong).filter(w=>!w.fixed).length;
-  const items=[['heute','#/heute','Heute',I.home],['plan','#/plan','Lernplan',I.cal],['wdh','#/wiederholen','Wiederholen',I.rep,due],['fehler','#/fehlerheft','Fehlerheft',I.err,nWrong],['pruefung','#/pruefung','Prüfungstraining',I.exam]];
+  const items=[['heute','#/heute','Heute',I.home],['plan','#/plan','Lernplan',I.cal],['wdh','#/wiederholen','Wiederholen',I.rep,due],['fehler','#/fehlerheft','Fehlerheft',I.err,nWrong],['sql','#/sql','SQL-Labor',I.db],['pruefung','#/pruefung','Prüfungstraining',I.exam]];
   const act=v=>R.v===v||(v==='pruefung'&&(R.v==='case'||R.v==='beleg'))||(v==='wdh'&&R.v==='run');
   $('#nav').innerHTML=items.map(([v,href,t,ic,b])=>`<button class="nv" data-href="${href}" aria-current="${act(v)?'page':'false'}">${ic}<span>${t}</span>${b?`<span class="badge num">${b}</span>`:''}</button>`).join('');
   const dp=dayProgress();const dpEl=$('#dayp');if(dpEl){dpEl.innerHTML=`<span>Heute <b class="num">${dp.n}/${dp.all}</b>${dayLog().closed?' · abgeschlossen ✓':''}</span><span class="rs-bar"><i style="width:${dp.all?dp.n/dp.all*100:0}%"></i></span>`;}
@@ -396,6 +400,7 @@ function renderTopic(){
         <div class="launch-meta"><span>${ring(pc)}<b>${pc} %</b> geschafft</span><span>⏱ ca. ${vMin+25} Min</span><span>3 Schritte</span></div>
         <button class="btn launch-go" data-href="${topicHash(l.id,goStep)}">${I.play} ${all?'Nochmal ansehen':(started?'Kurs fortsetzen · '+sinfo[nx].t:'Kurs starten')}</button>
         <ol class="launch-steps">${sinfo.map((x,i)=>`<li class="${d[i]?'done':''}"><button data-href="${topicHash(l.id,i)}"><span class="pi">${d[i]?'✓':i+1}</span><span><b>${x.t}</b><small>${x.sub}${x.st?' · '+x.st:''}</small></span></button></li>`).join('')}</ol>
+        ${SQL_LINK[l.id]?`<div class="launch-lab"><span>${I.db}</span><span><b>Danach im SQL-Labor üben</b><small>${SQL_LINK[l.id].map(k=>esc(SQL_LV[k].t)).join(' · ')}: echte Abfragen, sofort geprüft</small></span><button class="btn ghost sm" data-href="#/sql/${SQL_LINK[l.id][0]}">Öffnen</button></div>`:''}
       </div>
       ${topicNav(l.id)}
     </div>`));
@@ -606,6 +611,8 @@ function renderRun(){const {items,o}=runCfg;
     endButtons:el=>{el.append(h(`<button class="btn block" id="bk">Zurück zum Tagesplan</button>`));$('#bk',el).addEventListener('click',()=>{runCfg=null;nav('#/heute');});}});
 }
 
+/*SQLLAB*/
+
 /* ================= PRÜFUNG ================= */
 const CALC={ap1:60,proj:70,ga1:45,ga2:45,wiso:55};
 function grade(p){return p>=92?1:p>=81?2:p>=67?3:p>=50?4:p>=30?5:6;}
@@ -618,6 +625,7 @@ function renderPruefung(){
       <button class="td" data-act="blitz"><span class="ic">${I.bulb}</span><span><b>Blitzrunde</b><small>10 Fragen, 20 Sekunden pro Frage</small></span></button>
       <button class="td" data-act="gamix"><span class="ic">${I.mix}</span><span><b>GA-Mix</b><small>15 Fragen GA1 und GA2, 45 s pro Frage</small></span></button>
       <button class="td" data-href="#/belegsatz"><span class="ic">${I.pen}</span><span><b>Belegsatz-Spickzettel</b><small>SQL, Pseudocode, UML zum Nachschlagen</small></span></button>
+      <button class="td" data-href="#/sql"><span class="ic">${I.db}</span><span><b>SQL-Labor</b><small>${SQL_TASKS.length} Aufgaben, echte Abfragen im Browser · ${sqlCount()} gelöst</small></span></button>
     </div></section>
     <section class="stack"><h2>Prüfungsfälle wie in der AP2</h2><p class="small muted">Komplette Prüfungsbereiche: Szenario, 4 Handlungsschritte à 25 Punkte, 90 Minuten. Schreiben, Musterlösung aufdecken, ehrlich nach Schema abhaken.</p>
       <div class="grid2">${CASES.map(caseRow).join('')}</div></section>

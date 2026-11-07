@@ -620,6 +620,62 @@ td.key{font-weight:800;color:var(--red)}
 .cr{display:grid;grid-template-columns:24px 1fr auto;gap:10px;align-items:start;padding:8px 10px;background:var(--sunk);border-radius:10px;font-size:.92rem;cursor:pointer}
 .cr input{width:20px;height:20px;margin-top:2px;accent-color:var(--ok)}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== SQL-Labor ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.sqlhero{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.sqlhero>.stack{min-width:180px;flex:1}
+.sqlbig{font-size:1.6rem}
+.sqlhd{display:flex;align-items:center;gap:12px}
+.sqlhd h2{margin:0}
+.sqlgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.sqlt{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);color:var(--ink);font:inherit;font-weight:600;cursor:pointer}
+.sqlt:hover{border-color:var(--accent)}
+.sqlt .pi{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:.78rem;font-weight:800;background:var(--sunk);color:var(--muted)}
+.sqlt.done .pi{background:var(--ok-bg);color:var(--ok)}
+.sqlwrap{display:grid;grid-template-columns:minmax(0,1fr);gap:16px;align-items:start}
+.sqlwrap>*,.sqlpage,.sqled,#sqlOut{min-width:0;max-width:100%}
+.sqltab{min-width:0}.sqltn{overflow-wrap:anywhere}
+@media (min-width:1180px){.sqlwrap{grid-template-columns:minmax(0,1fr) 320px}.sqlside{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}}
+.sq-q{font-size:1.06rem;line-height:1.5;margin:0}
+.sqlnote{background:var(--accent-soft);border-radius:8px;padding:10px 12px;margin:0}
+.sqlhint{background:var(--mark);color:var(--mark-ink);border-radius:8px;padding:10px 12px;margin:0;font-family:var(--f-mono);font-size:.88rem;white-space:pre-wrap}
+.sqled{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);overflow:hidden}
+.sqled:focus-within{border-color:var(--accent);outline:2px solid var(--accent-soft)}
+.sqled textarea{display:block;width:100%;min-height:150px;resize:vertical;border:0;outline:0;padding:14px;background:transparent;color:var(--ink);font:500 .95rem/1.55 var(--f-mono);tab-size:2}
+.kw{display:flex;gap:6px;overflow-x:auto;padding:8px;border-top:1px solid var(--line);background:var(--sunk);scrollbar-width:thin}
+.kw button{flex:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:6px 9px;font:600 .8rem var(--f-mono);cursor:pointer}
+.kw button:active{background:var(--accent-soft)}
+.kbd{font-family:var(--f-mono)}
+@media (hover:none){.kbd{display:none}}
+.sqlmsg{display:flex;flex-direction:column;gap:4px;padding:12px 14px;border-radius:var(--r);border-left:4px solid}
+.sqlmsg.ok{background:var(--ok-bg);border-color:var(--ok)}
+.sqlmsg.bad{background:var(--bad-bg);border-color:var(--bad)}
+.sqlmsg small{font-family:var(--f-mono);color:var(--muted);font-size:.78rem;word-break:break-word}
+#sqlOut{display:flex;flex-direction:column;gap:10px}
+.sqlres{overflow:auto;max-height:420px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.sqlres table{border-collapse:collapse;width:100%;font:500 .86rem var(--f-mono)}
+.sqlres th{position:sticky;top:0;background:var(--sunk);text-align:left;font-weight:700;padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sqlres td{padding:6px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+.sqlres td.n{text-align:right;font-variant-numeric:tabular-nums}
+.sqlres td.null{color:var(--muted);font-style:italic}
+.sqlres tr:last-child td{border-bottom:0}
+.sqltabs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:10px 0}
+.sqlside .sqltabs{grid-template-columns:1fr 1fr}
+.sqltab{border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface)}
+.sqltn{display:block;font:700 .85rem var(--f-mono);color:var(--accent);background:none;border:0;padding:0 0 4px;cursor:pointer;text-align:left}
+.sqltab ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px}
+.sqltab li{display:flex;gap:4px;align-items:baseline;flex-wrap:wrap}
+.sqltab li button,.sqltab .col{font:500 .78rem var(--f-mono);color:var(--ink);background:none;border:0;padding:1px 0;cursor:pointer;text-align:left}
+.sqltab .col{cursor:default}
+.sqltab .pk{text-decoration:underline;text-underline-offset:2px;font-weight:700}
+.sqltab .fk{font:.7rem var(--f-mono);color:var(--muted)}
+.sqlside h3{margin:0}
+.sqlnav{justify-content:space-between;gap:8px;flex-wrap:wrap}
+.launch-lab{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:1px dashed var(--line);border-radius:var(--r);padding:10px 12px;margin-top:4px}
+.launch-lab>span:first-child{width:22px;color:var(--accent);flex:none}
+.launch-lab>span:nth-child(2){flex:1;display:flex;flex-direction:column}
+.launch-lab small{color:var(--muted)}
 </style>
 
 <div class="app">
