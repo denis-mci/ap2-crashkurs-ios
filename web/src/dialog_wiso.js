@@ -29,7 +29,7 @@ sozial:{
   'Wie komme ich von brutto zu netto?',
   'Welche Steuerklassen gibt es?',
   'Und welche Prinzipien stehen dahinter?'],
- o:'Also: Vier Versicherungen teilen sich Arbeitgeber und Arbeitnehmer, die Unfallversicherung zahlt der Arbeitgeber allein. Wegeunfälle zählen nur auf dem direkten Weg.'},
+ o:'Also: Vier Versicherungen teilen sich Arbeitgeber und Arbeitnehmer, die Unfallversicherung zahlt der Arbeitgeber allein. Wegeunfälle zählen auf dem direkten Weg, private Umwege in der Regel nicht.'},
 unternehmen:{
  i:'Rechtsformen und Kaufvertrag. Weißt du, welche Rechtsform unsere Kanzlei hat?',
  s:[null,

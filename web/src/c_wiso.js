@@ -122,7 +122,7 @@ quiz:[
 {q:'Wer zahlt die Unfallversicherung?', o:['Arbeitnehmer allein','Arbeitgeber allein','beide je zur Hälfte','der Staat'], a:1, e:'Träger sind die Berufsgenossenschaften.'},
 {q:'Wer ist Träger der Arbeitslosenversicherung?', o:['Krankenkassen','Berufsgenossenschaft','Bundesagentur für Arbeit','Deutsche Rentenversicherung'], a:2, e:'Bundesagentur für Arbeit.'},
 {q:'Wie hoch ist der Beitragssatz zur Rentenversicherung 2026 (gesamt, in %)?', type:'input', a:['18,6','18.6','18,6 %','18,6%'], e:'18,6 %, je 9,3 % für AG und AN.'},
-{q:'Du fährst nach der Arbeit einen Umweg zum Einkaufen und verunglückst. Bist du über die Unfallversicherung versichert?', o:['ja, immer','in der Regel nein, da privater Umweg','nur bei Schulden','nur samstags'], a:1, e:'Nur der direkte Weg ist versichert.'},
+{q:'Du fährst nach der Arbeit einen Umweg zum Einkaufen und verunglückst. Bist du über die Unfallversicherung versichert?', o:['ja, immer','in der Regel nein, da privater Umweg','nur bei Schulden','nur samstags'], a:1, e:'Versichert ist der direkte Weg. Private Umwege wie Einkaufen nicht. Ausnahmen: z. B. Umweg, um ein Kind zur Kita zu bringen, oder Fahrgemeinschaft.'},
 {q:'Ein Azubi verdient 300 € im Monat. Wer zahlt die Sozialversicherung?', o:['Azubi allein','Arbeitgeber allein','beide hälftig','niemand'], a:1, e:'Geringverdienergrenze 325 € für Azubis.'},
 {q:'Welche Steuerklasse hat ein lediger Arbeitnehmer ohne Kinder?', o:['I','II','III','IV'], a:0, e:'Klasse I.'},
 {q:'Wer zahlt den Kinderlosenzuschlag zur Pflegeversicherung?', o:['Arbeitgeber','Arbeitnehmer allein (ab 23)','beide','Staat'], a:1, e:'0,6 %, nur Arbeitnehmer.'},

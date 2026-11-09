@@ -64,9 +64,45 @@ function L(id){return S.lessons[id]||(S.lessons[id]={clip:false,quizBest:-1,writ
 let remoteRef=null,pushTimer=null,pushing=false,pushAgain=false,syncState='lokal';
 function save(){S.updatedAt=Date.now();try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}schedulePush();}
 function schedulePush(){if(!remoteRef)return;clearTimeout(pushTimer);pushTimer=setTimeout(push,2500);}
+let syncErrShown=false;
 async function push(){if(!remoteRef)return;if(pushing){pushAgain=true;return;}pushing=true;
-  try{await remoteRef.set({json:JSON.stringify(S),updatedAt:S.updatedAt});syncState='sync';}catch(e){syncState='lokal';}
+  try{await remoteRef.set({json:JSON.stringify(S),updatedAt:S.updatedAt});syncState='sync';}
+  catch(e){syncState='fehler';if(!syncErrShown){syncErrShown=true;const c=(e&&e.code)||'';toast(c==='permission-denied'?'Sync abgelehnt: Firestore-Regeln prüfen':'Sync fehlgeschlagen, Fortschritt bleibt lokal');}}
   pushing=false;paintSync();if(pushAgain){pushAgain=false;push();}}
+/* Zusammenführen statt Überschreiben: Fortschritt von zwei Geräten wird vereinigt.
+   Zahlen: Maximum, Ja/Nein: oder, Texte: der längere, fehlende Einträge werden ergänzt.
+   Ändert S an Ort und Stelle, damit offene Ansichten (Fall, Schreibaufgabe) ihre Referenzen behalten. */
+const SETTINGS_KEYS=['sound','rate','cc','theme','vol','af','openCat','sqlFree'];
+function deepMerge(a,b,key){
+  if(b===undefined||b===null)return a;if(a===undefined||a===null)return b;
+  if(key==='left')return Math.min(a,b);
+  if(Array.isArray(a)&&Array.isArray(b)){const n=Math.max(a.length,b.length);const o=[];for(let i=0;i<n;i++)o[i]=deepMerge(a[i],b[i]);
+    return o.every(v=>typeof v==='string')?[...new Set([...a,...b])]:o;}
+  if(typeof a==='object'&&typeof b==='object'&&!Array.isArray(a)&&!Array.isArray(b)){for(const k of Object.keys(b))a[k]=deepMerge(a[k],b[k],k);return a;}
+  if(typeof a==='number'&&typeof b==='number')return Math.max(a,b);
+  if(typeof a==='boolean'&&typeof b==='boolean')return a||b;
+  if(typeof a==='string'&&typeof b==='string')return b.length>a.length?b:a;
+  return a;}
+function mergeInto(R2){
+  const newer=(R2.updatedAt||0)>(S.updatedAt||0);
+  if(newer)for(const k of SETTINGS_KEYS)if(R2[k]!==undefined)S[k]=R2[k];
+  /* Wiederholung: je Frage die weiter fortgeschrittene Box gewinnt; gemeisterte Fragen (im Fehlerheft erledigt) nicht wiederbeleben */
+  const rv=R2.review||{};for(const [k,r] of Object.entries(rv)){const m=S.review[k];if(!m){const w=S.wrong[k];if(!(w&&w.fixed&&(!R2.wrong||!R2.wrong[k]||(R2.wrong[k].last||0)<=(w.last||0))))S.review[k]=r;}
+    else if(r.box>m.box||(r.box===m.box&&r.due>m.due))S.review[k]=r;}
+  /* Fehlerheft: der Eintrag mit dem jüngeren Fehler zählt, Anzahl als Maximum */
+  const wr=R2.wrong||{};for(const [k,w] of Object.entries(wr)){const m=S.wrong[k];if(!m){S.wrong[k]=w;continue;}const n=Math.max(m.n||0,w.n||0);S.wrong[k]=(w.last||0)>(m.last||0)?Object.assign({},w,{n}):Object.assign(m,{n});}
+  for(const k of ['xp','days','lessons','writes','cases','daylog','sql','open'])S[k]=deepMerge(S[k],R2[k],k);
+  S.xp=Math.max(S.xp||0,Object.values(S.days||{}).reduce((a,v)=>a+(+v||0),0));
+  if(R2.planStart&&(!S.planStart||R2.planStart<S.planStart))S.planStart=R2.planStart;
+  S.updatedAt=Math.max(S.updatedAt||0,R2.updatedAt||0);}
+/* übernimmt den Stand aus der Cloud, gibt true zurück, wenn lokal etwas dazukam, das die Cloud noch nicht hat */
+function absorb(json){const rs=cleanState(json);if(!rs)return true;mergeInto(rs);try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}
+  const norm=j=>{const c=cleanState(j);if(!c)return '';c.updatedAt=0;return stable(c);};
+  return norm(JSON.stringify(S))!==norm(json);}
+/* JSON mit sortierten Schlüsseln, damit gleiche Stände unabhängig von der Reihenfolge gleich aussehen */
+function stable(v){if(Array.isArray(v))return '['+v.map(x=>stable(x===undefined?null:x)).join(',')+']';
+  if(v&&typeof v==='object')return '{'+Object.keys(v).filter(k=>v[k]!==undefined).sort().map(k=>JSON.stringify(k)+':'+stable(v[k])).join(',')+'}';
+  return JSON.stringify(v);}
 async function connect(){
   try{
     if(!window.claude||!window.claude.use)return false;
@@ -75,9 +111,10 @@ async function connect(){
     const uid=await user.id();if(!uid)return true;
     const ref=db.doc('data/users/'+uid+'/progress');
     const snap=await ref.get();
-    if(snap.exists){const d=snap.data();try{const rs=cleanState(d.json);if(rs&&(rs.updatedAt||0)>(S.updatedAt||0)){S=rs;try{localStorage.setItem(LS,JSON.stringify(S));}catch(e){}applyTheme();render();}}catch(e){}}
+    let need=true;
+    if(snap.exists){const d=snap.data();try{need=absorb(d.json);applyTheme();if(!busyRoute())render();}catch(e){}}
     remoteRef=ref;syncState='sync';paintSync();
-    if(!snap.exists||(S.updatedAt>((snap.data()||{}).updatedAt||0)))push();
+    if(need)push();
   }catch(e){}
   return true;
 }
@@ -99,11 +136,13 @@ async function fbInit(){
       if(!u){remoteRef=null;syncState='lokal';paintSync();if(R.v==='settings')render();return;}
       const ref=fdb.collection('progress').doc(u.uid);
       try{const snap=await ref.get();
-        if(snap.exists){const d=snap.data();if((d.updatedAt||0)>(S.updatedAt||0)){if(busyRoute())pendingRemote=d.json;else{applyRemote(d.json);render();}}}
+        let need=true;
+        if(snap.exists){need=absorb(snap.data().json);applyTheme();if(!busyRoute())render();}
         remoteRef={set:d=>ref.set(d)};syncState='sync';paintSync();
-        if(!snap.exists||(S.updatedAt>((snap.data()||{}).updatedAt||0)))push();
-        fbUnsub=ref.onSnapshot(sn=>{if(!sn.exists||sn.metadata.hasPendingWrites)return;const d=sn.data();if((d.updatedAt||0)<=(S.updatedAt||0))return;
-          if(busyRoute())pendingRemote=d.json;else{applyRemote(d.json);render();}});
+        if(need)push();
+        fbUnsub=ref.onSnapshot(sn=>{if(!sn.exists||sn.metadata.hasPendingWrites)return;
+          const more=absorb(sn.data().json);applyTheme();if(!busyRoute())render();else renderSide&&renderSide();
+          if(more)schedulePush();},()=>{syncState='fehler';paintSync();});
         if(R.v==='settings')render();
       }catch(e){syncState='fehler';paintSync();}
     });

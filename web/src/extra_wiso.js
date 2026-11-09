@@ -1,8 +1,8 @@
 // Vertiefung WiSo: zusätzliche Erklärsätze pro Szene
 const EXTRA_WISO = {
 ausbildung:{
- 0:['Darum: Kläre vor der Prüfung mit deinem Betrieb, wie es weitergeht. Wer nicht übernommen werden soll, muss das rechtzeitig gesagt bekommen.'],
- 1:['Der Ausbildungsvertrag muss vor Beginn schriftlich festgehalten werden, unter anderem mit Dauer, Probezeit, Vergütung und Urlaub. Die IHK trägt ihn ins Verzeichnis ein.','Die Ausbildungsordnung legt bundesweit fest, was du im Betrieb lernst. Den Rahmenlehrplan für die Berufsschule beschließt die Kultusministerkonferenz.'],
+ 0:['Darum: Kläre vor der Prüfung mit deinem Betrieb, wie es weitergeht. Wichtig: Arbeitest du nach der Ausbildung einfach weiter, ohne dass etwas vereinbart ist, entsteht automatisch ein unbefristetes Arbeitsverhältnis (§ 24 BBiG).'],
+ 1:['Der Ausbildungsvertrag muss vor Beginn in Textform festgehalten werden (seit 2024 reicht auch elektronisch), unter anderem mit Dauer, Probezeit, Vergütung und Urlaub. Die IHK trägt ihn ins Verzeichnis ein.','Die Ausbildungsordnung legt bundesweit fest, was du im Betrieb lernst. Den Rahmenlehrplan für die Berufsschule beschließt die Kultusministerkonferenz.'],
  2:['Für die Berufsschule musst du freigestellt werden, und die Zeit wird auf die Arbeitszeit angerechnet. Auch für Prüfungen gibt es Freistellung.','Ausbildungsfremde Arbeiten, etwa dauernd Kaffee kochen oder privat einkaufen, darf der Betrieb dir nicht aufgeben.'],
  3:['Nach der Probezeit kannst du als Azubi selbst mit vier Wochen Frist kündigen, wenn du die Ausbildung aufgibst oder den Beruf wechselst. Immer schriftlich und mit Grund.'],
  4:['Bei Nichtbestehen kannst du die Prüfung zweimal wiederholen. Auf deinen Wunsch verlängert sich die Ausbildung bis zur nächsten Wiederholungsprüfung, höchstens um ein Jahr.','Ein Zeugnis bekommst du immer. Das einfache nennt Art, Dauer und Ziel der Ausbildung. Auf Wunsch gibt es ein qualifiziertes mit Leistung und Verhalten.'],
@@ -28,7 +28,7 @@ unternehmen:{
  0:['Bei der PartG mbB haften die Partner für Fehler bei der Berufsausübung nur mit dem Gesellschaftsvermögen. Dafür braucht es eine Berufshaftpflichtversicherung.'],
  1:['Bei der KG gibt es zwei Arten: Der Komplementär haftet unbeschränkt, der Kommanditist nur mit seiner Einlage.','Die UG, die Mini-GmbH, kann man schon mit einem Euro gründen. Sie muss aber Gewinne ansparen, bis 25.000 Euro erreicht sind.'],
  2:['Bei der AG wählt die Hauptversammlung der Aktionäre den Aufsichtsrat. Der Aufsichtsrat bestellt und kontrolliert den Vorstand.'],
- 3:['Ein Prokurist darf fast alles, aber keine Grundstücke verkaufen oder belasten und keine Prokura weitergeben. Dafür braucht er eine besondere Befugnis.'],
+ 3:['Ein Prokurist darf fast alles. Grundstücke verkaufen oder belasten darf er nur mit besonderer Befugnis. Prokura erteilen oder weitergeben darf er nie, das kann nur der Inhaber.'],
  4:['Beim Markt unterscheidest du nach Anzahl der Anbieter: viele heißt Polypol, wenige heißt Oligopol, einer heißt Monopol.'],
  5:['Eine Bestellung nach einem Angebot ist die Annahme, der Vertrag steht. Eine Bestellung ohne vorheriges Angebot ist selbst der Antrag, und der Verkäufer muss noch annehmen.'],
  6:['Erst wenn die Nacherfüllung zweimal scheitert, darfst du zurücktreten oder den Preis mindern. Beim Onlinekauf hast du zusätzlich 14 Tage Widerrufsrecht ohne Grund.']},
@@ -46,7 +46,7 @@ wirtschaft:{
  2:['Ein Kartell ist eine verbotene Absprache zwischen Wettbewerbern, etwa über Preise. Darüber wacht das Bundeskartellamt.'],
  3:['Magisch heißt das Viereck, weil sich die Ziele gegenseitig stören. Mehr Wachstum kann zum Beispiel die Preise steigen lassen.'],
  4:['Die Europäische Zentralbank strebt eine Inflation von zwei Prozent an. Steigt die Inflation, erhöht sie meist die Leitzinsen, damit weniger Geld im Umlauf ist.'],
- 5:['Beim Annahmeverzug nimmt der Käufer die ordentlich gelieferte Ware nicht ab. Beim Zahlungsverzug zahlt er nicht, spätestens 30 Tage nach Rechnung ist er automatisch im Verzug.'],
+ 5:['Beim Annahmeverzug nimmt der Käufer die ordentlich gelieferte Ware nicht ab. Beim Zahlungsverzug zahlt er nicht, spätestens 30 Tage nach Fälligkeit und Zugang der Rechnung ist er auch ohne Mahnung im Verzug. Bei Verbrauchern gilt das nur, wenn die Rechnung darauf hinweist.'],
  6:['Neben der Gewährleistung gibt es die Garantie. Die ist freiwillig und kommt meist vom Hersteller, mit Bedingungen, die er selbst festlegt.']},
 beruf_recht:{
  0:['Die Schweigepflicht gilt auch nach dem Ende der Ausbildung weiter. Ein Verstoß kann nach Paragraf 203 Strafgesetzbuch bestraft werden.'],

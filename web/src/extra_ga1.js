@@ -7,7 +7,7 @@ klasse:{
  3:['Die Frage, die alles klärt: Kann das Teil ohne das Ganze existieren? Ein Mitarbeiter existiert auch ohne Abteilung, also Aggregation. Eine Rechnungsposition ohne Rechnung ergibt keinen Sinn, also Komposition.','Vererbung prüfst du mit dem Satz: ist ein. Ein Privatmandant ist ein Mandant. Passt der Satz nicht, ist es keine Vererbung.'],
  4:['Lies Multiplizitäten immer von der gegenüberliegenden Seite: Ein Mandant hat null bis viele Aufträge, ein Auftrag gehört zu genau einem Mandanten.','In der Prüfung gibt es oft einen Punkt pro richtig gesetzter Multiplizität. Vergiss also keine Linie.'],
  5:['Polymorphie im Alltag: Du rufst bei jedem Mandanten berechneHonorar auf. Ein Privatmandant rechnet anders als ein Firmenmandant, aber der Aufruf ist derselbe.'],
- 6:['Eine Klasse darf nur von einer Klasse erben, aber beliebig viele Interfaces implementieren. Darum nimmt man Interfaces für Fähigkeiten wie druckbar oder exportierbar.']},
+ 6:['In Java und C# darf eine Klasse nur von einer Klasse erben, aber beliebig viele Interfaces implementieren. Darum nimmt man Interfaces für Fähigkeiten wie druckbar oder exportierbar.']},
 erm:{
  0:['ER-Modell, Tabellenmodell und SQL hängen zusammen. Wer das ER-Modell sauber umwandeln kann, schreibt danach auch die passenden JOINs.'],
  1:['In der Prüfung ist die Krähenfuß-Notation genauso erlaubt wie die Chen-Notation mit Rauten. Bleib nur innerhalb eines Diagramms bei einer Notation.'],
@@ -47,7 +47,7 @@ rest:{
  5:['Pull holt Änderungen vom Server und führt sie zusammen. Gibt es dabei Widersprüche, entsteht ein Merge-Konflikt, den du von Hand auflöst.']},
 quali:{
  0:['Die Rechnungen sind einfach, aber man verrechnet sich leicht. Schreib immer den Rechenweg hin, dafür gibt es Teilpunkte.'],
- 1:['Merk dir mindestens vier der acht Merkmale mit Beispiel: Sicherheit, Wartbarkeit, Benutzbarkeit und Zuverlässigkeit. Damit kannst du fast jede Frage beantworten.'],
+ 1:['Merk dir mindestens vier Merkmale mit Beispiel: Sicherheit, Wartbarkeit, Benutzbarkeit und Zuverlässigkeit. Damit kannst du fast jede Frage beantworten.'],
  2:['Barrierefreiheit hilft allen: Gute Kontraste lesen sich auch im Sonnenlicht besser, und Tastaturbedienung ist für Vielnutzer schneller.'],
  3:['Erst die jährliche Ersparnis ausrechnen: 300 Stunden mal 40 Euro sind 12.000 Euro im Jahr. 12.000 Euro Kosten geteilt durch 12.000 Euro pro Jahr ergibt genau ein Jahr.','Gibt es laufende Kosten, etwa Lizenzgebühren, ziehst du sie vorher von der Ersparnis ab. Das ist eine typische Falle.'],
  4:['Begründe deine Entscheidung immer mit der Situation aus der Aufgabe, zum Beispiel: Die Kanzlei hat keine eigenen Entwickler, also Buy.'],

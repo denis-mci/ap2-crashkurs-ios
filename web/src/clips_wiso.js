@@ -137,11 +137,11 @@ sozial: [
 {h:'Unfallversicherung', v:{list:['Arbeitsunfälle und Berufskrankheiten','Wegeunfall: direkter Weg zur Arbeit oder Schule und zurück','Privater Umweg, etwa Einkaufen: meist nicht versichert','Auch Azubis und Berufsschüler sind versichert','Unfall sofort melden, D-Arzt aufsuchen']},
  beats:[
   {say:'Die Unfallversicherung springt ein bei Arbeitsunfällen und Berufskrankheiten.', show:{item:1}},
-  {say:'Auch Wegeunfälle zählen. Aber nur auf dem direkten Weg zur Arbeit oder Berufsschule und zurück.', show:{item:2}},
+  {say:'Auch Wegeunfälle zählen. Versichert ist der direkte Weg zur Arbeit oder Berufsschule und zurück. Private Umwege, etwa zum Einkaufen, in der Regel nicht.', show:{item:2}},
   {say:'Machst du einen privaten Umweg, zum Beispiel zum Einkaufen, bist du in der Regel nicht versichert.', show:{item:3}},
   {say:'Azubis und Berufsschüler sind mit drin. Unfall sofort dem Arbeitgeber melden und zum Durchgangsarzt, dem D-Arzt.', show:{item:5}}
  ],
- check:{q:'Nach Feierabend fährst du zum Supermarkt und hast einen Unfall. Zahlt die Unfallversicherung?', o:['Ja, immer','In der Regel nein, privater Umweg'], a:1, e:'Versichert ist nur der direkte Weg zwischen Zuhause und Arbeit oder Schule.'}},
+ check:{q:'Nach Feierabend fährst du zum Supermarkt und hast einen Unfall. Zahlt die Unfallversicherung?', o:['Ja, immer','In der Regel nein, privater Umweg'], a:1, e:'Versichert ist der direkte Weg zwischen Zuhause und Arbeit oder Schule. Ein privater Umweg wie Einkaufen gehört nicht dazu. Ausnahmen gibt es nur für bestimmte Umwege, etwa um ein Kind zur Kita zu bringen oder für eine Fahrgemeinschaft.'}},
 {h:'Brutto zu Netto', v:{code:`  Bruttogehalt
 − Lohnsteuer (nach Steuerklasse)
 − Solidaritätszuschlag (meist entfallen)
